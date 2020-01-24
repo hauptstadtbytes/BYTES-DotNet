@@ -1,0 +1,12 @@
+.vs/
+BYTES.NET.SAMPLE/bin/
+BYTES.NET.SAMPLE/obj/
+BYTES.NET.TEST/bin/
+BYTES.NET/obj/
+Extensions/BYTES.NET.Collections/obj/
+Extensions/BYTES.NET.IO/obj/
+Extensions/BYTES.NET.Logging/obj/
+Extensions/BYTES.NET.Logging/bin/
+Extensions/BYTES.NET.IO/bin/
+Extensions/BYTES.NET.Collections/bin/
+BYTES.NET.TEST/obj/

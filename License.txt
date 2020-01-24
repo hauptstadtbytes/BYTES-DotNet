@@ -1,0 +1,41 @@
+End-User License Agreement (EULA) for the BYTES Application Framework
+Version 1.0 from November, 1st 2019
+
+This End-User License Agreement ("EULA") is a legal agreement between you and hauptstadtbytes Sebastian Räse (called „AUTHOR“ subsequently). This EULA agreement governs the acquisition and use of your copy of the BYTES.NET library (subsequently called "SOFTWARE") directly from the AUTHOR or indirectly through a reseller or distributor authorized by hauptstadtbytes Sebastian Räse (subsequently called "RESELLER").
+
+Please read this EULA agreement carefully before completing the installation process and using the SOFTWARE. It provides a license to use the SOFTWARE and contains warranty information and liability disclaimers. If you register for a free trial of the SOFTWARE, this EULA agreement will also govern that trial. By clicking "accept" or installing and/or using the SOFTWARE, you are confirming your acceptance of the SOFTWARE and agreeing to become bound by the terms of this EULA agreement.
+
+If you are entering into this EULA agreement on behalf of a company or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement. In case of any questions, please contact the AUTHOR.
+
+This EULA agreement shall apply only to the SOFTWARE supplied by the AUTHOR herewith regardless of whether other software is referred to or described herein. The terms also apply to any updates, supplements, Internet-based services, and support services for the SOFTWARE provided by the AUTHOR, unless other terms accompany those items on delivery. If so, those terms apply.
+ 
+1. License Grant
+
+(a) For personal, non-commercial and acedmic use, the AUTHOR hereby grants you a personal, non-transferable, non-exclusive licence free of charge to use the SOFTWARE on your devices in accordance with the terms of this EULA agreement. You are permitted to load the SOFTWARE (for example to a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum requirements of the SOFTWARE.
+
+You are allowed to:
+    •	Reproduce, copy, and distribute the SOFTWARE for your personal, non-commercial or acadedmic use
+    •	Incorporate to or combine the SOFTWARE with any other software intended for your personal, academic or non-commercial use
+	•	Edit, alter, modify, adapt, translate or otherwise change the whole or any part of the SOFTWARE by forking a source code repository published by the AUTHOR
+
+You are not allowed to:
+	•	Decompile, disassemble or reverse engineer the SOFTWARE or attempt to do any such things
+	•	Reproduce, copy, distribute, resell or otherwise use the SOFTWARE for any commercial purpose without any written permission granted by the AUTHOR
+	•	Allow any third party to use the SOFTWARE on behalf of or for the benefit of any third party without written permission granted by the AUTHOR
+	•	Use the SOFTWARE in any way which breaches any applicable local, national or international law
+	•	Use the SOFTWARE for any purpose that the AUTHOR considers is a breach of this EULA agreement
+
+(b) For commercial use or all scenarious not covered by paragraph (a), the the AUTHOR hereby grants you a personal, non-transferable, non-exclusive licence free of charge for a trial period of 30 days. You may use the SOFTWARE on your devices in accordance with the terms of this EULA agreement. You are permitted to load the SOFTWARE (for example to a PC, laptop, mobile or tablet) under your control. You are responsible for ensuring your device meets the minimum requirements of the SOFTWARE. 
+For trial period, you are allowed to test the SOFTWARE in concordancewith the rules stated in paragraph (a). Afterwards, you have to get a valid license (e.g. containing the written permission to use the SOFTWARE in commercial applications as well) from the AUTHOR.
+	
+2. Intellectual Property and Ownership
+The AUTHOR shall at all times retain ownership of the SOFTWARE as originally downloaded by you and all subsequent downloads of the SOFTWARE by you. The SOFTWARE (and the copyright, and other intellectual property rights of whatever nature in the SOFTWARE, including any modifications made thereto) are and shall remain the property of the AUTHOR.
+
+The AUTHOR reserves the right to grant licences to use the SOFTWARE to third parties.
+
+3. Termination
+This EULA agreement is effective from the date you first use the SOFTWARE and shall continue until terminated. You may terminate it at any time upon written notice to the AUTHOR. It will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the SOFTWARE. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.
+
+4. Governing Law
+This EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of Federal Republic of Germany.
+

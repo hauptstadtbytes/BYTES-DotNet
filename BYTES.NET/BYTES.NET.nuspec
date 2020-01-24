@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>BYTES.NET</id>
+    <version>1.1.0</version>
+    <title>BYTES .NET</title>
+    <authors>Sebastian Raese</authors>
+    <owners>Sebastian Raese</owners>
+    <license type="file">license\License.txt</license>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Base-class types for rapid prototyping/ software development</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2020 hauptstadtbytes.de</copyright>
+    <tags></tags>
+  </metadata>
+  <files>
+    <file src="bin\Release\BYTES.NET.dll" target="lib\net46\" />
+    <file src="..\Resources\System.Windows.Interactivity.dll" target="lib\net46\" />
+    <file src="..\License.txt" target="license\" />
+  </files>
+</package>

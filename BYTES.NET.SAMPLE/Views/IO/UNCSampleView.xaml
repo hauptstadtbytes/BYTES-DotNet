@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="Views.IO.UNCSampleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BYTES.NET.SAMPLE.Views.IO"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="5">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" HorizontalAlignment="Stretch">
+            <DockPanel>
+                <TextBlock Text="Root Path:" FontWeight="Bold" Width="75" />
+                <TextBox Text="{Binding SourcePath, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+
+            <DockPanel Margin="0,5,0,0">
+                <TextBlock Text="User:" FontWeight="Bold" Width="75" />
+                <TextBox Text="{Binding User, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+
+            <DockPanel Margin="0,5,0,0">
+                <TextBlock Text="Password:" FontWeight="Bold" Width="75" />
+                <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" />
+            </DockPanel>
+
+            <Button Content="Connect" Command="{Binding Path=Commands[ConnectCmd]}" Margin="0,5,0,0" />
+
+            <Separator HorizontalAlignment="Stretch" Margin="0,5,0,5" />
+        </StackPanel>
+
+        <TreeView Grid.Row="1" ItemsSource="{Binding Path=Folders}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+            <TreeView.ItemTemplate>
+
+                <HierarchicalDataTemplate ItemsSource="{Binding Path=Children}">
+
+                    <DockPanel>
+                        <TextBlock Text="{Binding Path=Name, Mode=OneWay}" />
+                    </DockPanel>
+
+                </HierarchicalDataTemplate>
+
+            </TreeView.ItemTemplate>
+
+        </TreeView>
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="Views.IO.LDAPSampleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BYTES.NET.SAMPLE.Views.IO"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Margin="5">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <DockPanel>
+                <TextBlock Text="Domain:" FontWeight="Bold" Width="75" />
+                <TextBlock Text="{Binding Path=Domain, Mode=OneWay}" Margin="5,0,0,0" />
+            </DockPanel>
+
+            <DockPanel Margin="0,5,0,0">
+                <TextBlock Text="OUs:" FontWeight="Bold" Width="75" />
+                <ComboBox ItemsSource="{Binding Path=OUs, Mode=OneWay}" SelectedItem="{Binding Path=OU, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0" />
+            </DockPanel>
+        </StackPanel>
+
+        <TabControl Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,5,0,0">
+            <TabItem Header="Users">
+                <Grid Margin="5">
+
+                    <ListView ItemsSource="{Binding Path=Users}" />
+                    
+                </Grid>
+            </TabItem>
+            <TabItem Header="Groups">
+                <Grid Margin="5">
+
+                    <ListView ItemsSource="{Binding Path=Groups}" />
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+            
+    </Grid>
+</UserControl>

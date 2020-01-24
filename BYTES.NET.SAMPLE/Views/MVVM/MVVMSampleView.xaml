@@ -1,0 +1,223 @@
+﻿<UserControl x:Class="Views.MVVM.MVVMSampleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BYTES.NET.SAMPLE.Views.MVVM"
+             
+             xmlns:lib="clr-namespace:BYTES.NET.WPF.MVVM;assembly=BYTES.NET"
+             xmlns:convertersLib="clr-namespace:BYTES.NET.WPF.Converters;assembly=BYTES.NET"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <!-- add the converters -->
+    <UserControl.Resources>
+        <convertersLib:NothingToVisibilityConverter x:Key="NothingToVisConverter" />
+        <convertersLib:NothingToBoolConverter x:Key="NothingToBoolConverter" />
+        <convertersLib:BoolToVisibilityConverter x:Key="BooleanToVisConverter" />
+        <convertersLib:BoolInvertConverter x:Key="BooleanInverter" />
+        <convertersLib:CountToVisibilityConverter x:Key="CountToVisConverter" />
+    </UserControl.Resources>
+    
+    <Grid>
+            
+        <!-- add the sample menu -->
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TabStripPlacement="Left">
+            
+            <!-- add the 'Controls' sample -->
+            <TabItem Header="Controls">
+                
+                <Grid Margin="5">
+                    <StackPanel>
+
+                        <!-- add the button 'say hello' example -->
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Text="Say Hello:" FontWeight="Bold" DockPanel.Dock="Left" Margin="0,0,5,0" />
+                            <Button Content="Click Me!" Command="{Binding Path=Commands[SayHelloCmd]}" CommandParameter="{Binding Path=Text, ElementName=WelcomeTxt}" DockPanel.Dock="Right" Margin="5,0,0,0" />
+                            <TextBox Text="Hello World!" x:Name="WelcomeTxt" />
+                        </DockPanel>
+
+                    </StackPanel>
+                </Grid>
+
+            </TabItem>
+
+            <!-- add the 'Dialog' sample -->
+            <TabItem Header="Dialog">
+
+                <Grid Margin="5">
+                    <StackPanel>
+                        <TextBlock Text="{Binding DialogText}" />
+                        <Button Content="Click to open!" Command="{Binding Path=Commands[OpenDialogCmd]}" Margin="0,5,0,0" />
+                    </StackPanel>
+                </Grid>
+                
+            </TabItem>
+
+            <!-- add the 'Validation' sample -->
+            <TabItem Header="Validation">
+
+                <Grid Margin="5">
+                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        
+                        <!-- add the (in-line) validation example -->
+                        <TextBlock Text="The answer to life, the universe and everything is..." FontWeight="Bold" />
+                        <TextBox Text="{Binding ValidationAnswer, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}" Margin="0,5,0,20">
+                            
+                            <Validation.ErrorTemplate>
+                                <ControlTemplate>
+                                    <StackPanel>
+
+                                        <!-- placeholder for the TextBox itself -->
+                                        <AdornedElementPlaceholder x:Name="textBox"/>
+
+                                        <!-- add the error messages -->
+                                        <ItemsControl ItemsSource="{Binding}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=ErrorContent.Message}">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="{x:Type TextBlock}">
+                                                                <Setter Property="Foreground"
+ Value="Orange" />
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Path=ErrorContent.Level}" Value="{x:Static lib:ViewModelValidationRule+ResultLevels.IsError}">
+                                                                        <Setter Property="Foreground" Value="Red" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+
+                                    </StackPanel>
+                                </ControlTemplate>
+                            </Validation.ErrorTemplate>
+                            
+                        </TextBox>
+                        
+                        <!-- add the nested view model validation example -->
+                        <DockPanel HorizontalAlignment="Stretch">
+                            <TextBlock Text="40" DockPanel.Dock="Left" />
+                            <TextBox Text="{Binding Path=ValidationNestedVM.OperatorSign, UpdateSourceTrigger=PropertyChanged,ValidatesOnNotifyDataErrors=True}" TextAlignment="Center" Margin="5,0,5,0" Width="15" />
+                            <TextBlock Text="2 = 42" DockPanel.Dock="Left" />
+                        </DockPanel>
+
+                        <!-- add a separator -->
+                        <Separator Margin="0,5,0,5" HorizontalAlignment="Stretch" />
+                        
+                    </StackPanel>
+
+                    <!-- add the validation results display -->
+                    <ListBox Grid.Row="2" ItemsSource="{Binding ValidationResults, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                </Grid>
+                
+            </TabItem>
+            
+            <!-- add the 'Converters' example -->
+            <TabItem Header="Converters">
+                
+                <Grid Margin="5">
+
+                    <StackPanel HorizontalAlignment="Stretch">
+
+                        <!-- add the 'Nothing' conversion example(s) -->
+                        <DockPanel LastChildFill="True">
+                            <Button Content="Reset only if NOT NOTHING" DockPanel.Dock="Left" Margin="0,0,5,0" Command="{Binding Path=Commands[ResetConversionSampleStringCmd]}" IsEnabled="{Binding Path=ConversionSampleString,Converter={StaticResource NothingToBoolConverter},ConverterParameter=false}" />
+                            
+                            <TextBlock Text="The sample string" FontWeight="Bold" DockPanel.Dock="Left" Margin="0,0,5,0" />
+                            
+                            <TextBlock Text="is NOTHING" DockPanel.Dock="Right" Margin="5,0,0,0" Visibility="{Binding Path=ConversionSampleString,Converter={StaticResource NothingToVisConverter}}" />
+                            <TextBlock Text="is NOT NOTHING" DockPanel.Dock="Right" Margin="5,0,0,0" Visibility="{Binding Path=ConversionSampleString,Converter={StaticResource NothingToVisConverter},ConverterParameter=false}" />
+
+                            <TextBox Text="{Binding Path=ConversionSampleString, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Left" />
+                        </DockPanel>
+                        
+                        <!-- add the 'boolean' conversion example(s) -->
+                        <DockPanel Margin="0,5,0,0">
+                            <TextBlock Text="The sample boolean" FontWeight="Bold" />
+
+                            <Button Content="value" Command="{Binding Path=Commands[ToggleConversionSampleBooleanCmd]}" Margin="5,0,0,0" />
+
+                            <TextBlock Text="is TRUE" DockPanel.Dock="Left" Margin="5,0,0,0" Visibility="{Binding Path=ConversionSampleBoolean,Converter={StaticResource BooleanToVisConverter}}" />
+                            <TextBlock Text="is FALSE" DockPanel.Dock="Left" Margin="5,0,0,0" Visibility="{Binding Path=ConversionSampleBoolean,Converter={StaticResource BooleanToVisConverter},ConverterParameter=false}" />
+
+                            <TextBlock Text="- the inverted value is" Margin="5,0,5,0" />
+                            <TextBlock Text="{Binding Path=ConversionSampleBoolean,Converter={StaticResource BooleanInverter}}" />
+                        </DockPanel>
+
+                        <DockPanel Margin="0,5,0,0">
+                            <Button Content="Reset" DockPanel.Dock="Left" Margin="0,0,5,0" Command="{Binding Path=Commands[ConversionSampleListClearCmd]}" />
+                            
+                            <TextBlock Text="The sample list" FontWeight="Bold" />
+
+                            <Button Content="add" Command="{Binding Path=Commands[ConversionSampleListAddCmd]}" Margin="5,0,0,0" />
+
+                            <TextBlock Text="contains >= 1 item(s)" DockPanel.Dock="Left" Margin="5,0,0,0" Visibility="{Binding Path=ConversionSampleList,Converter={StaticResource CountToVisConverter}}" />
+                            <TextBlock Text="; contains >= 2 item(s)" DockPanel.Dock="Left" Margin="5,0,0,0" Visibility="{Binding Path=ConversionSampleList,Converter={StaticResource CountToVisConverter},ConverterParameter=2}" />
+                            <TextBlock Text="; contains >= 5 item(s)" DockPanel.Dock="Left" Margin="5,0,0,0" Visibility="{Binding Path=ConversionSampleList,Converter={StaticResource CountToVisConverter},ConverterParameter=5}" />
+                            
+                        </DockPanel>
+                        
+                    </StackPanel>
+                    
+                </Grid>
+                
+            </TabItem>
+            
+            <!-- add the dictionary example-->
+            <TabItem Header="Dictionary">
+
+                <Grid Margin="5">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    
+                    <!-- add the controls for adding an item -->
+                    <StackPanel Grid.Row="0" HorizontalAlignment="Stretch">
+
+                        <DockPanel>
+                            <TextBlock Text="Key: " FontWeight="Bold" />
+                            <TextBox Text="{Binding Path=SampleDictionaryItemKey, UpdateSourceTrigger=PropertyChanged}" MinWidth="150" />
+                            
+                            <TextBlock Text="Value: " FontWeight="Bold" Margin="5,0,0,0" />
+                            <TextBox Text="{Binding Path=SampleDictionaryItemValue, UpdateSourceTrigger=PropertyChanged}" MinWidth="150" />
+
+                            <Button Content="Add" Command="{Binding Path=Commands[SampleDictionaryAddItemCmd]}" Margin="5,0,0,0" />
+                        </DockPanel>
+
+                        <Separator Margin="0,5,0,5" />
+
+                    </StackPanel>
+
+                    <ListView ItemsSource="{Binding SampleDictionary}" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+
+                </Grid>
+                
+            </TabItem>
+
+        </TabControl>
+        
+    </Grid>
+    
+</UserControl>

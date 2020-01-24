@@ -1,0 +1,168 @@
+﻿<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <RootNamespace>BYTES.NET</RootNamespace>
+    <AssemblyName>BYTES.NET</AssemblyName>
+    <OutputType>Library</OutputType>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <Deterministic>true</Deterministic>
+    <ProjectGuid>{4B0EBC4E-1CEE-46C9-8291-3A9398C723EA}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <IncrementalBuild>true</IncrementalBuild>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>BYTES.NET.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42314</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <IncrementalBuild>false</IncrementalBuild>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>BYTES.NET.xml</DocumentationFile>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42314</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="System.Threading.Tasks" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows" />
+    <Import Include="System.Windows.Controls" />
+    <Import Include="System.Windows.Data" />
+    <Import Include="System.Windows.Documents" />
+    <Import Include="System.Windows.Input" />
+    <Import Include="System.Windows.Shapes" />
+    <Import Include="System.Windows.Media" />
+    <Import Include="System.Windows.Media.Imaging" />
+    <Import Include="System.Windows.Navigation" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\API\ISQLConnection.vb" />
+    <Compile Include="Collections\API\ISQLConnectionMetadata.vb" />
+    <Compile Include="Collections\API\ISQLTable.vb" />
+    <Compile Include="Collections\API\SQLConnectionMetadata.vb" />
+    <Compile Include="Collections\MSSQL\SQLServerConnection.vb" />
+    <Compile Include="Collections\MSSQL\SQLServerTable.vb" />
+    <Compile Include="Collections\ObservableDictionary.vb" />
+    <Compile Include="Collections\Registry\Node.vb" />
+    <Compile Include="Imaging\API\IImage.vb" />
+    <Compile Include="Imaging\API\IImageParser.vb" />
+    <Compile Include="Imaging\API\IImageParserMetadata.vb" />
+    <Compile Include="Imaging\API\ImageParserMetadata.vb" />
+    <Compile Include="Imaging\GraylevelImage.vb" />
+    <Compile Include="Imaging\Helper.vb" />
+    <Compile Include="Imaging\Parsers\ParseJPG.vb" />
+    <Compile Include="Imaging\Parsers\ParseTIFF.vb" />
+    <Compile Include="Imaging\RGBImage.vb" />
+    <Compile Include="IO\Helper.vb" />
+    <Compile Include="IO\HTTP\Client.vb" />
+    <Compile Include="IO\System\Adapter.vb" />
+    <Compile Include="IO\System\Drive.vb" />
+    <Compile Include="IO\System\Info.vb" />
+    <Compile Include="IO\UNC\Connection.vb" />
+    <Compile Include="IO\UNC\NetworkConnection.vb" />
+    <Compile Include="IO\UNC\NetworkResource.vb" />
+    <Compile Include="IO\User\Info.vb" />
+    <Compile Include="Logging\API\ILogAppender.vb" />
+    <Compile Include="Logging\API\ILogAppenderMetadata.vb" />
+    <Compile Include="Logging\API\LogAppenderMetadata.vb" />
+    <Compile Include="Logging\Appenders\WindowsEventLogAppender.vb" />
+    <Compile Include="Logging\Log.vb" />
+    <Compile Include="Logging\LogEntry.vb" />
+    <Compile Include="MEF\API\IMetadata.vb" />
+    <Compile Include="MEF\API\Metadata.vb" />
+    <Compile Include="MEF\ExtendedExtensionsManager.vb" />
+    <Compile Include="MEF\ExtensionsManager.vb" />
+    <Compile Include="MEF\ExtensionsSettings.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Collections\XMLSerializableDictionary.vb" />
+    <Compile Include="Math\MatrixData.vb" />
+    <Compile Include="Math\MatrixStatistics.vb" />
+    <Compile Include="IO\LDAP\Manager.vb" />
+    <Compile Include="WPF\Behaviors\WindowClosingBehavior.vb" />
+    <Compile Include="WPF\Converters\BoolInvertConverter.vb" />
+    <Compile Include="WPF\Converters\BoolToVisibilityConverter.vb" />
+    <Compile Include="WPF\Converters\CountToVisibilityConverter.vb" />
+    <Compile Include="WPF\Converters\NothingToBoolConverter.vb" />
+    <Compile Include="WPF\Converters\NothingToVisibilityConverter.vb" />
+    <Compile Include="WPF\MVVM\DialogViewModel.vb" />
+    <Compile Include="WPF\MVVM\ViewModel.vb" />
+    <Compile Include="WPF\MVVM\ViewModelRelayCommand.vb" />
+    <Compile Include="WPF\MVVM\ViewModelValidationResult.vb" />
+    <Compile Include="WPF\MVVM\ViewModelValidationRule.vb" />
+    <Compile Include="WPF\MVVM\ViewModelValidationRulesSet.vb" />
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+    </EmbeddedResource>
+    <None Include="BYTES.NET.nuspec" />
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>nuget pack "$(ProjectDir)BYTES.NET.nuspec"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

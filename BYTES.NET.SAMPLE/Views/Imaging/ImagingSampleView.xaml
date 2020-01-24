@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="Views.Imaging.ImagingSampleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BYTES.NET.SAMPLE.Views.Imaging"
+             
+             xmlns:converters="clr-namespace:BYTES.NET.WPF.Converters;assembly=BYTES.NET"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <converters:NothingToVisibilityConverter x:Key="NothingToVisConverter" />
+    </UserControl.Resources>
+    
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0" HorizontalAlignment="Stretch">
+
+            <DockPanel>
+                <TextBlock Text="Source File:" FontWeight="Bold" DockPanel.Dock="Left" />
+                <Button Content="..." DockPanel.Dock="Right" MinWidth="50" Command="{Binding Path=Commands[BrowseForSourceCmd]}" />
+                <TextBlock Text="{Binding Path=Source, Mode=OneWay}" DockPanel.Dock="Left" Margin="5,0,5,0" />
+            </DockPanel>
+
+            <DockPanel Margin="0,5,0,0">
+                <TextBlock Text="Parser:" FontWeight="Bold" DockPanel.Dock="Left" />
+                <ComboBox ItemsSource="{Binding Path=Parsers, Mode=OneWay}" SelectedItem="{Binding Path=Parser, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Metadata.Name, Mode=OneWay}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </DockPanel>
+
+            <Button Content="Load" Margin="0,5,0,0" Command="{Binding Path=Commands[LoadImageCmd]}" />
+
+            <Separator Margin="0,5,0,5" HorizontalAlignment="Stretch" />
+
+            <ComboBox ItemsSource="{Binding Path=Images, Mode=OneWay}" SelectedItem="{Binding Image, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=Images,Converter={StaticResource NothingToVisConverter},ConverterParameter=false}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            
+        </StackPanel>
+        
+        <!-- add the image display -->
+        <Image Source="{Binding Path=Image.Image, Mode=OneWay}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" />
+
+    </Grid>
+</UserControl>
