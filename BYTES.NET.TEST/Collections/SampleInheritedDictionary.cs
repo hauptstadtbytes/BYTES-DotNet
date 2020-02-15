@@ -17,12 +17,12 @@ namespace BYTES.NET.TEST.Collections
 
     [Serializable]
     [XmlType("InheritedDictionary")]
-    public class SampleInheritedDictionary : XMLSerializableDictionary<int,SampleDataType>
+    public class SampleInheritedDictionary : XMLSerializableDictionary<string,SampleDataType>
     {
 
         #region public new instance method(s)
 
-        public SampleInheritedDictionary()
+        public SampleInheritedDictionary() : base(StringComparer.OrdinalIgnoreCase)
         {
         }
 
@@ -40,12 +40,12 @@ namespace BYTES.NET.TEST.Collections
 
             FileStream inFile = new FileStream(path, FileMode.Open);
 
-            XMLSerializableDictionary<int, SampleDataType> readDic = new XMLSerializableDictionary<int, SampleDataType>();
+            XMLSerializableDictionary<string, SampleDataType> readDic = new XMLSerializableDictionary<string, SampleDataType>();
             readDic = readDic.Read(ref inFile);
 
             this.Clear();
 
-            foreach(int index in readDic.Keys)
+            foreach(string index in readDic.Keys)
             {
 
                 this.Add(index, readDic[index]);

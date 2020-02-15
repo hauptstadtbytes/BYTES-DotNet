@@ -100,7 +100,7 @@ Namespace MEF
         ''' method for loading the extensions
         ''' </summary>
         ''' <param name="settings"></param>
-        ''' <param name="masks">masks for extension search paths; will be resolved using the pattern '%name%'</param>
+        ''' <param name="masks">masks for extension search paths; will be resolved by pattern '%name%'</param>
         Public Sub Update(Optional ByVal settings As ExtensionsSettings() = Nothing, Optional ByVal masks As Dictionary(Of String, String) = Nothing)
 
             'parse the argumente

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>BYTES.NET.Logging</id>
+    <version>1.0.1</version>
+    <title>BYTES .NET Logging</title>
+    <authors>Sebastian Raese</authors>
+    <owners>Sebastian Raese</owners>
+    <description>A library extending the logging features of the BYTES.NET application framework</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2020 hauptstadtbytes.de</copyright>
+    <tags></tags>
+    <dependencies>
+      <dependency id="log4net" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\log4net.dll" target="lib\net46\" />
+  </files>
+</package>

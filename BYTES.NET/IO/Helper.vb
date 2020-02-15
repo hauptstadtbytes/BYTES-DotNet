@@ -23,8 +23,13 @@ Namespace IO
 
             End If
 
-            additionalMasks.Add("%InstallationDir%", GetAppDirPath())
-            additionalMasks.Add("%BYTES.NET%", GetLibraryAssemblyPath())
+            If Not additionalMasks.ContainsKey("%InstallationDir%") Then
+                additionalMasks.Add("%InstallationDir%", GetAppDirPath())
+            End If
+
+            If Not additionalMasks.ContainsKey("%BYTES.NET%") Then
+                additionalMasks.Add("%BYTES.NET%", GetLibraryAssemblyPath())
+            End If
 
             For Each mask As KeyValuePair(Of String, String) In additionalMasks
 

@@ -2,6 +2,8 @@
 
     Public Class LogEntry
 
+        Inherits EventArgs
+
 #Region "public variable(s)"
 
         Public Enum InformationLevel
@@ -18,7 +20,7 @@
 
         Private _timeStamp As DateTime = Nothing
 
-        Private _level As LogEntry.InformationLevel = Nothing
+        Private _level As LogEntry.InformationLevel = InformationLevel.Info
 
         Private _message As String = Nothing
         Private _details As Object = Nothing
@@ -69,15 +71,53 @@
         ''' <param name="message"></param>
         ''' <param name="level"></param>
         ''' <param name="details"></param>
-        Public Sub New(ByVal message As String, Optional ByVal level As LogEntry.InformationLevel = InformationLevel.Info, Optional ByRef details As Object = Nothing)
+        Public Sub New(ByVal message As String, ByVal level As LogEntry.InformationLevel, ByRef details As Object)
+
+            'create a new base-class instance
+            MyBase.New()
 
             'set the variable(s)
             _timeStamp = DateTime.Now
 
             _level = level
-
             _message = message
             _details = details
+
+        End Sub
+
+        ''' <summary>
+        ''' overloaded new instance method
+        ''' </summary>
+        ''' <param name="message"></param>
+        ''' <param name="level"></param>
+        ''' <remarks>for increasing C# compatibility</remarks>
+        Public Sub New(ByVal message As String, ByVal level As LogEntry.InformationLevel)
+
+            'create a new base-class instance
+            MyBase.New()
+
+            'set the variable(s)
+            _timeStamp = DateTime.Now
+
+            _level = level
+            _message = message
+
+        End Sub
+
+        ''' <summary>
+        ''' overloaded new instance method
+        ''' </summary>
+        ''' <param name="message"></param>
+        ''' <remarks>for increasing C# compatibility</remarks>
+        Public Sub New(ByVal message As String)
+
+            'create a new base-class instance
+            MyBase.New()
+
+            'set the variable(s)
+            _timeStamp = DateTime.Now
+
+            _message = message
 
         End Sub
 

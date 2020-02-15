@@ -137,6 +137,7 @@
     <Compile Include="Math\MatrixData.vb" />
     <Compile Include="Math\MatrixStatistics.vb" />
     <Compile Include="IO\LDAP\Manager.vb" />
+    <Compile Include="Primitives\StringExtensions.vb" />
     <Compile Include="WPF\Behaviors\WindowClosingBehavior.vb" />
     <Compile Include="WPF\Converters\BoolInvertConverter.vb" />
     <Compile Include="WPF\Converters\BoolToVisibilityConverter.vb" />

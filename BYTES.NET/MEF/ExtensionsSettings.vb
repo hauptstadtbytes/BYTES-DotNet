@@ -6,6 +6,7 @@ Namespace MEF
     ''' <summary>
     ''' the settings to be used in combination with the 'ExtendedExtensionsManager'
     ''' </summary>
+    <Serializable>
     Public Class ExtensionsSettings
 
 #Region "private variable(s)"
@@ -17,6 +18,7 @@ Namespace MEF
 
 #Region "public properties"
 
+        <XmlAttribute>
         Public Property Source As String
             Get
 
@@ -30,6 +32,7 @@ Namespace MEF
             End Set
         End Property
 
+        <XmlAttribute>
         Public Property ID As String
             Get
 

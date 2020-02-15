@@ -53,6 +53,7 @@
     <Compile Include="Collections\TestRegistryNode.cs" />
     <Compile Include="IO\TestIOHelper.cs" />
     <Compile Include="Math\TestMatrixStatistics.cs" />
+    <Compile Include="Primitives\TestStringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\SampleDataType.cs" />
     <Compile Include="Collections\SampleInheritedDictionary.cs" />

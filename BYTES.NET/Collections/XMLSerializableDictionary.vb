@@ -32,11 +32,20 @@ Namespace Collections
         ''' <summary>
         ''' default new instance method
         ''' </summary>
-        ''' <remarks>required for XML serialization</remarks>
         Public Sub New()
 
-            'create a new base-class instance
             MyBase.New
+
+        End Sub
+
+        ''' <summary>
+        ''' overloaded new instance method
+        ''' </summary>
+        ''' <param name="comparer"></param>
+        Public Sub New(Optional ByVal comparer As IEqualityComparer(Of TKey) = Nothing)
+
+            'create a new base-class instance
+            MyBase.New(comparer)
 
         End Sub
 

@@ -177,14 +177,37 @@ Namespace Logging
         End Sub
 
         ''' <summary>
-        ''' overloaded method for writing to the log
+        ''' overloaded method for log writing
         ''' </summary>
         ''' <param name="message"></param>
         ''' <param name="level"></param>
         ''' <param name="details"></param>
-        Public Sub Write(ByVal message As String, Optional ByVal level As LogEntry.InformationLevel = LogEntry.InformationLevel.Info, Optional ByRef details As Object = Nothing)
+        Public Sub Write(ByVal message As String, ByVal level As LogEntry.InformationLevel, ByRef details As Object)
 
             Me.Write(New LogEntry(message, level, details))
+
+        End Sub
+
+        ''' <summary>
+        ''' overloaded method for log writing
+        ''' </summary>
+        ''' <param name="message"></param>
+        ''' <param name="level"></param>
+        ''' <remarks>for increasing C# compatibility</remarks>
+        Public Sub Write(ByVal message As String, ByVal level As LogEntry.InformationLevel)
+
+            Me.Write(New LogEntry(message, level))
+
+        End Sub
+
+        ''' <summary>
+        ''' overloaded method for log writing
+        ''' </summary>
+        ''' <param name="message"></param>
+        ''' <remarks>for increasing C# compatibility</remarks>
+        Public Sub Write(ByVal message As String)
+
+            Me.Write(New LogEntry(message))
 
         End Sub
 
