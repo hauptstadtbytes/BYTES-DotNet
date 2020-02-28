@@ -75,9 +75,79 @@ Namespace Appenders
 
         End Sub
 
+        ''' <summary>
+        ''' overloaded constructor, supporting parameterless construction
+        ''' </summary>
+        Public Sub New()
+        End Sub
+
 #End Region
 
 #Region "public method(s) inherited from base-class instance"
+
+        ''' <summary>
+        ''' method initializing the appender
+        ''' </summary>
+        ''' <param name="parameters"></param>
+        Public Sub Initialize(parameters As Dictionary(Of String, String)) Implements ILogAppender.Initialize
+
+            'parse the parameters
+            For Each param As KeyValuePair(Of String, String) In parameters
+
+                Select Case param.Key.ToLower
+
+                    Case "filepath"
+                        _filePath = param.Value
+
+                    Case "pattern"
+                        _loggingPattern = param.Value
+
+                    Case "maxfilesize"
+                        _maxFileSize = param.Value
+
+                    Case "maxbackupscount"
+                        Try
+
+                            _maxBackupsCount = CInt(param.Value)
+
+                        Catch ex As Exception
+
+                            Throw New ArgumentException("Unable to parse '" & param.Value & "' to '" & GetType(Integer).ToString & "' for maximum backups count")
+
+                        End Try
+
+                End Select
+
+            Next
+
+            'initialize 'log4net'
+            ConfigureLog4Net()
+
+        End Sub
+
+        ''' <summary>
+        ''' method called on appending the appender to the parent log
+        ''' </summary>
+        ''' <param name="parent"></param>
+        ''' <param name="dumpCache"></param>
+        Public Sub OnAppend(ByRef parent As Log, ByVal dumpCache As Boolean) Implements ILogAppender.OnAppend
+
+            'dump the cache
+            If dumpCache Then
+
+                _logger.Info("### Starting Log Cache Dump ###")
+
+                For Each entry As LogEntry In parent.Cache
+
+                    Write(entry)
+
+                Next
+
+                _logger.Info("### Cache Dump Finished ###")
+
+            End If
+
+        End Sub
 
         ''' <summary>
         ''' method called on writing a log entry
@@ -115,6 +185,13 @@ Namespace Appenders
         ''' </summary>
         ''' <remarks>based on the article found at 'https://stackoverflow.com/questions/16336917/can-you-configure-log4net-in-code-instead-of-using-a-config-file'</remarks>
         Private Sub ConfigureLog4Net()
+
+            'validate the file path
+            If IsNothing(_filePath) OrElse String.IsNullOrEmpty(_filePath) OrElse String.IsNullOrWhiteSpace(_filePath) Then
+
+                Throw New ArgumentException("The file path must not be empty")
+
+            End If
 
             'check for the output folder (or create)
             Dim dirPath As String = _filePath.Substring(0, _filePath.LastIndexOf("\"))

@@ -2,19 +2,26 @@
 <package >
   <metadata>
     <id>BYTES.NET.Logging</id>
-    <version>1.0.1</version>
-    <title>BYTES .NET Logging</title>
+    <version>1.0.3</version>
+    <title>BYTES.NET.Logging</title>
     <authors>Sebastian Raese</authors>
     <owners>Sebastian Raese</owners>
+    <license type="file">license\License.txt</license>
+    <projectUrl>https://github.com/hauptstadtbytes/bytes.net</projectUrl>
+    <icon>meta\Icon.png</icon>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>A library extending the logging features of the BYTES.NET application framework</description>
-    <releaseNotes></releaseNotes>
+    <releaseNotes>Inital public release</releaseNotes>
     <copyright>Copyright 2020 hauptstadtbytes.de</copyright>
     <tags></tags>
     <dependencies>
-      <dependency id="log4net" />
+      <dependency id="log4net" version="2.0.8" />
+      <dependency id="BYTES.NET" version="1.3.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\log4net.dll" target="lib\net46\" />
+    <file src="bin\Release\BYTES.NET.Logging.dll" target="lib\net46\" />
+    <file src="..\..\License.txt" target="license\" />
+    <file src="..\..\Icon.png" target="meta\" />
   </files>
 </package>

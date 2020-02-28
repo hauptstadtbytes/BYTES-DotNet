@@ -73,6 +73,7 @@ Namespace ViewModels
 
             Me.Samples.Add(New LocalHostSampleVM)
             Me.Samples.Add(New UNCSampleVM)
+            Me.Samples.Add(New FTPSampleVM)
             'Me.Samples.Add(New LDAPSampleVM)
 
             Me.Samples.Add(New MEFSampleVM)

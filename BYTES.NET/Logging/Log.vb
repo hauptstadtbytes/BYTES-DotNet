@@ -68,17 +68,12 @@ Namespace Logging
             End Set
         End Property
 
-        Public Property Appenders As List(Of ILogAppender)
+        Public ReadOnly Property Appenders As List(Of ILogAppender)
             Get
 
                 Return _appenders
 
             End Get
-            Set(value As List(Of ILogAppender))
-
-                _appenders = value
-
-            End Set
         End Property
 
 #End Region
@@ -135,6 +130,21 @@ Namespace Logging
 #End Region
 
 #Region "public method(s)"
+
+        ''' <summary>
+        ''' method for adding an 'ILogAppender' instance
+        ''' </summary>
+        ''' <param name="appender"></param>
+        ''' <param name="dumpCache"></param>
+        Public Sub AddAppender(ByRef appender As ILogAppender, Optional ByVal dumpCache As Boolean = False)
+
+            'add the appenders
+            _appenders.Add(appender)
+
+            'call the 'OnAppend' method
+            appender.OnAppend(Me, dumpCache)
+
+        End Sub
 
         ''' <summary>
         ''' default method for writing to the log

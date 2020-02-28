@@ -100,6 +100,8 @@
     <Compile Include="Imaging\Parsers\ParseJPG.vb" />
     <Compile Include="Imaging\Parsers\ParseTIFF.vb" />
     <Compile Include="Imaging\RGBImage.vb" />
+    <Compile Include="IO\FTP\Connection.vb" />
+    <Compile Include="IO\FTP\FTPRemoteItem.vb" />
     <Compile Include="IO\Helper.vb" />
     <Compile Include="IO\HTTP\Client.vb" />
     <Compile Include="IO\System\Adapter.vb" />

@@ -1,4 +1,7 @@
-﻿Namespace IO.User
+﻿'import .net namespace(s) required
+Imports System.Net
+
+Namespace IO.User
 
     Public Class Info
 
@@ -65,6 +68,32 @@
             _userDomain = domain
 
         End Sub
+
+#End Region
+
+#Region "public method(s)"
+
+        ''' <summary>
+        ''' method returning valid network credentials from user information
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function ToNetworkCredential() As NetworkCredential
+
+            If IsNothing(_userDomain) Then
+
+                Dim passwd As String = String.Empty
+
+                If Not IsNothing(_userPassword) Then
+                    passwd = _userPassword
+                End If
+
+                Return New NetworkCredential(_userName, passwd)
+
+            End If
+
+            Return New NetworkCredential(_userName, _userPassword, _userDomain)
+
+        End Function
 
 #End Region
 

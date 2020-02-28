@@ -24,8 +24,8 @@ Namespace ViewModels.Logging
         Private _newEntryLevel As LogEntry.InformationLevel = LogEntry.InformationLevel.Warning
         Private _newEntryMessage As String = Nothing
 
-        Private _logFilePath As String = "D:\BYTES.NET\MyLog.LOG"
-        Private _eventLogsource As String = "BYTES.NET"
+        Private _logFilePath As String = "D:\BYTES.NET.SAMPLE\MyLog.LOG"
+        Private _eventLogsource As String = "BYTES.NET.SAMPLE"
 
 #End Region
 
@@ -213,7 +213,14 @@ Namespace ViewModels.Logging
             End If
 
             'add the rolling file appender
-            _log.Appenders.Add(New RollingFileAppender(_logFilePath))
+            '_log.AddAppender(New RollingFileAppender(_logFilePath))
+
+            Dim args As Dictionary(Of String, String) = New Dictionary(Of String, String) From {{"FilePath", _logFilePath}}
+
+            Dim fileAppender As RollingFileAppender = New RollingFileAppender()
+            fileAppender.Initialize(args)
+
+            _log.AddAppender(fileAppender, True)
 
             'write a message to the log
             _log.Write("Rolling file appender added for file at '" & _logFilePath & "'", LogEntry.InformationLevel.Info)
@@ -234,8 +241,15 @@ Namespace ViewModels.Logging
 
             End If
 
-            'add the rolling file appender
-            _log.Appenders.Add(New WindowsEventLogAppender(_eventLogsource))
+            'add the Windows event log instance
+            '_log.AddAppender(New WindowsEventLogAppender(_eventLogsource))
+
+            Dim args As Dictionary(Of String, String) = New Dictionary(Of String, String) From {{"Source", _eventLogsource}, {"Threshold", "Debug"}}
+
+            Dim eventLogAppender As WindowsEventLogAppender = New WindowsEventLogAppender
+            eventLogAppender.Initialize(args)
+
+            _log.AddAppender(eventLogAppender)
 
             'write a message to the log
             _log.Write("Windows event log appender added, using source '" & _eventLogsource & "'", LogEntry.InformationLevel.Info)

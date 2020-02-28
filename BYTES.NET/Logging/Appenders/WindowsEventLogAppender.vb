@@ -62,9 +62,74 @@ Namespace Logging.Appenders
 
         End Sub
 
+        ''' <summary>
+        ''' overloaded constructor, supporting parameterless construction
+        ''' </summary>
+        Public Sub New()
+
+            'set the (default) variable(s)
+            _source = "BYTES.NET"
+            _log = "Application"
+            _threshold = LogEntry.InformationLevel.Info
+
+        End Sub
+
 #End Region
 
 #Region "public method(s) inherited from base-class instance"
+
+        ''' <summary>
+        ''' method initializing the appender
+        ''' </summary>
+        ''' <param name="parameters"></param>
+        Public Sub Initialize(parameters As Dictionary(Of String, String)) Implements ILogAppender.Initialize
+
+            For Each param As KeyValuePair(Of String, String) In parameters
+
+                Select Case param.Key.ToLower
+
+                    Case "source"
+                        _source = param.Value
+
+                    Case "log"
+                        _source = param.Value
+
+                    Case "threshold"
+                        Try
+
+                            _threshold = CType([Enum].Parse(GetType(LogEntry.InformationLevel), param.Value, True), LogEntry.InformationLevel)
+
+                        Catch ex As Exception
+
+                            Throw New ArgumentException("Unable to parse '" & param.Value & "' to '" & GetType(LogEntry.InformationLevel).ToString & "' for threshold")
+
+                        End Try
+
+                End Select
+
+            Next
+
+        End Sub
+
+        ''' <summary>
+        ''' method called on appending the appender to the parent log
+        ''' </summary>
+        ''' <param name="parent"></param>
+        ''' <param name="dumpCache"></param>
+        Public Sub OnAppend(ByRef parent As Log, ByVal dumpCache As Boolean) Implements ILogAppender.OnAppend
+
+            'dump the cache
+            If dumpCache Then
+
+                For Each entry As LogEntry In parent.Cache
+
+                    Write(entry)
+
+                Next
+
+            End If
+
+        End Sub
 
         ''' <summary>
         ''' method called on appending a log entry
