@@ -58,6 +58,14 @@ Namespace MEF
 
             For Each path As String In paths
 
+                'parse the path
+                Dim tmp As Uri = Nothing
+                If Uri.TryCreate(path, UriKind.Absolute, tmp) Then 'URIs will be kept and file/ folder paths will be converted to URI
+
+                    path = tmp.LocalPath 'set the local path of the URI item
+
+                End If
+
                 'add extensions for a single file
                 If File.Exists(path) Then
 

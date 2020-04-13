@@ -19,6 +19,21 @@ namespace BYTES.NET.TEST.Primitives
     {
 
         [TestMethod]
+        public void ExpandMaks()
+        {
+
+            //create a new string value
+            string theValue = " -%key% %value%";
+            Dictionary<string, string> theMasks = new Dictionary<string, string>();
+            theMasks.Add("Key", "Hello");
+            theMasks.Add("value", "World");
+
+            //validate the similarities for variing refence strings
+            Assert.AreEqual(" -Hello World", theValue.ExpandMasks(theMasks));
+
+        }
+
+        [TestMethod]
         public void GetTrigramSimilarity()
         {
 

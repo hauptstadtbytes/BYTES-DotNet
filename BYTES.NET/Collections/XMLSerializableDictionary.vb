@@ -41,11 +41,55 @@ Namespace Collections
         ''' <summary>
         ''' overloaded new instance method
         ''' </summary>
+        ''' <param name="dictionary"></param>
+        Public Sub New(ByVal dictionary As IDictionary(Of TKey, TValue))
+
+            MyBase.New(dictionary)
+
+        End Sub
+
+        ''' <summary>
+        ''' overloaded new instance method
+        ''' </summary>
         ''' <param name="comparer"></param>
         Public Sub New(Optional ByVal comparer As IEqualityComparer(Of TKey) = Nothing)
 
             'create a new base-class instance
             MyBase.New(comparer)
+
+        End Sub
+
+        ''' <summary>
+        ''' overloaded new instance method
+        ''' </summary>
+        ''' <param name="capacity"></param>
+        ''' <remarks></remarks>
+        Public Sub New(ByVal capacity As Integer)
+
+            MyBase.New(capacity)
+
+        End Sub
+
+        ''' <summary>
+        ''' overloaded new instance method
+        ''' </summary>
+        ''' <param name="dictionary"></param>
+        ''' <param name="comparer"></param>
+        Public Sub New(ByVal dictionary As IDictionary(Of TKey, TValue), ByVal comparer As IEqualityComparer(Of TKey))
+
+            MyBase.New(dictionary, comparer)
+
+        End Sub
+
+        ''' <summary>
+        ''' overloaded new instance method
+        ''' </summary>
+        ''' <param name="capacity"></param>
+        ''' <param name="comparer"></param>
+        ''' <remarks></remarks>
+        Public Sub New(ByVal capacity As Integer, ByVal comparer As IEqualityComparer(Of TKey))
+
+            MyBase.New(capacity, comparer)
 
         End Sub
 

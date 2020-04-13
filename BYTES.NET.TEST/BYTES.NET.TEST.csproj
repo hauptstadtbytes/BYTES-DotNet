@@ -46,6 +46,7 @@
       <HintPath>..\packages\MSTest.TestFramework.2.1.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -53,6 +54,11 @@
     <Compile Include="Collections\TestRegistryNode.cs" />
     <Compile Include="IO\TestIOHelper.cs" />
     <Compile Include="Math\TestMatrixStatistics.cs" />
+    <Compile Include="MEF\API\ITestInterface.cs" />
+    <Compile Include="MEF\API\ITestMetadata.cs" />
+    <Compile Include="MEF\API\TestMetadata.cs" />
+    <Compile Include="MEF\SampleExtension.cs" />
+    <Compile Include="MEF\TestExtensionsManager.cs" />
     <Compile Include="Primitives\TestStringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Collections\SampleDataType.cs" />
@@ -68,6 +74,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

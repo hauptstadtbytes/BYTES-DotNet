@@ -1,0 +1,15 @@
+1.4.0 -> 1.4.1
+----------------------
+- Bugfixing in 'IO.ManagedProcess'; 'Terminate' method added
+
+1.3.0 -> 1.4.0
+----------------------
+- 'MEF.ExtensionsManager'/ 'MEF.ExtendedExtensionsManager' enhanced to support URI (file) sources
+- 'Logging.Log' 'Cache' property extended to support filtering by information level
+- 'Primitives.StringExtensions' extended with 'ExpandMasks' method; 'IO.Helper' 'ExpandPath' method altered to use the new 'String' type extension
+- 'IO.Helper' 'ExpandPath' method enhanced to properly handle <Nothing>/ <null> values
+- class constructors from 'Collections.XMLSerializableDictionary' equalized to 'Collections.ObservableDictionary'
+
+- base class 'WPF.Observable' added, implementing 'INotifyPropertyChanged'; 'WPF.MVVM.ViewModel' class altered to inherit from 'WPF.Observable'
+- base class 'WPF.MVVM.GUIThreadViewModel' added
+- 'IO.ManagedProcess' class added

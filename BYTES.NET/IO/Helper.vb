@@ -1,7 +1,8 @@
 ﻿'import .net namespace(s) required
 Imports System.Reflection
 
-Imports System.Text.RegularExpressions
+'import internal namespace(s) required
+Imports BYTES.NET.Primitives
 
 Namespace IO
 
@@ -13,46 +14,34 @@ Namespace IO
         ''' method parsing a path string, expanding various masks
         ''' </summary>
         ''' <param name="path"></param>
-        ''' <param name="additionalMasks"></param>
+        ''' <param name="masks"></param>
         ''' <returns></returns>
-        Shared Function ExpandPath(ByVal path As String, Optional ByVal additionalMasks As Dictionary(Of String, String) = Nothing) As String
+        Shared Function ExpandPath(Optional ByVal path As String = Nothing, Optional ByVal masks As Dictionary(Of String, String) = Nothing) As String
 
-            If IsNothing(additionalMasks) Then
+            'check for empty path
+            If IsNothing(path) Then
 
-                additionalMasks = New Dictionary(Of String, String)
+                Return Nothing
 
             End If
 
-            If Not additionalMasks.ContainsKey("%InstallationDir%") Then
-                additionalMasks.Add("%InstallationDir%", GetAppDirPath())
+            'assemble the mask(s) collection
+            If IsNothing(masks) Then
+
+                masks = New Dictionary(Of String, String)
+
             End If
 
-            If Not additionalMasks.ContainsKey("%BYTES.NET%") Then
-                additionalMasks.Add("%BYTES.NET%", GetLibraryAssemblyPath())
+            If Not masks.ContainsKey("InstallationDir") Then
+                masks.Add("InstallationDir", GetAppDirPath())
             End If
 
-            For Each mask As KeyValuePair(Of String, String) In additionalMasks
+            If Not masks.ContainsKey("%BYTES.NET%") Then
+                masks.Add("BYTES.NET%", GetLibraryAssemblyPath())
+            End If
 
-                Dim toReplace As String = mask.Key
-
-                If Not toReplace.StartsWith("%") Then
-
-                    toReplace = "%" & toReplace
-
-                End If
-
-                If Not toReplace.EndsWith("%") Then
-
-                    toReplace = toReplace & "%"
-
-                End If
-
-                path = Regex.Replace(path, toReplace, mask.Value, RegexOptions.IgnoreCase)
-
-            Next
-
-            'return the output, expanding default Windows environment variables
-            Return Environment.ExpandEnvironmentVariables(path)
+            'return the output, expanding default Windows environment variables as well as generic masks
+            Return Environment.ExpandEnvironmentVariables(path.ExpandMasks(masks))
 
         End Function
 

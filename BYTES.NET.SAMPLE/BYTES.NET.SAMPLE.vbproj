@@ -85,12 +85,14 @@
     <Compile Include="ViewModels\IO\FTPSampleVM.vb" />
     <Compile Include="ViewModels\IO\HTTPSampleVM.vb" />
     <Compile Include="ViewModels\IO\LocalHostSampleVM.vb" />
+    <Compile Include="ViewModels\IO\ManagedProcessVM.vb" />
     <Compile Include="ViewModels\IO\TCPSampleVM.vb" />
     <Compile Include="ViewModels\IO\UNCSampleVM.vb" />
     <Compile Include="ViewModels\Logging\LogSampleVM.vb" />
     <Compile Include="ViewModels\MainVM.vb" />
     <Compile Include="ViewModels\MEF\MEFSampleVM.vb" />
     <Compile Include="ViewModels\MVVM\DialogVM.vb" />
+    <Compile Include="ViewModels\MVVM\GUIThreadSampleVM.vb" />
     <Compile Include="ViewModels\MVVM\MVVMSampleVM.vb" />
     <Compile Include="ViewModels\MVVM\ValidationVM.vb" />
     <Compile Include="ViewModels\IO\LDAPSampleVM.vb" />
@@ -112,6 +114,9 @@
     <Compile Include="Views\IO\LocalHostSampleView.xaml.vb">
       <DependentUpon>LocalHostSampleView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\IO\ManagedProcessView.xaml.vb">
+      <DependentUpon>ManagedProcessView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\IO\TCPSampleView.xaml.vb">
       <DependentUpon>TCPSampleView.xaml</DependentUpon>
     </Compile>
@@ -131,8 +136,11 @@
     <Compile Include="Views\MEF\MEFSampleView.xaml.vb">
       <DependentUpon>MEFSampleView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MVVM\DialogView.xaml.vb">
-      <DependentUpon>DialogView.xaml</DependentUpon>
+    <Compile Include="Views\MVVM\DialogSampleView.xaml.vb">
+      <DependentUpon>DialogSampleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MVVM\GUIThreadSampleView.xaml.vb">
+      <DependentUpon>GUIThreadSampleView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MVVM\MVVMSampleView.xaml.vb">
       <DependentUpon>MVVMSampleView.xaml</DependentUpon>
@@ -164,6 +172,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\IO\ManagedProcessView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\IO\TCPSampleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -184,7 +196,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MVVM\DialogView.xaml">
+    <Page Include="Views\MVVM\DialogSampleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MVVM\GUIThreadSampleView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -251,6 +267,14 @@
     <ProjectReference Include="..\BYTES.NET\BYTES.NET.vbproj">
       <Project>{4b0ebc4e-1cee-46c9-8291-3a9398c723ea}</Project>
       <Name>BYTES.NET</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Extensions\BYTES.NET.Collections\BYTES.NET.Collections.vbproj">
+      <Project>{f2f5bbed-7b3d-4773-9015-eabe625831b3}</Project>
+      <Name>BYTES.NET.Collections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Extensions\BYTES.NET.IO\BYTES.NET.IO.vbproj">
+      <Project>{54105aee-45f0-4adf-851e-33daa3097031}</Project>
+      <Name>BYTES.NET.IO</Name>
     </ProjectReference>
     <ProjectReference Include="..\Extensions\BYTES.NET.Logging\BYTES.NET.Logging.vbproj">
       <Project>{83f13360-ab31-446f-ae3d-36e9940562cd}</Project>

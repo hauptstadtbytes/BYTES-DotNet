@@ -12,7 +12,7 @@ Namespace ViewModels.MVVM
 
 #Region "private variable(s)"
 
-        Private _myView As DialogView = Nothing
+        Private _myView As DialogSampleView = Nothing
 
         Private _txt As String = Nothing
 
@@ -73,7 +73,7 @@ Namespace ViewModels.MVVM
             'create a new view instance
             If IsNothing(_myView) Then
 
-                _myView = New DialogView
+                _myView = New DialogSampleView
                 _myView.DataContext = Me
 
             End If

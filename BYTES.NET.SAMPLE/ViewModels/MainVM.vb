@@ -70,6 +70,7 @@ Namespace ViewModels
 
             'set the variable(s)
             Me.Samples.Add(New MVVMSampleVM)
+            Me.Samples.Add(New ManagedProcessVM)
 
             Me.Samples.Add(New LocalHostSampleVM)
             Me.Samples.Add(New UNCSampleVM)

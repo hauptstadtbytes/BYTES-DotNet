@@ -11,13 +11,16 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "BYTES.NET.SAMPLE", "BYTES.N
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{09610140-0098-44CF-B312-39AB9084E7EA}"
 	ProjectSection(SolutionItems) = preProject
-		Icon.png = Icon.png
 		License.txt = License.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{9F128905-A696-4B14-A59B-9C13802729E7}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "BYTES.NET.Logging", "Extensions\BYTES.NET.Logging\BYTES.NET.Logging.vbproj", "{83F13360-AB31-446F-AE3D-36E9940562CD}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "BYTES.NET.Collections", "Extensions\BYTES.NET.Collections\BYTES.NET.Collections.vbproj", "{F2F5BBED-7B3D-4773-9015-EABE625831B3}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "BYTES.NET.IO", "Extensions\BYTES.NET.IO\BYTES.NET.IO.vbproj", "{54105AEE-45F0-4ADF-851E-33DAA3097031}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,12 +44,22 @@ Global
 		{83F13360-AB31-446F-AE3D-36E9940562CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83F13360-AB31-446F-AE3D-36E9940562CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83F13360-AB31-446F-AE3D-36E9940562CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2F5BBED-7B3D-4773-9015-EABE625831B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2F5BBED-7B3D-4773-9015-EABE625831B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2F5BBED-7B3D-4773-9015-EABE625831B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2F5BBED-7B3D-4773-9015-EABE625831B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54105AEE-45F0-4ADF-851E-33DAA3097031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54105AEE-45F0-4ADF-851E-33DAA3097031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54105AEE-45F0-4ADF-851E-33DAA3097031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54105AEE-45F0-4ADF-851E-33DAA3097031}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{83F13360-AB31-446F-AE3D-36E9940562CD} = {9F128905-A696-4B14-A59B-9C13802729E7}
+		{F2F5BBED-7B3D-4773-9015-EABE625831B3} = {9F128905-A696-4B14-A59B-9C13802729E7}
+		{54105AEE-45F0-4ADF-851E-33DAA3097031} = {9F128905-A696-4B14-A59B-9C13802729E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F828A74A-4DB3-4053-BD84-8593735E1C2E}

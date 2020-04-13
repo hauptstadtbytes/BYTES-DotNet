@@ -55,6 +55,50 @@
                 
             </TabItem>
 
+            <!-- add the 'Threading' sample -->
+            <TabItem Header="Threading">
+
+                <Grid Margin="5">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Grid.Row="0" HorizontalAlignment="Stretch">
+                        
+                        <Button Content="Open New Thread" Command="{Binding Path=Commands[OpenGUIThreadCmd]}" Margin="0,5,0,0" />
+
+                        <Separator Margin="0,5,0,5" HorizontalAlignment="Stretch" />
+
+                        <TextBlock Text="Threads:" FontWeight="Bold" Margin="0,0,0,5" />
+                        
+                    </StackPanel>
+
+                    <ListView Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding Path=Threads, Mode=OneWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel>
+                                    <TextBlock Text="{Binding Path=ThreadID}" />
+                                    <TextBlock Text=" | " />
+                                    <TextBlock Text="{Binding Path=Greetings}" />
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <StackPanel Grid.Row="2">
+
+                        <Button  Content="Change First Greeting" Command="{Binding Path=Commands[GUIThreadsChangeGreetingCmd]}" Margin="0,5,0,0" />
+                        <Button  Content="Close All Thread(s)" Command="{Binding Path=Commands[CloseGUIThreadsCmd]}" Margin="0,5,0,0" />
+                        
+                    </StackPanel>
+
+                </Grid>
+
+            </TabItem>
+
             <!-- add the 'Validation' sample -->
             <TabItem Header="Validation">
 

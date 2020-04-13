@@ -34,6 +34,8 @@ Namespace ViewModels.MVVM
         Private _sampleDictionaryItemKey As String = Nothing
         Private _sampleDictionaryItemValue As String = Nothing
 
+        Private _guiThreads As Dictionary(Of Integer, GUIThreadSampleVM) = New Dictionary(Of Integer, GUIThreadSampleVM)
+
 #End Region
 
 #Region "public properties inherited from base-class"
@@ -205,6 +207,14 @@ Namespace ViewModels.MVVM
             End Set
         End Property
 
+        Public ReadOnly Property Threads As GUIThreadSampleVM()
+            Get
+
+                Return _guiThreads.Values.ToArray
+
+            End Get
+        End Property
+
 #End Region
 
 #Region "public new instance method(s)"
@@ -225,6 +235,10 @@ Namespace ViewModels.MVVM
             Me.Commands.Add("ConversionSampleListAddCmd", New ViewModelRelayCommand(New Action(AddressOf AddConversionSampleListItem)))
             Me.Commands.Add("ConversionSampleListClearCmd", New ViewModelRelayCommand(New Action(AddressOf ClearConversionSampleList)))
             Me.Commands.Add("SampleDictionaryAddItemCmd", New ViewModelRelayCommand(New Action(AddressOf SampleDictionaryAdd)))
+
+            Me.Commands.Add("OpenGUIThreadCmd", New ViewModelRelayCommand(New Action(AddressOf GUIThreadOpenCmd)))
+            Me.Commands.Add("CloseGUIThreadsCmd", New ViewModelRelayCommand(New Action(AddressOf GUIThreadsCloseCmd)))
+            Me.Commands.Add("GUIThreadsChangeGreetingCmd", New ViewModelRelayCommand(New Action(AddressOf GUIThreadChangeGreetingsCmd)))
 
             'add the validation rule(s)
             Me.ValidationRules.Add(New ViewModelValidationRule("ValidationAnswer", Function() Not Me.ValidationAnswer = 42, "'" & Me.ValidationAnswer & "' was not 'Deep Thought's' result."))
@@ -270,6 +284,84 @@ Namespace ViewModels.MVVM
             End If
 
             MsgBox("Dialog closed...")
+
+        End Sub
+
+        ''' <summary>
+        ''' method opening a (custom) GUI thread
+        ''' </summary>
+        Private Sub GUIThreadOpenCmd()
+
+            Dim thread As GUIThreadSampleVM = New GUIThreadSampleVM()
+            AddHandler thread.Closed, AddressOf GUIThreadOnClosed
+
+            _guiThreads.Add(thread.ThreadID, thread)
+            OnPropertyChanged("Threads")
+
+        End Sub
+
+        ''' <summary>
+        ''' event handler on closing a (custom) GUI thread
+        ''' </summary>
+        ''' <param name="sender"></param>
+        Private Sub GUIThreadOnClosed(sender As GUIThreadSampleVM)
+
+            'inform the user
+            MsgBox("Thread '" & sender.ThreadID & "' closed")
+
+            'update the listing
+            If _guiThreads.ContainsKey(sender.ThreadID) Then
+
+                _guiThreads.Remove(sender.ThreadID)
+
+            End If
+
+            OnPropertyChanged("Threads")
+
+        End Sub
+
+        ''' <summary>
+        ''' method closing all (custom) GUI threads
+        ''' </summary>
+        Private Sub GUIThreadsCloseCmd()
+
+            'close all thread(s)
+            Dim counter As Integer = 0
+
+            Dim threads As GUIThreadSampleVM() = _guiThreads.Values.ToArray
+
+            For Each thread As GUIThreadSampleVM In threads
+
+                counter += 1
+
+                thread.Close()
+
+            Next
+
+            MsgBox(counter.ToString + " GUI thread(s) closed successfully")
+
+            'reset the listing
+            _guiThreads = New Dictionary(Of Integer, GUIThreadSampleVM)
+            OnPropertyChanged("Threads")
+
+        End Sub
+
+        ''' <summary>
+        ''' method modifying the greetings of the first GUI thread instance
+        ''' </summary>
+        Private Sub GUIThreadChangeGreetingsCmd()
+
+            'check for a thread
+            If _guiThreads.Count < 1 Then
+
+                MsgBox("There are not threads to be altered")
+
+                Exit Sub
+
+            End If
+
+            'modify the greetings
+            _guiThreads.First.Value.Greetings = "Modified by request"
 
         End Sub
 

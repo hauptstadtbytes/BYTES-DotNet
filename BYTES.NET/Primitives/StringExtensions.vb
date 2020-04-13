@@ -1,9 +1,41 @@
 ﻿'import .net namespace(s) required
 Imports System.Runtime.CompilerServices
+Imports System.Text.RegularExpressions
 
 Namespace Primitives
 
     Public Module StringExtensions
+
+        ''' <summary>
+        ''' a 'String' type extension method expanding mask(s) inside a string
+        ''' </summary>
+        ''' <param name="theString"></param>
+        ''' <param name="theMasks"></param>
+        ''' <param name="ignoreCase"></param>
+        ''' <returns></returns>
+        <Extension()>
+        Public Function ExpandMasks(theString As String, ByVal theMasks As Dictionary(Of String, String), Optional ByVal ignoreCase As Boolean = True)
+
+            'expand the mask(s)
+            For Each mask As KeyValuePair(Of String, String) In theMasks
+
+                'create the regular expression
+                Dim myRegex As Regex = New Regex("%" & mask.Key & "%", RegexOptions.IgnoreCase Or RegexOptions.CultureInvariant)
+
+                If Not (ignoreCase) Then
+
+                    myRegex = New Regex("%" & mask.Key & "%", RegexOptions.CultureInvariant)
+
+                End If
+
+                theString = myRegex.Replace(theString, mask.Value)
+
+            Next
+
+            'return the output value
+            Return theString
+
+        End Function
 
         ''' <summary>
         ''' a 'String' type extension method calculating the trigram-based similarity to another string

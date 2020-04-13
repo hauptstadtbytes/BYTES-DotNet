@@ -11,28 +11,21 @@ Namespace WPF.MVVM
     ''' <remarks></remarks>
     Public MustInherit Class ViewModel
 
-        Implements INotifyPropertyChanged
+        Inherits Observable
 
         Implements INotifyDataErrorInfo
 
-#Region "method(s) implementing the 'INotifypropertyChanged' interface"
-
-        Public Event PropertyChanged(sender As Object, e As PropertyChangedEventArgs) Implements INotifyPropertyChanged.PropertyChanged
-
-#End Region
-
-#Region "method(s) supporting the 'INotifypropertyChanged' interface"
+#Region "method(s) supporting the 'INotifypropertyChanged' interface (inherited from 'Observable)"
 
         ''' <summary>
-        ''' method for raising the 'PropertyChanged' event on property changed
+        ''' overloaded method for raising the 'PropertyChanged' event
         ''' </summary>
-        ''' <param name="propertyName"></param>
         ''' <param name="doReValidation"></param>
-        ''' <remarks></remarks>
-        Public Sub OnPropertyChanged(<CallerMemberName> Optional ByVal propertyName As String = Nothing, Optional ByVal doReValidation As Boolean = False)
+        ''' <param name="propertyName"></param>
+        Public Overloads Sub OnPropertyChanged(ByVal doReValidation As Boolean, <CallerMemberName> Optional ByVal propertyName As String = Nothing)
 
             'raise the 'PropertyChanged' event
-            RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(propertyName))
+            OnPropertyChanged(propertyName)
 
             'do a re-validation (if requested)
             If doReValidation Then
@@ -44,25 +37,14 @@ Namespace WPF.MVVM
         End Sub
 
         ''' <summary>
-        ''' overloaded method for raising the 'PropertyChanged' event
-        ''' </summary>
-        ''' <param name="doReValidation"></param>
-        ''' <param name="propertyName"></param>
-        Public Sub OnPropertyChanged(ByVal doReValidation As Boolean, <CallerMemberName> Optional ByVal propertyName As String = Nothing)
-
-            OnPropertyChanged(propertyName, doReValidation)
-
-        End Sub
-
-        ''' <summary>
         ''' method for notifying on all properties changed
         ''' </summary>
         ''' <param name="doReValidation"></param>
         ''' <remarks>based on the article found at 'http://jobijoy.blogspot.de/2009/07/easy-way-to-update-all-ui-property.html'</remarks>
-        Public Sub OnAllPropertiesChanged(Optional ByVal doReValidation As Boolean = False)
+        Public Overloads Sub OnAllPropertiesChanged(Optional ByVal doReValidation As Boolean = False)
 
             'raise the 'PropertyChanged' event
-            RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs(Nothing))
+            OnAllPropertiesChanged(doReValidation)
 
             'do a re-validation (if requested)
             If doReValidation Then

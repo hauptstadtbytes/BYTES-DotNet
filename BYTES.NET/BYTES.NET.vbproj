@@ -104,6 +104,7 @@
     <Compile Include="IO\FTP\FTPRemoteItem.vb" />
     <Compile Include="IO\Helper.vb" />
     <Compile Include="IO\HTTP\Client.vb" />
+    <Compile Include="IO\ManagedProcess.vb" />
     <Compile Include="IO\System\Adapter.vb" />
     <Compile Include="IO\System\Drive.vb" />
     <Compile Include="IO\System\Info.vb" />
@@ -147,11 +148,13 @@
     <Compile Include="WPF\Converters\NothingToBoolConverter.vb" />
     <Compile Include="WPF\Converters\NothingToVisibilityConverter.vb" />
     <Compile Include="WPF\MVVM\DialogViewModel.vb" />
+    <Compile Include="WPF\MVVM\GUIThreadViewModel.vb" />
     <Compile Include="WPF\MVVM\ViewModel.vb" />
     <Compile Include="WPF\MVVM\ViewModelRelayCommand.vb" />
     <Compile Include="WPF\MVVM\ViewModelValidationResult.vb" />
     <Compile Include="WPF\MVVM\ViewModelValidationRule.vb" />
     <Compile Include="WPF\MVVM\ViewModelValidationRulesSet.vb" />
+    <Compile Include="WPF\Observable.vb" />
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
@@ -163,7 +166,9 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="ReleaseNotes.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>nuget pack "$(ProjectDir)BYTES.NET.nuspec"</PostBuildEvent>

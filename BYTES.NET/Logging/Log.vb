@@ -32,6 +32,26 @@ Namespace Logging
             End Get
         End Property
 
+        Public ReadOnly Property Cache(ByVal level As LogEntry.InformationLevel) As LogEntry()
+            Get
+
+                Dim output As List(Of LogEntry) = New List(Of LogEntry)
+
+                For Each entry As LogEntry In _cache
+
+                    If (entry.Level = level) Then
+
+                        output.Add(entry)
+
+                    End If
+
+                Next
+
+                Return output.ToArray
+
+            End Get
+        End Property
+
         ''' <summary>
         ''' The number of log entries cached in-memory
         ''' </summary>
