@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31829.152
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BYTES.NET", "BYTES.NET\BYTES.NET.csproj", "{B02265E7-C2AC-4BC6-A224-B555848D9E0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BYTES.NET.Test", "BYTES.NET.Test\BYTES.NET.Test.csproj", "{238A7821-AE2B-4C8C-885D-F1C1B7A784AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BYTES.NET.Test", "BYTES.NET.Test\BYTES.NET.Test.csproj", "{238A7821-AE2B-4C8C-885D-F1C1B7A784AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BYTES.NET.MS", "BYTES.NET.MS\BYTES.NET.MS.csproj", "{77268A98-9B30-4873-B34B-3F2A957C1AB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{238A7821-AE2B-4C8C-885D-F1C1B7A784AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{238A7821-AE2B-4C8C-885D-F1C1B7A784AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{238A7821-AE2B-4C8C-885D-F1C1B7A784AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77268A98-9B30-4873-B34B-3F2A957C1AB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77268A98-9B30-4873-B34B-3F2A957C1AB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77268A98-9B30-4873-B34B-3F2A957C1AB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77268A98-9B30-4873-B34B-3F2A957C1AB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

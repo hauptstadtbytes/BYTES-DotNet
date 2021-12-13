@@ -14,3 +14,6 @@ src-2.x/BYTES.NET.Test/obj/
 src-2.x/BYTES.NET/bin/
 src-2.x/BYTES.NET/obj/
 src-2.x/BYTES.NET/.vs/
+src-2.x/BYTES.NET.MS/bin/
+src-2.x/BYTES.NET.MS/obj/
+test/Logs/
