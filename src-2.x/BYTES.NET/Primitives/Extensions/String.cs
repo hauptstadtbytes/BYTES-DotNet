@@ -255,7 +255,7 @@ namespace BYTES.NET.Primitives.Extensions
         /// <summary>
         /// returns the best match from a given list of string options (respecting a threshold)
         /// </summary>
-        /// <param name="theString"></param>
+        /// <param name="text"></param>
         /// <param name="options"></param>
         /// <param name="threshold"></param>
         /// <returns></returns>
@@ -283,6 +283,16 @@ namespace BYTES.NET.Primitives.Extensions
 
             return System.String.Empty;
 
+        }
+
+        /// <summary>
+        /// returns an instance of 'AESCipher' for a tsring given
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static Cryptography.AESCipher AES(this System.String text)
+        {
+            return new Cryptography.AESCipher(text);
         }
 
         #endregion
