@@ -204,6 +204,56 @@ namespace BYTES.NET.Primitives.Extensions
         }
 
         /// <summary>
+        /// returns a key-value-pair from a string containing an equality character
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="equalitySigns"></param>
+        /// <returns></returns>
+        /// <remarks>if an equality sign occures multiple times or there are multiple equality signs, only the left-first one is taken into account</remarks>
+        public static KeyValuePair<string,string> ParseKeyValue(this string text, char[] equalitySigns = null)
+        {
+
+            //parse the arguments
+            if (equalitySigns == null || equalitySigns.Length == 0)
+            {
+                equalitySigns = new char[] { '=', ':' };
+            }
+
+            //assemble the regular expression
+            string expression = @"\s*[";
+            int counter = 0;
+
+            foreach (char sign in equalitySigns)
+            {
+                counter += 1;
+
+                if (counter > 1)
+                {
+                    expression += "|";
+                }
+
+                expression += sign;
+
+            }
+
+            expression += @"]\s*";
+
+            Regex myRegex = new Regex(expression, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
+            //get a list of all indexes
+            int[] indexes = text.AllIndexesOf(myRegex);
+
+            //return the output value
+            if(indexes.Length == 0)
+            {
+                return new KeyValuePair<string, string>(text, null);
+            }
+
+            return new KeyValuePair<string, string>(text.Substring(0,indexes[0]),text.Substring(indexes[0]+1));
+
+        }
+
+        /// <summary>
         /// calculates the trigam-based similarity to another string
         /// </summary>
         /// <param name="text"></param>

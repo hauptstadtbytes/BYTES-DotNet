@@ -43,6 +43,24 @@ namespace BYTES.NET.Test.Primitives
         }
 
         [TestMethod]
+        public void TestKeyValueParsing()
+        {
+            string inputString = "Hello:World";
+            KeyValuePair<string, string> result = inputString.ParseKeyValue();
+            Assert.AreEqual("Hello World", result.Key + " " + result.Value);
+
+            inputString = "Path:\"C:\"myPath\"";
+            result = inputString.ParseKeyValue();
+            Assert.AreEqual("Path", result.Key);
+            Assert.AreEqual("\"C:\"myPath\"", result.Value);
+
+            inputString = "Key,Val*";
+            result = inputString.ParseKeyValue(new char[] { ',' });
+            Assert.AreEqual("Key", result.Key);
+            Assert.AreEqual("Val*", result.Value);
+        }
+
+        [TestMethod]
         public void TestExpandVariables()
         {
 

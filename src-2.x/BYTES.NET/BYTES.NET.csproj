@@ -31,4 +31,8 @@
     <Exec Command="if $(ConfigurationName) == Release nuget pack &quot;$(ProjectDir)BYTES.NET.nuspec&quot;" />
   </Target>
 
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Composition" />
+  </ItemGroup>
+
 </Project>

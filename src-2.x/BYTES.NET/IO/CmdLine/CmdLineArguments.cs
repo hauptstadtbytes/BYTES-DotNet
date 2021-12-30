@@ -8,21 +8,20 @@ using System.Threading.Tasks;
 
 //import internal namespace(s) required
 using BYTES.NET.Primitives.Extensions;
+using BYTES.NET.Collections;
 
-namespace BYTES.NET.Collections
+namespace BYTES.NET.IO.CmdLine
 {
     /// <summary>
-    /// a collection of (command line) arguments
+    /// a command line arguments collection
     /// </summary>
-    public class ArgumentsCollection
+    public class CmdLineArguments : ExtendedDictionary<string,string>
     {
 
         #region private variable(s)
 
         private string[] _args = { };
-
-        private Regex _namedArgsRegEx = new Regex(@"[-|/]([\w|'|""]*)[:|=]*([\w|'|""|:|\\]*)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-        private Dictionary<string, string> _namedArgs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        private Regex _namedArgsRegEx = new Regex(@"[-|/]([\w|'|""|?]*)[:|=]*([\w|'|""|:|\\|\s|!]*)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         #endregion
 
@@ -41,27 +40,9 @@ namespace BYTES.NET.Collections
             }
         }
 
-        public string this[string name]
-        {
-            get
-            {
-                if (!_namedArgs.ContainsKey(name))
-                {
-                    throw new ArgumentException("Unable to find argument named '" + name + "'");
-                }
-
-                return _namedArgs[name];
-            }
-        }
-
-        public string[] Arguments
+        public string[] Raw
         {
             get => _args;
-        }
-
-        public string[] Names
-        {
-            get => _namedArgs.Keys.ToArray<string>();
         }
 
         #endregion
@@ -72,25 +53,15 @@ namespace BYTES.NET.Collections
         /// default new instance method
         /// </summary>
         /// <param name="args"></param>
-        public ArgumentsCollection(string[] args)
+        public CmdLineArguments(string[] args) : base(StringComparer.OrdinalIgnoreCase)
         {
             _args = args;
-            _namedArgs = ParseNamedArgs();
+            ParseNamedArgs();
         }
 
         #endregion
 
         #region public method(s)
-
-        /// <summary>
-        /// checks for a dedicated named argument
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public bool ContainsArgument(string name)
-        {
-            return _namedArgs.ContainsKey(name);
-        }
 
         /// <summary>
         /// checks an indexed argument for being a named one
@@ -117,9 +88,8 @@ namespace BYTES.NET.Collections
         /// parses the named argument(s)
         /// </summary>
         /// <returns></returns>
-        private Dictionary<string, string> ParseNamedArgs()
+        private void ParseNamedArgs()
         {
-            Dictionary<string,string> output = new Dictionary<string,string>(StringComparer.OrdinalIgnoreCase);
 
             int counter = -1;
 
@@ -128,7 +98,7 @@ namespace BYTES.NET.Collections
 
                 counter += 1;
 
-                Match ?match;
+                Match? match;
 
                 if (arg.MatchesPattern(_namedArgsRegEx,out match)) //check for a valid argument, extracting key (and value)
                 {
@@ -151,11 +121,10 @@ namespace BYTES.NET.Collections
                         }
                     }
 
-                    output.Add(key,value.Trim('"').Trim('\''));
+                    this.Add(key,value.Trim('"').Trim('\''));
                 }
             }
 
-            return output;
         }
 
         #endregion

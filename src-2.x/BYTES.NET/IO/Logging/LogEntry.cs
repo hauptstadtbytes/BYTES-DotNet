@@ -152,20 +152,18 @@ namespace BYTES.NET.IO.Logging
             if (this.Details != null)
             {
 
-                var ex = this.Details as Exception;
-                if (ex != null)
-                {
-                    variables.Add("%Exception%", ex.Message);
-                    variables.Add("%ExceptionStack%", ex.StackTrace);
-                }
+                if(this.Details.GetType() == typeof(Exception)){
 
-                if (this.Details.GetType().Equals(typeof(string)))
+                    Exception exeption = (Exception)this.Details;
+
+                    variables.Add("%Exception%", exeption.Message);
+                    variables.Add("%ExceptionStack%", exeption.StackTrace);
+
+                } else if(this.Details.GetType() == typeof(string))
                 {
+
                     variables.Add("%Details%", this.Details.ToString());
-                }
-                else
-                {
-                    variables.Add("%Details%", this.Details.GetType().ToString());
+
                 }
 
             }

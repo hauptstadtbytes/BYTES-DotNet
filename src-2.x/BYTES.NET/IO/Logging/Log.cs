@@ -68,7 +68,7 @@ namespace BYTES.NET.IO.Logging
         /// default new instance method
         /// </summary>
         /// <param name="identifyer"></param>
-        public Log(string identifyer = null)
+        public Log(string? identifyer = null)
         {
             if(identifyer != null)
             {
@@ -108,10 +108,14 @@ namespace BYTES.NET.IO.Logging
                     _cache.Add(entry);
 
                     //cleanup the cache, if required
-                    while(_cache.Count > _cacheLimit)
+                    if(_cacheLimit > 0 && _cache.Count > 0)
                     {
-                        _cache.RemoveAt(0);
+                        while (_cache.Count > _cacheLimit)
+                        {
+                            _cache.RemoveAt(0);
+                        }
                     }
+                    
                 }
             }
 
@@ -131,7 +135,7 @@ namespace BYTES.NET.IO.Logging
         /// <param name="message"></param>
         /// <param name="level"></param>
         /// <param name="details"></param>
-        public void AddEntry(string message, LogEntry.InformationLevel level, object details = null)
+        public void AddEntry(string message, LogEntry.InformationLevel level, object? details = null)
         {
             if(details == null)
             {
@@ -148,7 +152,7 @@ namespace BYTES.NET.IO.Logging
         /// </summary>
         /// <param name="message"></param>
         /// <param name="details"></param>
-        public void Trace(string message, object details = null)
+        public void Trace(string message, object? details = null)
         {
             AddEntry(message,LogEntry.InformationLevel.Debug,details);
         }
@@ -158,7 +162,7 @@ namespace BYTES.NET.IO.Logging
         /// </summary>
         /// <param name="message"></param>
         /// <param name="details"></param>
-        public void Inform(string message, object details = null)
+        public void Inform(string message, object? details = null)
         {
             AddEntry(message, LogEntry.InformationLevel.Info, details);
         }
@@ -168,7 +172,7 @@ namespace BYTES.NET.IO.Logging
         /// </summary>
         /// <param name="message"></param>
         /// <param name="details"></param>
-        public void Warn(string message, object details = null)
+        public void Warn(string message, object? details = null)
         {
             AddEntry(message, LogEntry.InformationLevel.Warning, details);
         }
@@ -179,7 +183,7 @@ namespace BYTES.NET.IO.Logging
         /// <param name="message"></param>
         /// <param name="details"></param>
         /// <param name="isFatal"></param>
-        public void ReportError(string message, object details = null, bool isFatal = false)
+        public void ReportError(string message, object? details = null, bool isFatal = false)
         {
             if (isFatal)
             {
