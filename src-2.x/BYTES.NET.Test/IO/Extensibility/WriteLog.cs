@@ -10,19 +10,24 @@ using System.Threading.Tasks;
 using BYTES.NET.IO.Scripting;
 using BYTES.NET.IO.Scripting.API;
 using BYTES.NET.IO;
-
-//import .net namespace(s) required from 'BYTES.NET.MS' framework
-using BYTES.NET.MS.IO.Logging;
+using BYTES.NET.Primitives.Extensions;
 
 namespace BYTES.NET.Test.IO.Extensibility
 {
-    public class DumpLog : IMethod
+    public class WriteLog : IMethod
     {
         public ScriptExecutionResult Execute(ref ScriptExecutionContext context, MethodCallArguments args)
         {
+            //parse the argument(s)
+            string message = "Hello World!";
+
+            if (args.ContainsKey("message"))
+            {
+                message = args["message"].Expand(context.Variables.Get());
+            }
+
             //setup the log
-            string logFilePath = "%bytes.net.dir%\\..\\..\\..\\..\\..\\test\\Scripting\\sampleLog.LOG";
-            logFilePath = Helper.ExpandPath(logFilePath);
+            string logFilePath = Helper.ExpandPath("%bytes.net.dir%\\..\\..\\..\\..\\..\\test\\Scripting\\sampleLog.LOG");
 
             if (File.Exists(logFilePath))
             {
@@ -30,10 +35,10 @@ namespace BYTES.NET.Test.IO.Extensibility
             }
 
             //log the data
-            context.Log.AddAppender(new RollingFileAppender(logFilePath)); //dumps existing log entries by default
+            File.WriteAllText(logFilePath, message);
 
             //return "success"
-            return new ScriptExecutionResult(true,"Logged dumped sucessfully to '" + logFilePath + "'");
+            return new ScriptExecutionResult(true,"'" + message + "' sucessfully written to '" + logFilePath + "'");
         }
     }
 }

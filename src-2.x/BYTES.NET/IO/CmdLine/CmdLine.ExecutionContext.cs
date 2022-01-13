@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 //import internal namespace(s) required
 using BYTES.NET.IO.CmdLine.API;
+using BYTES.NET.IO.Logging;
 using BYTES.NET.Collections.Extensions;
 
 namespace BYTES.NET.IO.CmdLine
@@ -14,14 +15,8 @@ namespace BYTES.NET.IO.CmdLine
     /// <summary>
     /// a generic command line (call) processor
     /// </summary>
-    public class CmdLineExecutionContext
+    public class CmdLineExecutionContext : ContextBase
     {
-        #region public event(s)
-
-        public event MessageReceivedEventhandler MessageReceived;
-        public delegate void MessageReceivedEventhandler(string message);
-
-        #endregion
 
         #region protected variable(s)
 
@@ -121,7 +116,7 @@ namespace BYTES.NET.IO.CmdLine
             //validates the argument(s) given
             if (!this.Methods.ContainsKey(arguments.Raw[0])) //the method is unknown
             {
-                WriteMessage("Method '" + arguments.Raw[0] + "' unknown. Unable to proceed.");
+                ReportError("Method '" + arguments.Raw[0] + "' unknown. Unable to proceed.");
 
                 WriteMessage(string.Empty);
                 this.ReturnGlobalHelpCallback(false);
@@ -139,7 +134,7 @@ namespace BYTES.NET.IO.CmdLine
 
                 if(missing.Length > 0)
                 {
-                    WriteMessage("Argument(s) '" + String.Join("','",missing) + "' missing for method '" + arguments.Raw[0] + "'. Unable to proceed.");
+                    ReportError("Argument(s) '" + String.Join("','",missing) + "' missing for method '" + arguments.Raw[0] + "'. Unable to proceed.");
 
                     WriteMessage(string.Empty);
                     this.ReturnMethodHelpCallback(arguments.Raw[0]);
@@ -153,30 +148,9 @@ namespace BYTES.NET.IO.CmdLine
             method.Execute(ref me, arguments);
         }
 
-        /// <summary>
-        /// writes a message (line)
-        /// </summary>
-        /// <param name="message"></param>
-        public void WriteMessage(string message)
-        {
-            OnMessageReceived(message);
-        }
-
         #endregion
 
         #region protected method(s)
-
-        /// <summary>
-        /// raises the 'MessageReceived' event
-        /// </summary>
-        /// <param name="message"></param>
-        protected virtual void OnMessageReceived(string message)
-        {
-            if (MessageReceived != null)
-            {
-                MessageReceived(message);
-            }
-        }
 
         /// <summary>
         /// checks for (global) help requests

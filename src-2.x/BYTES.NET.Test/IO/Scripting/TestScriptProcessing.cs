@@ -36,7 +36,7 @@ namespace BYTES.NET.Test.IO.Scripting
             Script script = new Script();
             script.Sequence.Add(new MethodCall() { MethodID = "SetVariable", Arguments = new MethodCallArguments() { { "Name", "Hello" }, { "Value", "World" } } });
             script.Sequence.Add(new MethodCall() { MethodID = "LogMessage", Arguments = new MethodCallArguments() { { "Message", "Let's do a 'Hello %Hello%'" }, { "Level", "Fatal" } } });
-            script.Sequence.Add(new MethodCall() { MethodID = "DumpLog", Arguments = new MethodCallArguments() });
+            script.Sequence.Add(new MethodCall() { MethodID = "Write", Arguments = new MethodCallArguments() });
 
             //write to XML file
             script.WriteToXML(filePath);
@@ -57,6 +57,7 @@ namespace BYTES.NET.Test.IO.Scripting
 
             if (!File.Exists(filePath))
             {
+                File.Delete(filePath);
                 TestWriteReadScript();
             }
 
@@ -64,11 +65,11 @@ namespace BYTES.NET.Test.IO.Scripting
             Dictionary<string, IMethod> methods = new Dictionary<string, IMethod>(StringComparer.OrdinalIgnoreCase);
             methods.Add("SetVariable", new SetVariable());
             methods.Add("LogMessage", new LogMessage());
-            methods.Add("DumpLog", new Extensibility.DumpLog());
+            methods.Add("Write", new Extensibility.WriteLog());
 
             //setup the context
             ScriptExecutionContext context = new ScriptExecutionContext() { Methods = methods };
-            context.Log.Logged += OnLogged;
+            context.MessageReceived += OnLogged;
 
             //load the script
             Script script = new Script();

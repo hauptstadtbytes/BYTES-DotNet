@@ -80,7 +80,7 @@ namespace BYTES.NET.Test.IO.Extensibility
             manager = new ExtensionsManager<IMethod, MethodMetdata>();
 
             sources = new List<ExtensionsSource>();
-            sources.Add(new ExtensionsSource("%BYTES.NET%", "Aliases=SetVariable"));
+            sources.Add(new ExtensionsSource("%BYTES.NET%", "Name=SetVariable"));
             sources.Add(new ExtensionsSource("%BYTES.NET.DIR%\\BYTES.NET.Test.dll"));
 
             manager.Update(sources.ToArray());
@@ -93,7 +93,7 @@ namespace BYTES.NET.Test.IO.Extensibility
             manager = new ExtensionsManager<IMethod, MethodMetdata>();
 
             sources = new List<ExtensionsSource>();
-            sources.Add(new ExtensionsSource("%BYTES.NET%", "Aliases=SetVariable|*"));
+            sources.Add(new ExtensionsSource("%BYTES.NET%", "Aliases=Log|*"));
             sources.Add(new ExtensionsSource("%BYTES.NET.DIR%\\BYTES.NET.Test.dll"));
 
             manager.Update(sources.ToArray());

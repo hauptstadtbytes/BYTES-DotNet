@@ -4,6 +4,7 @@ using System.Diagnostics;
 
 //import namespace(s) required from 'BYTES.NET' framework
 using BYTES.NET.IO.CmdLine;
+using BYTES.NET.IO.Logging;
 
 //import internal namespace(s) required
 using BYTES.NET.Test.IO.CmdLine;
@@ -15,7 +16,7 @@ namespace BYTES.NET.Test.IO.Cmdline
     public class TestCmdLineProcessing
     {
 
-        private string _lastMessage = string.Empty;
+        private LogEntry _lastMessage = new LogEntry(string.Empty);
 
         [TestMethod]
         public void TestArgsParsing()
@@ -48,7 +49,7 @@ namespace BYTES.NET.Test.IO.Cmdline
             context.MessageReceived += HandleMessageReceived;
 
             context.Execute(new string[] { });
-            Assert.AreEqual("WriteMessage - Writes a message (e.g. to console)", _lastMessage);
+            Assert.AreEqual("WriteMessage - Writes a message (e.g. to console)", _lastMessage.Message);
         }
 
         [TestMethod]
@@ -59,7 +60,7 @@ namespace BYTES.NET.Test.IO.Cmdline
             context.MessageReceived += HandleMessageReceived;
 
             context.Execute(new string[] {"writemessage","/?"});
-            Assert.AreEqual("[-uppercase] Makes all characters upper case", _lastMessage);
+            Assert.AreEqual("[-uppercase] Makes all characters upper case", _lastMessage.Message);
         }
 
         [TestMethod]
@@ -70,7 +71,7 @@ namespace BYTES.NET.Test.IO.Cmdline
             context.MessageReceived += HandleMessageReceived;
 
             context.Execute(new string[] { "writemessage", "/not:working" });
-            Assert.AreEqual("[-uppercase] Makes all characters upper case", _lastMessage);
+            Assert.AreEqual("[-uppercase] Makes all characters upper case", _lastMessage.Message);
         }
 
         [TestMethod]
@@ -81,16 +82,16 @@ namespace BYTES.NET.Test.IO.Cmdline
             context.MessageReceived += HandleMessageReceived;
 
             context.Execute(new string[] { "writemessage", "/msg:HelloWorld!" });
-            Assert.AreEqual("HelloWorld!", _lastMessage);
+            Assert.AreEqual("HelloWorld!", _lastMessage.Message);
 
             context.Execute(new string[] { "writemessage", "/msg:HelloWorld!", "/uppercase" });
-            Assert.AreEqual("HELLOWORLD!", _lastMessage);
+            Assert.AreEqual("HELLOWORLD!", _lastMessage.Message);
 
             context.Execute(new string[] { "writemessage", "/msg:\"Hello World!\"", "/uppercase" });
-            Assert.AreEqual("HELLO WORLD!", _lastMessage);
+            Assert.AreEqual("HELLO WORLD!", _lastMessage.Message);
         }
 
-        private void HandleMessageReceived(string message)
+        private void HandleMessageReceived(ref LogEntry message)
         {
             Trace.WriteLine(message);
             _lastMessage = message;

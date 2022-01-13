@@ -77,7 +77,7 @@ namespace BYTES.NET.IO.Persistance.Extensions
         /// <param name="variables"></param>
         /// <param name="ignoreCase"></param>
         /// <exception cref="ArgumentException"></exception>
-        public static void ReadFromXML(this API.IFilePersistable instance, string path, Dictionary<string, string> variables = null, bool ignoreCase = true)
+        public static void ReadFromXML(this API.IFilePersistable instance, string path, Dictionary<string, string>? variables = null, bool ignoreCase = true)
         {
             //parse the argument(s)
             path = Helper.ExpandPath(path, variables, ignoreCase);

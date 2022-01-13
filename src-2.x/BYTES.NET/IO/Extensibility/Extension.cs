@@ -75,7 +75,10 @@ namespace BYTES.NET.IO.Extensibility
             return _instance;
         }
 
-        //returns the value
+        /// <summary>
+        /// returns the value
+        /// </summary>
+        /// <returns></returns>
         public new TInterface Value()
         {
             if (_instance != null)

@@ -10,6 +10,13 @@ namespace BYTES.NET.IO.Scripting
     [AttributeUsage(AttributeTargets.Class)]
     public class MethodMetdata : Attribute
     {
-        public string Aliases { get; set; }
+        public string Name { get; set; }
+
+        public string[] Aliases { get; set; }
+
+        public MethodMetdata()
+        {
+            this.Aliases = new string[] { };
+        }
     }
 }

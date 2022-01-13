@@ -17,7 +17,7 @@ namespace BYTES.NET.IO.Scripting.Methods
     /// script method, logging a 'String' type message
     /// </summary>
     /// <remarks>runtime variables masked using the pattern '%name%' will me expanded automatically</remarks>
-    [MethodMetdata(Aliases ="LogMessage,Log")]
+    [MethodMetdata(Name= "LogMessage", Aliases = new string[] {"Log"})]
     public class LogMessage : IMethod
     {
         public ScriptExecutionResult Execute(ref ScriptExecutionContext context, MethodCallArguments args)
@@ -42,7 +42,7 @@ namespace BYTES.NET.IO.Scripting.Methods
             string message = args["Message"].Expand(context.Variables.Get());
 
             //log the message
-            context.Log.AddEntry(message, level);
+            context.WriteMessage(message, level);
 
             //return the (success) output value
             return new ScriptExecutionResult(true, "'LogMessage' executed successfully");

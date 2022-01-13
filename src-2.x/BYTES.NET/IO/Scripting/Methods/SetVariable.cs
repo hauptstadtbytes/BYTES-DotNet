@@ -14,7 +14,7 @@ namespace BYTES.NET.IO.Scripting.Methods
     /// <summary>
     /// script method, setting a runtime variable
     /// </summary>
-    [MethodMetdata(Aliases = "SetVariable")]
+    [MethodMetdata(Name = "SetVariable", Aliases = new string[] {"Set"})]
     public class SetVariable : IMethod
     {
         public ScriptExecutionResult Execute(ref ScriptExecutionContext context, MethodCallArguments args)

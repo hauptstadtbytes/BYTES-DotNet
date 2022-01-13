@@ -21,7 +21,7 @@ namespace BYTES.NET.IO.CmdLine
         #region private variable(s)
 
         private string[] _args = { };
-        private Regex _namedArgsRegEx = new Regex(@"[-|/]([\w|'|""|?]*)[:|=]*([\w|'|""|:|\\|\s|!]*)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+        private Regex _namedArgsRegEx = new Regex(@"[-|/]([\w|'|""|?]*)[:|=]*([\w|'|""|%|:|-|_|\\|.|\s|!]*)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
 
         #endregion
 

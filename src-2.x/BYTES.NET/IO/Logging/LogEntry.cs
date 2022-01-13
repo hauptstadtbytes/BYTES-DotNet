@@ -139,9 +139,14 @@ namespace BYTES.NET.IO.Logging
         /// returns a string equivalent of the 
         /// </summary>
         /// <param name="pattern"></param>
+        /// <param name="supportEmptyLines"></param>
         /// <returns></returns>
-        public string ToString(string pattern = "%TimeStamp% %Level% [] - %Message%")
+        public string ToString(string pattern = "%TimeStamp% %Level% [] - %Message%", bool supportEmptyLines = true)
         {
+            //return empty line (of enabled)
+            if(string.IsNullOrEmpty(Message) && supportEmptyLines){
+                return string.Empty;
+            }
 
             //create the variables dictionary
             Dictionary<string, string> variables = new Dictionary<string, string>();
