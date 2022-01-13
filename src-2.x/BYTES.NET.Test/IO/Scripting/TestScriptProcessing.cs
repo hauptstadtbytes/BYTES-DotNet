@@ -8,11 +8,12 @@ using System.Collections.Generic;
 
 //import namespace(s) required from 'BYTES.NET' framework
 using BYTES.NET.IO.Scripting;
-using BYTES.NET.IO.Scripting.API;
-using BYTES.NET.IO.Scripting.Methods;
 using BYTES.NET.IO;
 using BYTES.NET.IO.Persistance.Extensions;
 using BYTES.NET.IO.Logging;
+
+//import internal namespace(s) required
+using BYTES.NET.Test.IO.Scripting.Methods;
 
 namespace BYTES.NET.Test.IO.Scripting
 {
@@ -33,10 +34,14 @@ namespace BYTES.NET.Test.IO.Scripting
             }
 
             //assemble the script
-            Script script = new Script();
-            script.Sequence.Add(new MethodCall() { MethodID = "SetVariable", Arguments = new MethodCallArguments() { { "Name", "Hello" }, { "Value", "World" } } });
-            script.Sequence.Add(new MethodCall() { MethodID = "LogMessage", Arguments = new MethodCallArguments() { { "Message", "Let's do a 'Hello %Hello%'" }, { "Level", "Fatal" } } });
-            script.Sequence.Add(new MethodCall() { MethodID = "Write", Arguments = new MethodCallArguments() });
+            TestScript script = new TestScript();
+
+            script.Name = "Sample Script";
+            script.Description = "As simple script for testing";
+
+            script.Sequence.Calls.Add(new MethodCall() { Method = "SetVariable", Arguments = new MethodCallArguments() { { "Name", "Hello" }, { "Value", "World" } } });
+            script.Sequence.Calls.Add(new MethodCall() { Method = "LogMessage", Arguments = new MethodCallArguments() { { "Message", "Let's do a 'Hello %Hello%'" }, { "Level", "Fatal" } } });
+            script.Sequence.Calls.Add(new MethodCall() { Method = "Write", Arguments = new MethodCallArguments() });
 
             //write to XML file
             script.WriteToXML(filePath);
@@ -44,8 +49,8 @@ namespace BYTES.NET.Test.IO.Scripting
 
             //read from XML file
             script.ReadFromXML(filePath);
-            Assert.AreEqual(3, script.Sequence.Count);
-            Assert.AreEqual("SetVariable", script.Sequence[0].MethodID);
+            Assert.AreEqual(3, script.Sequence.Calls.Count);
+            Assert.AreEqual("SetVariable", script.Sequence.Calls[0].Method);
 
         }
 
@@ -62,21 +67,21 @@ namespace BYTES.NET.Test.IO.Scripting
             }
 
             //enumerate the method(s)
-            Dictionary<string, IMethod> methods = new Dictionary<string, IMethod>(StringComparer.OrdinalIgnoreCase);
+            Dictionary<string, API.ITestMethod> methods = new Dictionary<string, API.ITestMethod>(StringComparer.OrdinalIgnoreCase);
             methods.Add("SetVariable", new SetVariable());
             methods.Add("LogMessage", new LogMessage());
-            methods.Add("Write", new Extensibility.WriteLog());
+            methods.Add("Write", new WriteFile());
 
             //setup the context
-            ScriptExecutionContext context = new ScriptExecutionContext() { Methods = methods };
+            TestExecutionContext context = new TestExecutionContext() { Methods = methods };
             context.MessageReceived += OnLogged;
 
             //load the script
-            Script script = new Script();
+            TestScript script = new TestScript();
             script.ReadFromXML(filePath);
 
             //execute the script
-            ScriptExecutionResult result = context.Execute(script);
+            ExecutionResult result = context.Execute(script.Sequence);
             Assert.AreEqual(true, result.Successful);
         }
 

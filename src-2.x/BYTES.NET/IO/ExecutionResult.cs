@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BYTES.NET.IO.Scripting
+namespace BYTES.NET.IO
 {
-    public class ScriptExecutionResult
+    public class ExecutionResult
     {
         #region private variable(s)
 
@@ -44,7 +44,7 @@ namespace BYTES.NET.IO.Scripting
         /// <param name="successful"></param>
         /// <param name="message"></param>
         /// <param name="details"></param>
-        public ScriptExecutionResult(bool successful = true, string message = "Finished sucessfully", object? details = null)
+        public ExecutionResult(bool successful = true, string message = "Finished sucessfully", object? details = null)
         {
             //set the variable(s)
             _successful = successful;

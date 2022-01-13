@@ -6,17 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//import .net namespace(s) required from 'BYTES.NET' framework
-using BYTES.NET.IO.Scripting;
-using BYTES.NET.IO.Scripting.API;
+//import namespace(s) required from 'BYTES.NET' framework
 using BYTES.NET.IO;
+using BYTES.NET.IO.Scripting;
 using BYTES.NET.Primitives.Extensions;
 
-namespace BYTES.NET.Test.IO.Extensibility
+//import internal namespace(s) required
+using BYTES.NET.Test.IO.Scripting.API;
+
+namespace BYTES.NET.Test.IO.Scripting.Methods
 {
-    public class WriteLog : IMethod
+    public class WriteFile : ITestMethod
     {
-        public ScriptExecutionResult Execute(ref ScriptExecutionContext context, MethodCallArguments args)
+        public ExecutionResult Execute(ref TestExecutionContext context, MethodCallArguments args)
         {
             //parse the argument(s)
             string message = "Hello World!";
@@ -38,7 +40,7 @@ namespace BYTES.NET.Test.IO.Extensibility
             File.WriteAllText(logFilePath, message);
 
             //return "success"
-            return new ScriptExecutionResult(true,"'" + message + "' sucessfully written to '" + logFilePath + "'");
+            return new ExecutionResult(true, "'" + message + "' sucessfully written to '" + logFilePath + "'");
         }
     }
 }

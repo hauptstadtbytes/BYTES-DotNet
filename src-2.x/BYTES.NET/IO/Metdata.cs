@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BYTES.NET.IO.Scripting
+namespace BYTES.NET.IO
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class MethodMetdata : Attribute
+    public class Metdata : Attribute
     {
         public string Name { get; set; }
 
         public string[] Aliases { get; set; }
 
-        public MethodMetdata()
+        public Metdata()
         {
             this.Aliases = new string[] { };
         }

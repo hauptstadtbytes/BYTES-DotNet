@@ -10,7 +10,7 @@ using BYTES.NET.Collections;
 
 namespace BYTES.NET.IO.Scripting
 {
-    public class ScriptVariables : ExtendedDictionary<string,object>
+    public class ExecutionContextVariables : ExtendedDictionary<string,object>
     {
         #region public new instance method(s)
 
@@ -18,7 +18,7 @@ namespace BYTES.NET.IO.Scripting
         /// default new instance method
         /// </summary>
         /// <remarks>makes the dictionary case insensitive</remarks>
-        public ScriptVariables() : base(StringComparer.OrdinalIgnoreCase)
+        public ExecutionContextVariables() : base(StringComparer.OrdinalIgnoreCase)
         {
         }
 

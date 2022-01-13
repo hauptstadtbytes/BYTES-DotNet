@@ -2,15 +2,13 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using System;
-
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
 //import .net namespace(s) required from 'BYTES.NET' framework
+using BYTES.NET.IO;
 using BYTES.NET.IO.Extensibility;
-using BYTES.NET.IO.Scripting;
-using BYTES.NET.IO.Scripting.API;
 
 namespace BYTES.NET.Test.IO.Extensibility
 {
@@ -21,14 +19,14 @@ namespace BYTES.NET.Test.IO.Extensibility
         public void TestSimpleEnumeration()
         {
             //enumerate, using the file path 'String' type
-            ExtensionsManager<IMethod> manager = new ExtensionsManager<IMethod>();
+            ExtensionsManager<Scripting.API.ITestMethod> manager = new ExtensionsManager<Scripting.API.ITestMethod>();
             manager.Update(new string[] {"%BYTES.NET%"});
 
-            DumpExtensions<ExtensionsManager<IMethod>>(manager);
-            Assert.AreEqual(2, manager.Extensions.Length);
+            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod>>(manager);
+            Assert.AreEqual(0, manager.Extensions.Length);
 
             //enumerate, using the 'ExtensionsSource' type
-            manager = new ExtensionsManager<IMethod>();
+            manager = new ExtensionsManager<Scripting.API.ITestMethod>();
             
             List<ExtensionsSource> sources = new List<ExtensionsSource>();
             sources.Add(new ExtensionsSource("%BYTES.NET%"));
@@ -37,7 +35,7 @@ namespace BYTES.NET.Test.IO.Extensibility
             manager.Update(sources.ToArray());
 
             Trace.WriteLine(String.Empty);
-            DumpExtensions<ExtensionsManager<IMethod>>(manager);
+            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod>>(manager);
             Assert.AreEqual(3, manager.Extensions.Length);
         }
 
@@ -45,14 +43,14 @@ namespace BYTES.NET.Test.IO.Extensibility
         public void TestAdvancedEnumeration()
         {
             //enumerate, using the file path 'String' type
-            ExtensionsManager<IMethod,MethodMetdata> manager = new ExtensionsManager<IMethod, MethodMetdata>();
+            ExtensionsManager<Scripting.API.ITestMethod, Metdata> manager = new ExtensionsManager<Scripting.API.ITestMethod, Metdata>();
             manager.Update(new string[] { "%BYTES.NET%" });
 
-            DumpExtensions<ExtensionsManager<IMethod,MethodMetdata>>(manager);
-            Assert.AreEqual(2, manager.Extensions.Length);
+            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod, Metdata>>(manager);
+            Assert.AreEqual(0, manager.Extensions.Length);
 
             //enumerate, using the 'ExtensionsSource' type (1)
-            manager = new ExtensionsManager<IMethod, MethodMetdata>();
+            manager = new ExtensionsManager<Scripting.API.ITestMethod, Metdata>();
 
             List<ExtensionsSource> sources = new List<ExtensionsSource>();
             sources.Add(new ExtensionsSource("%BYTES.NET%"));
@@ -61,64 +59,50 @@ namespace BYTES.NET.Test.IO.Extensibility
             manager.Update(sources.ToArray());
 
             Trace.WriteLine(String.Empty);
-            DumpExtensions<ExtensionsManager<IMethod, MethodMetdata>>(manager);
-            Assert.AreEqual(2, manager.Extensions.Length);
-
-            //enumerate, using the 'ExtensionsSource' type (2)
-            manager = new ExtensionsManager<IMethod, MethodMetdata>();
-
-            sources = new List<ExtensionsSource>();
-            sources.Add(new ExtensionsSource("%BYTES.NET%|BYTES.NET.DIR%\\BYTES.NET.Test.dll"));
-
-            manager.Update(sources.ToArray());
-
-            Trace.WriteLine(String.Empty);
-            DumpExtensions<ExtensionsManager<IMethod, MethodMetdata>>(manager);
+            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod, Metdata>>(manager);
             Assert.AreEqual(2, manager.Extensions.Length);
 
             //enumerate, using the 'ExtensionsSource' type and metadata filtering (1)
-            manager = new ExtensionsManager<IMethod, MethodMetdata>();
+            manager = new ExtensionsManager<Scripting.API.ITestMethod, Metdata>();
 
             sources = new List<ExtensionsSource>();
-            sources.Add(new ExtensionsSource("%BYTES.NET%", "Name=SetVariable"));
-            sources.Add(new ExtensionsSource("%BYTES.NET.DIR%\\BYTES.NET.Test.dll"));
+            sources.Add(new ExtensionsSource("%BYTES.NET.DIR%\\BYTES.NET.Test.dll", "Name=SetVariable"));
 
             manager.Update(sources.ToArray());
 
             Trace.WriteLine(String.Empty);
-            DumpExtensions<ExtensionsManager<IMethod, MethodMetdata>>(manager);
+            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod, Metdata>>(manager);
             Assert.AreEqual(1, manager.Extensions.Length);
 
             //enumerate, using the 'ExtensionsSource' type and metadata filtering (2)
-            manager = new ExtensionsManager<IMethod, MethodMetdata>();
+            manager = new ExtensionsManager<Scripting.API.ITestMethod, Metdata>();
 
             sources = new List<ExtensionsSource>();
-            sources.Add(new ExtensionsSource("%BYTES.NET%", "Aliases=Log|*"));
-            sources.Add(new ExtensionsSource("%BYTES.NET.DIR%\\BYTES.NET.Test.dll"));
+            sources.Add(new ExtensionsSource("%BYTES.NET.DIR%\\BYTES.NET.Test.dll", "Aliases=Log|*"));
 
             manager.Update(sources.ToArray());
 
             Trace.WriteLine(String.Empty);
-            DumpExtensions<ExtensionsManager<IMethod, MethodMetdata>>(manager);
+            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod, Metdata>>(manager);
             Assert.AreEqual(2, manager.Extensions.Length);
         }
 
         private void DumpExtensions<T>(T manager)
         {
-            if (typeof(T).Equals(typeof(ExtensionsManager<IMethod>))){
-                ExtensionsManager<IMethod> instance = (ExtensionsManager<IMethod>)Convert.ChangeType(manager, typeof(ExtensionsManager<IMethod>));
+            if (typeof(T).Equals(typeof(ExtensionsManager<Scripting.API.ITestMethod>))){
+                ExtensionsManager<Scripting.API.ITestMethod> instance = (ExtensionsManager<Scripting.API.ITestMethod>)Convert.ChangeType(manager, typeof(ExtensionsManager<Scripting.API.ITestMethod>));
 
-                foreach (Extension<IMethod> extension in instance.Extensions)
+                foreach (Extension<Scripting.API.ITestMethod> extension in instance.Extensions)
                 {
                     Trace.WriteLine("Extension '" + extension.ValueType.ToString() + "' found");
                 }
             }
 
-            if (typeof(T).Equals(typeof(ExtensionsManager<IMethod,MethodMetdata>)))
+            if (typeof(T).Equals(typeof(ExtensionsManager<Scripting.API.ITestMethod, Metdata>)))
             {
-                ExtensionsManager<IMethod, MethodMetdata> instance = (ExtensionsManager<IMethod, MethodMetdata>)Convert.ChangeType(manager, typeof(ExtensionsManager<IMethod, MethodMetdata>));
+                ExtensionsManager<Scripting.API.ITestMethod, Metdata> instance = (ExtensionsManager<Scripting.API.ITestMethod, Metdata>)Convert.ChangeType(manager, typeof(ExtensionsManager<Scripting.API.ITestMethod, Metdata>));
 
-                foreach (Extension<IMethod, MethodMetdata> extension in instance.Extensions)
+                foreach (Extension<Scripting.API.ITestMethod, Metdata> extension in instance.Extensions)
                 {
                     Trace.WriteLine("Extension '" + extension.ValueType.ToString() + "' (Aliases '" + extension.Metadata.Aliases + "') found");
                 }
