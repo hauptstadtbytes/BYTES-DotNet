@@ -21,7 +21,7 @@ namespace BYTES.NET.Test.IO.Scripting.Methods
     /// script method, logging a 'String' type message
     /// </summary>
     /// <remarks>runtime variables masked using the pattern '%name%' will me expanded automatically</remarks>
-    [Metdata(Name= "LogMessage", Aliases = new string[] {"Log"})]
+    [Metadata(Name= "LogMessage", Aliases = new string[] {"Log"})]
     public class LogMessage : ITestMethod
     {
         public ExecutionResult Execute(ref TestExecutionContext context, MethodCallArguments args)

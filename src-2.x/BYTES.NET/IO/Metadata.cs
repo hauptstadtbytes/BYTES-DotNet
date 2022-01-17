@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 namespace BYTES.NET.IO
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class Metdata : Attribute
+    public class Metadata : Attribute
     {
         public string Name { get; set; }
 
         public string[] Aliases { get; set; }
 
-        public Metdata()
+        public Metadata()
         {
             this.Aliases = new string[] { };
         }

@@ -43,14 +43,14 @@ namespace BYTES.NET.Test.IO.Extensibility
         public void TestAdvancedEnumeration()
         {
             //enumerate, using the file path 'String' type
-            ExtensionsManager<Scripting.API.ITestMethod, Metdata> manager = new ExtensionsManager<Scripting.API.ITestMethod, Metdata>();
+            ExtensionsManager<Scripting.API.ITestMethod, Metadata> manager = new ExtensionsManager<Scripting.API.ITestMethod, Metadata>();
             manager.Update(new string[] { "%BYTES.NET%" });
 
-            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod, Metdata>>(manager);
+            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod, Metadata>>(manager);
             Assert.AreEqual(0, manager.Extensions.Length);
 
             //enumerate, using the 'ExtensionsSource' type (1)
-            manager = new ExtensionsManager<Scripting.API.ITestMethod, Metdata>();
+            manager = new ExtensionsManager<Scripting.API.ITestMethod, Metadata>();
 
             List<ExtensionsSource> sources = new List<ExtensionsSource>();
             sources.Add(new ExtensionsSource("%BYTES.NET%"));
@@ -59,11 +59,11 @@ namespace BYTES.NET.Test.IO.Extensibility
             manager.Update(sources.ToArray());
 
             Trace.WriteLine(String.Empty);
-            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod, Metdata>>(manager);
+            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod, Metadata>>(manager);
             Assert.AreEqual(2, manager.Extensions.Length);
 
             //enumerate, using the 'ExtensionsSource' type and metadata filtering (1)
-            manager = new ExtensionsManager<Scripting.API.ITestMethod, Metdata>();
+            manager = new ExtensionsManager<Scripting.API.ITestMethod, Metadata>();
 
             sources = new List<ExtensionsSource>();
             sources.Add(new ExtensionsSource("%BYTES.NET.DIR%\\BYTES.NET.Test.dll", "Name=SetVariable"));
@@ -71,11 +71,11 @@ namespace BYTES.NET.Test.IO.Extensibility
             manager.Update(sources.ToArray());
 
             Trace.WriteLine(String.Empty);
-            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod, Metdata>>(manager);
+            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod, Metadata>>(manager);
             Assert.AreEqual(1, manager.Extensions.Length);
 
             //enumerate, using the 'ExtensionsSource' type and metadata filtering (2)
-            manager = new ExtensionsManager<Scripting.API.ITestMethod, Metdata>();
+            manager = new ExtensionsManager<Scripting.API.ITestMethod, Metadata>();
 
             sources = new List<ExtensionsSource>();
             sources.Add(new ExtensionsSource("%BYTES.NET.DIR%\\BYTES.NET.Test.dll", "Aliases=Log|*"));
@@ -83,7 +83,7 @@ namespace BYTES.NET.Test.IO.Extensibility
             manager.Update(sources.ToArray());
 
             Trace.WriteLine(String.Empty);
-            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod, Metdata>>(manager);
+            DumpExtensions<ExtensionsManager<Scripting.API.ITestMethod, Metadata>>(manager);
             Assert.AreEqual(2, manager.Extensions.Length);
         }
 
@@ -98,11 +98,11 @@ namespace BYTES.NET.Test.IO.Extensibility
                 }
             }
 
-            if (typeof(T).Equals(typeof(ExtensionsManager<Scripting.API.ITestMethod, Metdata>)))
+            if (typeof(T).Equals(typeof(ExtensionsManager<Scripting.API.ITestMethod, Metadata>)))
             {
-                ExtensionsManager<Scripting.API.ITestMethod, Metdata> instance = (ExtensionsManager<Scripting.API.ITestMethod, Metdata>)Convert.ChangeType(manager, typeof(ExtensionsManager<Scripting.API.ITestMethod, Metdata>));
+                ExtensionsManager<Scripting.API.ITestMethod, Metadata> instance = (ExtensionsManager<Scripting.API.ITestMethod, Metadata>)Convert.ChangeType(manager, typeof(ExtensionsManager<Scripting.API.ITestMethod, Metadata>));
 
-                foreach (Extension<Scripting.API.ITestMethod, Metdata> extension in instance.Extensions)
+                foreach (Extension<Scripting.API.ITestMethod, Metadata> extension in instance.Extensions)
                 {
                     Trace.WriteLine("Extension '" + extension.ValueType.ToString() + "' (Aliases '" + extension.Metadata.Aliases + "') found");
                 }

@@ -18,7 +18,7 @@ namespace BYTES.NET.Test.IO.Scripting.Methods
     /// <summary>
     /// script method, setting a runtime variable
     /// </summary>
-    [Metdata(Name = "SetVariable", Aliases = new string[] {"Set"})]
+    [Metadata(Name = "SetVariable", Aliases = new string[] {"Set"})]
     public class SetVariable : ITestMethod
     {
         public ExecutionResult Execute(ref TestExecutionContext context, MethodCallArguments args)
