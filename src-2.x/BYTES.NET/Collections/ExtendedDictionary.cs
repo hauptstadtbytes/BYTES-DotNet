@@ -22,7 +22,13 @@ namespace BYTES.NET.Collections
     {
         #region private variable(s)
 
-        private char _strcDelimiter = ',';
+        private string _itemName = "Item";
+        private string _keyName = "Key";
+        private string _valueName = "Value";
+
+        private bool _serialize = true;
+
+        private bool _embedStruc = true;
 
         #endregion
 
@@ -30,36 +36,32 @@ namespace BYTES.NET.Collections
 
         protected virtual string XmlItemName
         {
-            get => "Item";
+            get => _itemName;
+            set => _itemName = value;
         }
 
         protected virtual string XmlKeyName
         {
-            get => "Key";
+            get => _keyName;
+            set => _keyName = value;
         }
 
         protected virtual string XmlValueName
         {
-            get => "Value";
+            get => _valueName;
+            set => _valueName = value;
         }
 
         protected virtual bool Serialize
         {
-            get => true;
+            get => _serialize;
+            set => _serialize = value;
         }
 
-        #endregion
-
-        #region public properties
-
-        [XmlIgnore]
-        public char StructureDelimiter
+        protected virtual bool EmbedStructure
         {
-            get => _strcDelimiter;
-            set
-            {
-                _strcDelimiter = value;
-            }
+            get => _embedStruc;
+            set => _embedStruc = value;
         }
 
         #endregion
@@ -98,21 +100,16 @@ namespace BYTES.NET.Collections
         /// <exception cref="ArgumentException"></exception>
         public void ReadXml(XmlReader reader)
         {
-            //get the serilization tag
-            reader.MoveToFirstAttribute();
-            bool serialize = (bool)Convert.ChangeType(reader.GetAttribute("Serialize"), typeof(bool));
 
-            //get the structure tag
-            Dictionary<string, string> struc = new Dictionary<string, string>();
-
-            foreach (string pairString in reader.GetAttribute("Structure").Split(_strcDelimiter))
+            //read the (embedded) structure definition(s)
+            if (this.EmbedStructure)
             {
-                KeyValuePair<string, string> pair = pairString.ParseKeyValue();
-                struc.Add(pair.Key.ToLower(), pair.Value);
+                ReadStruc(reader);
             }
+            
 
             //read the XML data
-            if (serialize)
+            if (this.Serialize)
             {
                 XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
                 XmlSerializer valSerializer = new XmlSerializer(typeof(TValue));
@@ -128,13 +125,13 @@ namespace BYTES.NET.Collections
                 while (reader.NodeType != XmlNodeType.EndElement)
                 {
 
-                    reader.ReadStartElement(struc["item"]);
+                    reader.ReadStartElement(this.XmlItemName);
 
-                    reader.ReadStartElement(struc["key"]);
+                    reader.ReadStartElement(this.XmlKeyName);
                     TKey key = (TKey)keySerializer.Deserialize(reader);
                     reader.ReadEndElement();
 
-                    reader.ReadStartElement(struc["value"]);
+                    reader.ReadStartElement(this.XmlValueName);
                     TValue value = (TValue)valSerializer.Deserialize(reader);
                     reader.ReadEndElement();
 
@@ -182,7 +179,7 @@ namespace BYTES.NET.Collections
         public void WriteXml(XmlWriter writer)
         {
             //validate the data type(s) for serialization
-            if (Serialize)
+            if (this.Serialize)
             {
 
                 if (!typeof(TKey).IsSerializable)
@@ -197,11 +194,12 @@ namespace BYTES.NET.Collections
 
             }
 
-            //write the serialization tag
-            writer.WriteAttributeString("Serialize", Serialize.ToString());
-
-            //write the structure tag
-            writer.WriteAttributeString("Structure", "Item:" + XmlItemName + ",Key:" + XmlKeyName + ",Value:" + XmlValueName);
+            //write the structure
+            if (this.EmbedStructure)
+            {
+                WriteStruc(writer);
+            }
+            
 
             //write the XML data
             XmlSerializer keySerializer = new XmlSerializer(typeof(TKey));
@@ -257,6 +255,51 @@ namespace BYTES.NET.Collections
         }
 
         #endregion
+
+        #region protected method(s)
+
+        /// <summary>
+        /// writes the structure definition to XML data
+        /// </summary>
+        /// <param name="writer"></param>
+        protected virtual void WriteStruc(XmlWriter writer)
+        {
+            writer.WriteAttributeString("Meta", "Serialize:" + this.Serialize.ToString() +",Item:" + XmlItemName + ",Key:" + XmlKeyName + ",Value:" + XmlValueName);
+        }
+
+        /// <summary>
+        /// reads the structure definition from XML data
+        /// </summary>
+        /// <param name="reader"></param>
+        protected virtual void ReadStruc(XmlReader reader)
+        {
+            reader.MoveToFirstAttribute();
+
+            Dictionary<string, string> struc = new Dictionary<string, string>();
+
+            foreach (string pairString in reader.GetAttribute("Meta").Split(','))
+            {
+                KeyValuePair<string, string> pair = pairString.ParseKeyValue();
+
+                if (pair.Key.ToLower() == "serialize")
+                {
+                    this.Serialize = bool.Parse(pair.Value);
+                }
+                else if(pair.Key.ToLower() == "item")
+                {
+                    this.XmlItemName = pair.Value;
+                } else if(pair.Key.ToLower() == "key")
+                {
+                    this.XmlKeyName = pair.Value;
+                } else if (pair.Key.ToLower() == "value")
+                {
+                    this.XmlValueName = pair.Value;
+                }
+            }
+        }
+
+        #endregion
+
     }
 
     #endregion

@@ -51,5 +51,34 @@ namespace BYTES.NET.Test.Collections
 
         }
 
+        [TestMethod]
+        public void TestInheritance()
+        {
+            //create the dictionary
+            ListDictionary myList = new ListDictionary() { {1,"One" }, {2, "Two" } };
+            myList.Add(3, "Three");
+
+            Assert.AreEqual(3, myList.Count);
+
+            //write to disk file
+            string filePath = "%BYTES.NET.DIR%\\..\\..\\..\\..\\..\\test\\Dictionary\\sampleIntDic.XML";
+            filePath = Helper.ExpandPath(filePath);
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            myList.WriteToXML(filePath);
+            Assert.AreEqual(true, File.Exists(filePath));
+
+            //read from disk file
+            ListDictionary clonedList = new ListDictionary();
+            clonedList.ReadFromXML(filePath);
+
+            Assert.AreEqual(3,clonedList.Count);
+            Assert.AreEqual("Two", clonedList[2]);
+        }
+
     }
 }
