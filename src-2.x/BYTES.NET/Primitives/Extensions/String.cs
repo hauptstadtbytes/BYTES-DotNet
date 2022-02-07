@@ -1,4 +1,6 @@
-﻿using System;
+﻿//import .net namespace(s) required
+using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -201,6 +203,21 @@ namespace BYTES.NET.Primitives.Extensions
         public static bool MatchesPattern(this string text, Regex pattern)
         {
             return MatchesPattern(text, pattern,out _);
+        }
+
+        /// <summary>
+        /// checks if a given string might be a file path (no matter if the file exists or not)
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static bool IsFilePath(this string text)
+        {
+            if (File.Exists(text))
+            {
+                return true;
+            }
+
+            return text.MatchesPattern(new Regex("^\\S*[.]+[a-z|A-Z|0-9]*$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant));
         }
 
         /// <summary>

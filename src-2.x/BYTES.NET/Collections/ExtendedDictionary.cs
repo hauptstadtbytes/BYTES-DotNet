@@ -18,7 +18,7 @@ namespace BYTES.NET.Collections
     /// a XML-serializable dictionary implementation
     /// </summary>
     [Serializable]
-    public class ExtendedDictionary<TKey, TValue> : System.Collections.Generic.Dictionary<TKey, TValue>, IXmlSerializable, IFilePersistable
+    public class ExtendedDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable, IFilePersistable
     {
         #region private variable(s)
 

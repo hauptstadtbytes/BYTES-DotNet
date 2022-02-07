@@ -129,5 +129,22 @@ namespace BYTES.NET.Test.Primitives
             Assert.AreEqual("Batch", resultString);
 
         }
+
+        [TestMethod]
+        public void TestFilePathParsing()
+        {
+            string theText = "%BYTES.NET.DIR%\\..\\..\\..\\..\\test\\CLI_SampleSettings.xml\\";
+            Assert.AreEqual(false, theText.IsFilePath());
+
+            theText = "%BYTES.NET.DIR%\\..\\..\\..\\..\\test\\CLI_SampleSettings.xml";
+            Assert.AreEqual(true, theText.IsFilePath());
+
+            theText = "D:\\MightBeAFile.docx";
+            Assert.AreEqual(true, theText.IsFilePath());
+
+            theText = "D:\\MightBeAFolder";
+            Assert.AreEqual(false, theText.IsFilePath());
+        }
+
     }
 }
