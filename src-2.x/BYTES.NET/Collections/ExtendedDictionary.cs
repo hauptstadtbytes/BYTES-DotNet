@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 //import internal namespace(s) required
 using BYTES.NET.Primitives.Extensions;
 using BYTES.NET.IO.Persistance.API;
+using System.Data;
 
 namespace BYTES.NET.Collections
 {
@@ -242,7 +243,7 @@ namespace BYTES.NET.Collections
         /// </summary>
         /// <param name="data"></param>
         /// <remarks>there is no dedicated data type handling implemented</remarks>
-        public void Load(IFilePersistable data)
+        public virtual void FromIPersistable(IFilePersistable data)
         {
             Dictionary<TKey, TValue> updated = (Dictionary<TKey, TValue>)data;
 
@@ -252,6 +253,16 @@ namespace BYTES.NET.Collections
             {
                 this.Add(pair.Key, pair.Value);
             }
+        }
+
+        public virtual DataTable ToTable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void FromTable(DataTable data)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

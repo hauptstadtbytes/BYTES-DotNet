@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace BYTES.NET.Test.IO.Persistance
             this.Text = text;
         }
 
-        public void Load(IFilePersistable data)
+        public void FromIPersistable(IFilePersistable data)
         {
             TestCollection tmp = (TestCollection)data;
 
@@ -44,5 +45,14 @@ namespace BYTES.NET.Test.IO.Persistance
             this.Number = tmp.Number;
         }
 
+        public DataTable ToTable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FromTable(DataTable data)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
