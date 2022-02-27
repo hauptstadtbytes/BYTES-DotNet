@@ -47,11 +47,16 @@ namespace BYTES.NET.IO
         /// <returns></returns>
         public static string ExpandPath(string path = null, Dictionary<string, string>? variables = null, bool ignoreCase = true)
         {
-
             //return the default output
             if (path == null)
             {
                 return System.String.Empty;
+            }
+
+            //handle (valid) URLs
+            if (path.IsWebURL())
+            {
+                return path;
             }
 
             //parse the argument(s)

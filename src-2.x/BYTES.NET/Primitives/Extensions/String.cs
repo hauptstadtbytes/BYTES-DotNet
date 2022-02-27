@@ -221,6 +221,17 @@ namespace BYTES.NET.Primitives.Extensions
         }
 
         /// <summary>
+        /// checks if a given string might be an URL
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static bool IsWebURL(this string text)
+        {
+            Uri uriResult;
+            return Uri.TryCreate(text, UriKind.Absolute, out uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+        }
+
+        /// <summary>
         /// returns a key-value-pair from a string containing an equality character
         /// </summary>
         /// <param name="text"></param>

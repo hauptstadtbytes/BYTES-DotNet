@@ -42,11 +42,17 @@ namespace BYTES.NET.Test.IO
             Trace.WriteLine("Expanding variable(s) in '" + inputPath + "' resulted in '" + result + "'");
             Assert.AreEqual(Helper.GetLibraryDirPath(), result);
 
+            //check for URLs in the path
+            inputPath = "https://eux.jacando.io/x/api";
+            result = Helper.ExpandPath(inputPath, null);
+            Trace.WriteLine("Expanding variable(s) in '" + inputPath + "' resulted in '" + result + "'");
+            Assert.AreEqual(inputPath, result);
+
             //test expanding wildcard path(s)
             inputPath = "%bytes.net.dir%";
             string[] resultArray = Helper.ExpandWildcardPath(inputPath);
             Trace.WriteLine("Expanding variable(s) in '" + inputPath + "' resulted in '" + System.String.Join(",", resultArray) + "'");
-            Assert.AreEqual(Helper.GetLibraryDirPath(), result);
+            Assert.AreEqual(Helper.GetLibraryDirPath().ToString(), resultArray[0]);
 
             inputPath = "%bytes.net.dir%\\..\\..\\..\\..\\..\\test\\IOObjects\\DummyFolder\\*.dll";
             resultArray = Helper.ExpandWildcardPath(inputPath);
