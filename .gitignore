@@ -16,6 +16,5 @@ src/BYTES.NET/obj/
 src/BYTES.NET/.vs/
 src/BYTES.NET.MS/bin/
 src/BYTES.NET.MS/obj/
-src/nuget.config
 src/TestResults
 test/
