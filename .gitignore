@@ -18,3 +18,4 @@ src/BYTES.NET.MS/bin/
 src/BYTES.NET.MS/obj/
 src/TestResults
 test/
+src/nuget.config
