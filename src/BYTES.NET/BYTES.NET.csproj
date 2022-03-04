@@ -1,0 +1,65 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<!-- enable multi-targetting and setup language properties-->
+    <TargetFrameworks>net46;net48;net5.0;net6.0</TargetFrameworks>
+	<LangVersion>9.0</LangVersion>
+	<Nullable>enable</Nullable>
+	  
+	<!-- add the metadata required fro nuget packaging (see also 'https://kaylumah.nl/2021/03/27/set-nuget-metadata-via-msbuild.html') -->
+	<Description>A framework for rapid prototyping and software development</Description>
+	<!-- <PackageReadmeFile>README.MD</PackageReadmeFile> -->
+	<!-- <PackageReleaseNotes>nuget.exe added to 'content' directory</PackageReleaseNotes> -->
+	<Authors>Sebastian Raese</Authors>
+	<Company>hauptstadtbytes GmbH</Company>
+	<Copyright>Copyright (c) 2022 hauptstadtbytes GmbH</Copyright>
+	  
+	 <PackageProjectUrl>https://bytes-dotnet.readme.io/docs/getting-started</PackageProjectUrl>
+	 <RepositoryUrl>https://github.com/hauptstadtbytes/BYTES-DotNet</RepositoryUrl>
+	 <RepositoryType>git</RepositoryType>
+	 <PackageVersion>2.0.0-alpha1</PackageVersion>
+	 <PackageTags>Prototyping,Base-Classes, Application Framework</PackageTags>
+
+	 <!--<PackageLicenseFile>meta\License.txt</PackageLicenseFile>-->
+	 <PackageLicenseUrl>https://bytes-dotnet.readme.io/docs/public-license</PackageLicenseUrl>
+	 <PackageIcon>meta\Icon.png</PackageIcon>
+	 
+	  <!-- generate a XML documentation automatically -->
+	 <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	 <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	 <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+	  
+  </PropertyGroup>
+	
+  <!-- add external resources/ files (for the NuGet package); see also 'https://docs.microsoft.com/de-de/nuget/reference/msbuild-targets') -->
+  <ItemGroup>
+	<None Include="..\..\res\License.txt" Pack="true" PackagePath="\meta\" />
+	<None Include="..\..\res\Icon.png" Pack="true" PackagePath="\meta\" />
+  </ItemGroup>
+
+<!-- define constants for framework differentiation; see also 'https://weblog.west-wind.com/posts/2017/jun/22/multitargeting-and-porting-a-net-library-to-net-core-20'-->
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net46'">
+	 <DefineConstants>NET46;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net48'">
+	  <DefineConstants>NET48;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net5.0'">
+	  <DefineConstants>NET50;NETCORE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0'">
+	  <DefineConstants>NET60;NETCORE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.Composition" />
+  </ItemGroup>
+
+  <!-- publish NuGet package automatically to github (for release versions only) -->
+  <Target Name="Push NuGet package" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
+	<Exec Command="dotnet nuget push &quot;bin\Release\$(AssemblyName).$(PackageVersion).nupkg&quot; --source &quot;github&quot;" />
+  </Target>
+</Project>

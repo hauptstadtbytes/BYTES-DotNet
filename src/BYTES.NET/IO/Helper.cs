@@ -262,5 +262,28 @@ namespace BYTES.NET.IO
 
         }
 
+        /// <summary>
+        /// reads all lines of a text file to a string array
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        /// <remarks>opens the file in read-only mode, lthough it might be used by another application; <seealso href="https://stackoverflow.com/questions/12744725/how-do-i-perform-file-readalllines-on-a-file-that-is-also-open-in-excel"/></remarks>
+        public static string[] ReadAllAllLines(string path)
+        {
+            using(FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                using(StreamReader reader = new StreamReader(fs))
+                {
+                    List<string> lines = new List<string>();
+
+                    while (!reader.EndOfStream)
+                    {
+                        lines.Add(reader.ReadLine());
+                    }
+
+                    return lines.ToArray();
+                }
+            }
+        }
     }
 }
