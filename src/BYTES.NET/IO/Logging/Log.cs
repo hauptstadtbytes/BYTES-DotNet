@@ -117,16 +117,16 @@ namespace BYTES.NET.IO.Logging
                     }
                     
                 }
-            }
 
-            //route the new entry to the appenders (registrated)
-            foreach(ILogAppender appender in _appenders)
-            {
-                appender.OnLogged(entry);
-            }
+                //route the new entry to the appenders (registrated)
+                foreach (ILogAppender appender in _appenders)
+                {
+                    appender.OnLogged(entry);
+                }
 
-            //raise the 'Logged' event
-            OnLogged(ref entry);
+                //raise the 'Logged' event
+                OnLogged(ref entry);
+            }
         }
 
         /// <summary>
