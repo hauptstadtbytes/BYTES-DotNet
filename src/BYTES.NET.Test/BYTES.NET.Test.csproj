@@ -18,10 +18,29 @@
   <ItemGroup>
     <ProjectReference Include="..\BYTES.NET.MS\BYTES.NET.MS.csproj" />
     <ProjectReference Include="..\BYTES.NET\BYTES.NET.csproj" />
+    <ProjectReference Include="..\Extensions\BYTES.NET.MS\BYTES.NET.MS.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="System.ComponentModel.Composition" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <PackageReference Include="System.ComponentModel.Composition">
+      <Version>6.0.0</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+    <PackageReference Include="System.ComponentModel.Composition">
+      <Version>6.0.0</Version>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <PackageReference Include="System.ComponentModel.Composition">
+      <Version>6.0.0</Version>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
