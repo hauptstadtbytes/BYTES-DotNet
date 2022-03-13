@@ -9,6 +9,7 @@ using BYTES.NET.Collections;
 
 namespace BYTES.NET.Test.Collections
 {
+    [Serializable]
     public class ListDictionary : ExtendedDictionary<int,string>
     {
 

@@ -27,8 +27,7 @@
 	  <!-- generate a XML documentation automatically -->
 	 <GenerateDocumentationFile>true</GenerateDocumentationFile>
 	 <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	 <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-	  
+	 <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>  
   </PropertyGroup>
 	
   <!-- add external resources/ files (for the NuGet package); see also 'https://docs.microsoft.com/de-de/nuget/reference/msbuild-targets') -->
@@ -55,9 +54,9 @@
   </PropertyGroup>
 
   <!-- add the dependencies -->
-	<ItemGroup Condition="'$(TargetFramework)' == 'net46'">
-		<Reference Include="System.ComponentModel.Composition" />
-	</ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+	<Reference Include="System.ComponentModel.Composition" />
+  </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
     <PackageReference Include="System.ComponentModel.Composition">

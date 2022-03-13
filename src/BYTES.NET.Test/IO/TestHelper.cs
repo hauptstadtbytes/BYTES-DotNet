@@ -78,19 +78,19 @@ namespace BYTES.NET.Test.IO
             inputPath = "%bytes.net.dir%\\..\\..\\..\\..\\..\\test\\IOObjects\\D*Folder\\Sub*";
             resultArray = Helper.ExpandWildcardPath(inputPath);
             Trace.WriteLine("Expanding variable(s) in '" + inputPath + "' resulted in '" + System.String.Join(",", resultArray) + "'");
-            Assert.AreEqual(3, resultArray.Length);
+            Assert.AreEqual(2, resultArray.Length);
 
-            inputPath = "%bytes.net.dir%\\..\\..\\..\\..\\..\\test\\IOObjects\\D*Folder\\Sub*\\*.dll";
+            inputPath = "%bytes.net.dir%\\..\\..\\..\\..\\..\\test\\IOObjects\\D*Folder\\Sub*\\*.txt";
             resultArray = Helper.ExpandWildcardPath(inputPath);
             Trace.WriteLine("Expanding variable(s) in '" + inputPath + "' resulted in '" + System.String.Join(",", resultArray) + "'");
-            Assert.AreEqual(2, resultArray.Length);
+            Assert.AreEqual(1, resultArray.Length);
 
             Dictionary<string, string> variables = new Dictionary<string, string>() { { "demo.variable", Helper.ExpandPath("%bytes.net.dir%") } };
 
             inputPath = "%demo.variable%\\..\\..\\..\\..\\..\\test\\IOObjects\\D*Folder\\Sub*\\*.dll";
             resultArray = Helper.ExpandWildcardPath(inputPath, variables);
             Trace.WriteLine("Expanding variable(s) in '" + inputPath + "' resulted in '" + System.String.Join(",", resultArray) + "'");
-            Assert.AreEqual(2, resultArray.Length);
+            Assert.AreEqual(1, resultArray.Length);
 
             string[] inputArray = new string[]
             {
@@ -99,7 +99,7 @@ namespace BYTES.NET.Test.IO
             };
             resultArray = Helper.ExpandWildcardPath(inputArray, variables);
             Trace.WriteLine("Expanding variable(s) in '" + System.String.Join(",", inputArray) + "' resulted in '" + System.String.Join(",", resultArray) + "'");
-            Assert.AreEqual(2, resultArray.Length);
+            Assert.AreEqual(1, resultArray.Length);
         }
     }
 }

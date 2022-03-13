@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BYTES.NET.MS\BYTES.NET.MS.csproj" />
     <ProjectReference Include="..\BYTES.NET\BYTES.NET.csproj" />
     <ProjectReference Include="..\Extensions\BYTES.NET.MS\BYTES.NET.MS.csproj" />
   </ItemGroup>
