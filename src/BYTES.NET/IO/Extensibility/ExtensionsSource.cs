@@ -261,7 +261,7 @@ namespace BYTES.NET.IO.Extensibility
                 try //try to load the assembly file and iterate over the types
                 {
 
-                    foreach (Type type in GetImplementations<TInterface>(path))
+                    foreach (System.Type type in GetImplementations<TInterface>(path))
                     {
 
                         try
@@ -301,7 +301,7 @@ namespace BYTES.NET.IO.Extensibility
                 try
                 {
 
-                    foreach (Type type in GetImplementations<TInterface>(path))
+                    foreach (System.Type type in GetImplementations<TInterface>(path))
                     {
 
                         if (Attribute.GetCustomAttribute(type, typeof(TMetadata)) != null) //check for an existing metadata instance
@@ -348,15 +348,15 @@ namespace BYTES.NET.IO.Extensibility
         /// <param name="path"></param>
         /// <param name="validateForActivator"></param>
         /// <returns></returns>
-        private Type[] GetImplementations<TInterface>(string path, bool validateForActivator = true)
+        private System.Type[] GetImplementations<TInterface>(string path, bool validateForActivator = true)
         {
-            List<Type> output = new List<Type>();
+            List<System.Type> output = new List<System.Type>();
 
             //load the assembly
             Assembly file = Assembly.LoadFrom(path);
 
             //enumerate the valid types
-            foreach (Type type in file.GetTypes())
+            foreach (System.Type type in file.GetTypes())
             {
 
                 if (typeof(TInterface).GetTypeInfo().IsInterface) //get interface implementation(s) only

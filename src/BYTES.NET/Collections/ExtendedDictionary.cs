@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using System.Data;
+using System.Reflection;
 
 //import internal namespace(s) required
 using BYTES.NET.Primitives.Extensions;
 using BYTES.NET.IO.Persistance.API;
-using System.Data;
 
 namespace BYTES.NET.Collections
 {
@@ -311,6 +312,102 @@ namespace BYTES.NET.Collections
 
         #endregion
 
+        #region public method(s)
+
+        /// <summary>
+        /// returns a dictionary of items, indexed by a specific item property
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <remarks>based on <seealso href="https://stackoverflow.com/questions/15341028/check-if-a-property-exists-in-a-classv"/></remarks>
+        public Dictionary<T, List<TValue>> ByItemProperty<T>(string name, T? value = default)
+        {
+            Dictionary<T,List<TValue>> output = new Dictionary<T,List<TValue>>();
+
+            System.Type type = typeof(TValue);
+
+            if (type.HasProperty(name)) //check if the property exists
+            {
+                foreach (TValue item in this.Values)
+                {
+                    PropertyInfo prop = type.GetProperty(name);
+                    T key = default(T);
+
+                    try
+                    {
+                        key = (T)Convert.ChangeType(prop.GetValue(item), typeof(T));
+                    } catch(Exception ex)
+                    {
+                        if (typeof(T).Equals(typeof(string)))
+                        {
+                            key = (T)Convert.ChangeType(prop.GetValue(item).ToString(), typeof(T));
+                        }
+                    }
+                    
+
+                    if (EqualityComparer<T>.Default.Equals(key, default(T)) && (typeof(T).Equals(typeof(string))))
+                    {
+                        key = (T)Convert.ChangeType("%BYTES.Empty%", typeof(T));
+                    } else if(EqualityComparer<T>.Default.Equals(key, default(T)))
+                    {
+                        continue ;
+                    }
+
+                    if(EqualityComparer<T>.Default.Equals(value,default(T))) { //check for the default value (= null/ not set); all items will be returned
+
+                        if (output.ContainsKey(key))
+                        {
+                            output[key].Add(item);
+                        }
+                        else
+                        {
+                            output.Add(key, new List<TValue>() { item });
+                        }
+                    } else // a (filtering) value was set; only matching items will be returned
+                    {
+                        if (!type.GetProperty(name).PropertyType.Equals(typeof(T)) && (typeof(T).Equals(typeof(string)))) //the property types differ but 'string' type output was requested
+                        {
+                            if (key.ToString() == value.ToString())
+                            {
+                                if (output.ContainsKey(key))
+                                {
+                                    output[key].Add(item);
+                                }
+                                else
+                                {
+                                    output.Add(key, new List<TValue>() { item });
+                                }
+                            }
+                        }
+                        else //the property types match
+                        {
+                            if (key.Equals(value))
+                            {
+                                if (output.ContainsKey(key))
+                                {
+                                    output[key].Add(item);
+                                }
+                                else
+                                {
+                                    output.Add(key, new List<TValue>() { item });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return output;
+        }
+
+        public Dictionary<string,List<TValue>> ByItemProperty(string name, string? value = default)
+        {
+            return ByItemProperty<string>(name, value);
+        }
+
+        #endregion
     }
 
     #endregion

@@ -11,25 +11,57 @@ namespace BYTES.NET.Primitives.Extensions
     {
         #region public method(s)
 
-        public static bool TryConvert<T>(this object? input, out T? output, Func<object,T>? callback = null)
+        /// <summary>
+        /// converts an object instance to another type
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="outputType"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        /// <remarks><seealso href="https://stackoverflow.com/questions/8625/generic-type-conversion-from-string"/></remarks>
+        public static object? Convert(this object input, System.Type outputType, Func<object?,object>? callback = null)
+        {
+            System.Type underlyingType = Nullable.GetUnderlyingType(outputType);
+
+            if (underlyingType != null && input == null)
+            {
+                return default;
+            }
+            else
+            {
+                System.Type basetype = underlyingType == null ? outputType : underlyingType;
+
+                if(callback == null)
+                {
+                    return System.Convert.ChangeType(input, basetype);
+                } else
+                {
+                    return System.Convert.ChangeType(callback(input), basetype);
+                }
+                
+            }
+        }
+
+        /// <summary>
+        /// trys to convert an object instance to a given type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="input"></param>
+        /// <param name="output"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
+        /// <remarks><seealso href="https://stackoverflow.com/questions/8625/generic-type-conversion-from-string"/></remarks>
+        public static bool TryConvert<T>(this object? input, out T? output, Func<object?,T>? callback = null)
         {
             try
             {
                 if(callback != null)
                 {
-                    output = callback(input);
-                } else
+                    output = (T)Convert(callback(input), typeof(T));
+                }
+                else
                 {
-                    Type underlyingType = Nullable.GetUnderlyingType(typeof(T));
-
-                    if (underlyingType != null && input == null)
-                    {
-                        output = default;
-                    } else
-                    {
-                        Type basetype = underlyingType == null ? typeof(T) : underlyingType;
-                        output = (T)Convert.ChangeType(input, basetype);
-                    }
+                    output = (T)Convert(input,typeof(T));
                 }
 
                 return true;
