@@ -20,3 +20,7 @@ test/
 packages/
 src/Extensions/BYTES.NET.MS/bin/
 src/Extensions/BYTES.NET.MS/obj/
+src/Docu/BYTES.NET.Docu.App.NETFULL/bin/
+src/Docu/BYTES.NET.Docu.App.NETFULL/obj/
+src/Docu/BYTES.NET.Docu/bin/
+src/Docu/BYTES.NET.Docu/obj/
