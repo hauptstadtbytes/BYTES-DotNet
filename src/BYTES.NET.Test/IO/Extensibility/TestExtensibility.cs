@@ -36,7 +36,7 @@ namespace BYTES.NET.Test.IO.Extensibility
 
             manager.Update(sources.ToArray());
 
-            Trace.WriteLine(String.Empty);
+            Debug.WriteLine(String.Empty);
             DumpExtensions<ExtensionsManager<ITestInterface>>(manager);
             Assert.AreEqual(3, manager.Extensions.Length);
         }
@@ -60,7 +60,7 @@ namespace BYTES.NET.Test.IO.Extensibility
 
             manager.Update(sources.ToArray());
 
-            Trace.WriteLine(String.Empty);
+            Debug.WriteLine(String.Empty);
             DumpExtensions<ExtensionsManager<ITestInterface, TestMetadata>>(manager);
             Assert.AreEqual(2, manager.Extensions.Length);
 
@@ -72,7 +72,7 @@ namespace BYTES.NET.Test.IO.Extensibility
 
             manager.Update(sources.ToArray());
 
-            Trace.WriteLine(String.Empty);
+            Debug.WriteLine(String.Empty);
             DumpExtensions<ExtensionsManager<ITestInterface, TestMetadata>>(manager);
             Assert.AreEqual(1, manager.Extensions.Length);
 
@@ -84,7 +84,7 @@ namespace BYTES.NET.Test.IO.Extensibility
 
             manager.Update(sources.ToArray());
 
-            Trace.WriteLine(String.Empty);
+            Debug.WriteLine(String.Empty);
             DumpExtensions<ExtensionsManager<ITestInterface, TestMetadata>>(manager);
             Assert.AreEqual(0, manager.Extensions.Length);
 
@@ -96,7 +96,7 @@ namespace BYTES.NET.Test.IO.Extensibility
 
             manager.Update(sources.ToArray());
 
-            Trace.WriteLine(String.Empty);
+            Debug.WriteLine(String.Empty);
             DumpExtensions<ExtensionsManager<ITestInterface, TestMetadata>>(manager);
             Assert.AreEqual(2, manager.Extensions.Length);
         }
@@ -108,7 +108,7 @@ namespace BYTES.NET.Test.IO.Extensibility
 
                 foreach (Extension<ITestInterface> extension in instance.Extensions)
                 {
-                    Trace.WriteLine("Extension '" + extension.ValueType.ToString() + "' found");
+                    Debug.WriteLine("Extension '" + extension.ValueType.ToString() + "' found");
                 }
             }
 
@@ -118,7 +118,7 @@ namespace BYTES.NET.Test.IO.Extensibility
 
                 foreach (Extension<ITestInterface, TestMetadata> extension in instance.Extensions)
                 {
-                    Trace.WriteLine("Extension '" + extension.ValueType.ToString() + "' (Aliases '" + string.Join(",",extension.Metadata.Aliases) + "') found");
+                    Debug.WriteLine("Extension '" + extension.ValueType.ToString() + "' (Aliases '" + string.Join(",",extension.Metadata.Aliases) + "') found");
                 }
             }
         }

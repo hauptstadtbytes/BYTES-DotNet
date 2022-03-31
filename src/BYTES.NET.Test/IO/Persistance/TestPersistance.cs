@@ -27,19 +27,48 @@ namespace BYTES.NET.Test.IO.Persistance
             }
 
             //write to XML
-            TestCollection source = new TestCollection("Hello World!") { Number = 42 };
+            TestObject testObj = new TestObject() { ID = 42, Name = "Hello World!", Group = "Sample 1" };
 
-            source.WriteToXML(thePath);
-            Trace.WriteLine("Written to '" + thePath + "'");
+            testObj.WriteToXML(thePath);
+            Debug.WriteLine("Written to '" + thePath + "'");
             Assert.AreEqual(true, File.Exists(thePath));
 
             //read from XML
-            TestCollection destination = new TestCollection();
-            destination.ReadFromXML(thePath);
-            Trace.WriteLine("Read from '" + thePath + "'");
+            TestObject loadedTestObj = new TestObject();
+            loadedTestObj.ReadFromXML(thePath);
+            Debug.WriteLine("Read from '" + thePath + "'");
 
-            Assert.AreEqual("Hello World!", destination.Text);
-            Assert.AreEqual(42, destination.Number);
+            Assert.AreEqual("Hello World!", loadedTestObj.Name);
+            Assert.AreEqual(42, loadedTestObj.ID);
+        }
+
+        [TestMethod]
+        public void TestCSVWriteAndRead()
+        {
+            string thePath = Helper.ExpandPath(filePath + ".csv");
+
+            //cleanup the test environment
+            if (File.Exists(thePath))
+            {
+                File.Delete(thePath);
+            }
+
+            //write to CSV
+            TestObject parentObj = new TestObject() { ID = 99, Name = "Origin", Group = "Sample 1" };
+            TestObject testObj = new TestObject(parentObj) { ID = 42, Name = "Hello World!", Group = "Sample 1" };
+
+            testObj.WriteToCSV(thePath);
+            Debug.WriteLine("Written to '" + thePath + "'");
+            Assert.AreEqual(true, File.Exists(thePath));
+
+            //read from CSV
+            TestObject loadedTestObj = new TestObject();
+            loadedTestObj.ReadFromCSV(thePath);
+            Debug.WriteLine("Read from '" + thePath + "'");
+
+            Assert.AreEqual("Hello World!", loadedTestObj.Name);
+            Assert.AreEqual(42, loadedTestObj.ID);
+            Assert.AreEqual(99, loadedTestObj.Parent.ID);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace BYTES.NET.Primitives.Extensions
     /// <summary>
     /// a set of 'String' type extensions and helper method(s)
     /// </summary>
-    public static class String
+    public static class StringExtensions
     {
         #region public method(s)
 

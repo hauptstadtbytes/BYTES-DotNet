@@ -54,10 +54,10 @@ namespace BYTES.NET.Test.Collections
 
             //test complex types
             ExtendedDictionary<string, TestObject> dic2 = new ExtendedDictionary<string,TestObject>();
-            TestObject first = new TestObject() { Name = "My first" , Indexer = 1, Group="Lyrics"};
+            TestObject first = new TestObject() { Name = "My first" , ID = 1, Group="Lyrics"};
             dic2.Add("One", first);
-            dic2.Add("Two", new TestObject() { Name="My last", Indexer = 2, Parent = first, Group = "Lyrics" });
-            dic2.Add("Third", new TestObject() { Name = "My Everything", Indexer = 3, Group = "Lyrics" });
+            dic2.Add("Two", new TestObject(first) { Name="My last", ID = 2, Group = "Lyrics" });
+            dic2.Add("Third", new TestObject() { Name = "My Everything", ID = 3, Group = "Lyrics" });
 
             Dictionary<string, List<TestObject>> aggregated3 = dic2.ByItemProperty<string>("Group");
             Assert.AreEqual(1, aggregated3.Count);

@@ -17,7 +17,7 @@
 	 <PackageProjectUrl>https://bytes-dotnet.readme.io/docs/getting-started</PackageProjectUrl>
 	 <RepositoryUrl>https://github.com/hauptstadtbytes/BYTES-DotNet</RepositoryUrl>
 	 <RepositoryType>git</RepositoryType>
-	 <PackageVersion>2.0.0-alpha4</PackageVersion>
+	 <PackageVersion>2.0.0-alpha5</PackageVersion>
 	 <PackageTags>Prototyping,Application Framework</PackageTags>
 
 	 <!--<PackageLicenseFile>meta\License.txt</PackageLicenseFile>-->

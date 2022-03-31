@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BYTES.NET.Primitives.Extensions
 {
-    public static class Type
+    public static class TypeExtensions
     {
         #region public method(s)
 

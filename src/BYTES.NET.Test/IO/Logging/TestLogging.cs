@@ -108,7 +108,7 @@ namespace BYTES.NET.Test.IO.Logging
         private void OnLogged(ref LogEntry entry)
         {
             _counter++;
-            Trace.WriteLine(entry.ToString());
+            Debug.WriteLine(entry.ToString());
         }
 
     }

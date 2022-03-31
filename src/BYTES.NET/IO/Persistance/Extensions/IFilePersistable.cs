@@ -8,6 +8,9 @@ using System.IO;
 using System.Xml.Serialization;
 using System.Data;
 
+//import internal namespace(s) required
+using BYTES.NET.Primitives.Extensions;
+
 namespace BYTES.NET.IO.Persistance.Extensions
 {
     public static class IFilePersistable
@@ -125,35 +128,8 @@ namespace BYTES.NET.IO.Persistance.Extensions
             //get the data table
             DataTable table = instance.ToTable();
 
-            //parse the data
-            StringBuilder data = new StringBuilder();
-
-            if (hasHeader)
-            {
-                List<string> headers = new List<string>();
-
-                foreach (DataColumn col in table.Columns)
-                {
-                    headers.Add(col.ColumnName);
-                }
-
-                data.AppendLine(string.Join(delimiter.ToString(), headers.ToArray()));
-            }
-
-            foreach(DataRow row in table.Rows)
-            {
-                List<string> values = new List<string>();
-
-                foreach(DataColumn col in table.Columns)
-                {
-                    values.Add(row[col].ToString());
-                }
-
-                data.AppendLine(string.Join(delimiter.ToString(), values.ToArray()));
-            }
-
-            //write the data
-            File.WriteAllText(path, data.ToString());
+            //write to disk file
+            table.ToCSVFile(path,hasHeader,delimiter);
         }
 
         /// <summary>
@@ -170,53 +146,11 @@ namespace BYTES.NET.IO.Persistance.Extensions
             //parse the argument(s)
             path = Helper.ExpandPath(path, variables, ignoreCase);
 
-            if (!File.Exists(path))
-            {
-                throw new ArgumentException("Unable to find file '" + path + "'");
-            }
-
             //read the data
             DataTable table = new DataTable();
+            table.FromCSV(path);
 
-            int rowCounter = 0;
-
-            foreach(string line in File.ReadAllLines(path))
-            {
-                rowCounter ++;
-                string[] split = line.Split(delimiter);
-
-                while(table.Columns.Count < split.Length)
-                {
-                    table.Columns.Add(new DataColumn());
-                }
-
-                if(rowCounter == 1 && hasHeader)
-                {
-                    int columnCounter = -1;
-
-                    foreach(string name in split)
-                    {
-                        columnCounter++;
-
-                        table.Columns[columnCounter].ColumnName = name;
-                    }
-                } else
-                {
-                    DataRow row = table.NewRow();
-
-                    int columnCounter = -1;
-
-                    foreach (string value in split)
-                    {
-                        columnCounter++;
-
-                        row[columnCounter] = value;
-                    }
-
-                    table.Rows.Add(row);
-                }
-            }
-
+            //update the 'IFilePersistable' instance
             instance.FromTable(table);
         }
 

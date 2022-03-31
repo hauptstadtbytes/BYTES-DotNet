@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BYTES.NET.Primitives.Extensions
 {
-    public static class Object
+    public static class ObjectExtensions
     {
         #region public method(s)
 
