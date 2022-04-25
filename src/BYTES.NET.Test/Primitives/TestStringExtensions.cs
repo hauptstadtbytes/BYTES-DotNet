@@ -15,6 +15,27 @@ namespace BYTES.NET.Test.Primitives
     public class TestStringExtensions
     {
         [TestMethod]
+        public void TestStringPatterns()
+        {
+            string toBeTested = "Hello_String";
+
+            Regex rule = GetWildcardRegEx("Hello String");
+            Assert.AreEqual(false,toBeTested.MatchesPattern(rule));
+
+            rule = GetWildcardRegEx("Hello*");
+            Assert.AreEqual(true, toBeTested.MatchesPattern(rule));
+
+            rule = GetWildcardRegEx("*String");
+            Assert.AreEqual(true, toBeTested.MatchesPattern(rule));
+
+            rule = GetWildcardRegEx("Hello_String");
+            Assert.AreEqual(true, toBeTested.MatchesPattern(rule));
+
+            rule = GetWildcardRegEx("*ello*ring");
+            Assert.AreEqual(true, toBeTested.MatchesPattern(rule));
+        }
+
+        [TestMethod]
         public void TestAllIndexesOf()
         {
             string inputString = "D:\\Das*\\ist\\das\\H*";
@@ -143,6 +164,12 @@ namespace BYTES.NET.Test.Primitives
 
             theText = "D:\\MightBeAFolder";
             Assert.AreEqual(false, theText.IsFilePath());
+        }
+
+        private Regex GetWildcardRegEx(string input)
+        {
+            input = input.Replace("*", "[\\w|\\W]*");
+            return new Regex("^" + input + "$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         }
 
     }

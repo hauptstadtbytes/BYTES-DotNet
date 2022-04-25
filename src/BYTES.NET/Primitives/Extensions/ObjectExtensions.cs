@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +11,46 @@ namespace BYTES.NET.Primitives.Extensions
     public static class ObjectExtensions
     {
         #region public method(s)
+
+        /// <summary>
+        /// validates a given object property for being null or defaul
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <remarks><seealso href="https://docs.microsoft.com/de-de/dotnet/csharp/language-reference/builtin-types/default-values"/></remarks>
+        public static bool IsPropertyNullOrDefault(this object input, string name)
+        {
+            //get the property details
+            PropertyInfo propInfo = input.GetType().GetProperty(name);
+            Type propType = input.GetType().GetProperty(name).PropertyType;
+
+            //compare the values
+            if (propInfo.GetValue(input) == null)
+            {
+                return true;
+            }
+
+            if (propType == typeof(DateTime) && propInfo.GetValue(input).Equals(default(DateTime))) //for 'DateTime' type properties
+            {
+                return true;
+            }
+            else if (propType == typeof(bool) && propInfo.GetValue(input).Equals(default(bool))) //for 'boolean' type properties
+            {
+                return true;
+            }
+            else if (propType == typeof(int) && propInfo.GetValue(input).Equals(default(int))) //for 'integer' type properties
+            {
+                return true;
+            }
+            else if (propType == typeof(double) && propInfo.GetValue(input).Equals(default(double))) //for 'double' type properties
+            {
+                return true;
+            }
+
+
+            return false;
+        }
 
         /// <summary>
         /// converts an object instance to another type

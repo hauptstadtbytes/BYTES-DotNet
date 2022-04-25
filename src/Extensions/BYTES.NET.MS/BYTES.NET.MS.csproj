@@ -36,6 +36,23 @@
 		<None Include="..\..\..\res\Icon.png" Pack="true" PackagePath="\meta\" />
 	</ItemGroup>
 
+	<!-- define constants for framework differentiation; see also 'https://weblog.west-wind.com/posts/2017/jun/22/multitargeting-and-porting-a-net-library-to-net-core-20'-->
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net46'">
+		<DefineConstants>NET46;NETFULL</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net48'">
+		<DefineConstants>NET48;NETFULL</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net5.0'">
+		<DefineConstants>NET50;NETCORE</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0'">
+		<DefineConstants>NET60;NETCORE</DefineConstants>
+	</PropertyGroup>
+
   <!-- add the dependencies -->
   <ItemGroup>
     <ProjectReference Include="..\..\BYTES.NET\BYTES.NET.csproj" />

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
 	<!-- enable multi-targetting and setup language properties-->
@@ -7,7 +7,7 @@
 	<Nullable>enable</Nullable>
 	  
 	<!-- add the metadata required for nuget packaging (see also 'https://kaylumah.nl/2021/03/27/set-nuget-metadata-via-msbuild.html') -->
-	<Description>A framework for rapid prototyping and software development</Description>
+	<Description>An AOP extension library for the BYTES.NET framework</Description>
 	<!-- <PackageReadmeFile>README.MD</PackageReadmeFile> -->
 	<!-- <PackageReleaseNotes>nuget.exe added to 'content' directory</PackageReleaseNotes> -->
 	<Authors>Sebastian Raese</Authors>
@@ -17,8 +17,8 @@
 	 <PackageProjectUrl>https://bytes-dotnet.readme.io/docs/getting-started</PackageProjectUrl>
 	 <RepositoryUrl>https://github.com/hauptstadtbytes/BYTES-DotNet</RepositoryUrl>
 	 <RepositoryType>git</RepositoryType>
-	 <PackageVersion>2.0.0-alpha6</PackageVersion>
-	 <PackageTags>Prototyping,Application Framework</PackageTags>
+	 <PackageVersion>2.0.0-alpha1</PackageVersion>
+	 <PackageTags>Prototyping,Application Framework,AOP</PackageTags>
 
 	 <!--<PackageLicenseFile>meta\License.txt</PackageLicenseFile>-->
 	 <PackageLicenseUrl>https://bytes-dotnet.readme.io/docs/public-license</PackageLicenseUrl>
@@ -32,8 +32,8 @@
 	
   <!-- add external resources/ files (for the NuGet package); see also 'https://docs.microsoft.com/de-de/nuget/reference/msbuild-targets') -->
   <ItemGroup>
-	<None Include="..\..\res\License.txt" Pack="true" PackagePath="\meta\" />
-	<None Include="..\..\res\Icon.png" Pack="true" PackagePath="\meta\" />
+	<None Include="..\..\..\res\License.txt" Pack="true" PackagePath="\meta\" />
+	<None Include="..\..\..\res\Icon.png" Pack="true" PackagePath="\meta\" />
   </ItemGroup>
 
   <!-- define constants for framework differentiation; see also 'https://weblog.west-wind.com/posts/2017/jun/22/multitargeting-and-porting-a-net-library-to-net-core-20'-->
@@ -53,31 +53,18 @@
 	  <DefineConstants>NET60;NETCORE</DefineConstants>
   </PropertyGroup>
 
-  <!-- add the dependencies -->
-  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
-	<Reference Include="System.ComponentModel.Composition" />
+  <ItemGroup>
+    <PackageReference Include="System.Reflection.DispatchProxy" Version="4.7.1" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-    <PackageReference Include="System.ComponentModel.Composition">
-      <Version>6.0.0</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
-    <PackageReference Include="System.ComponentModel.Composition">
-      <Version>6.0.0</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-    <PackageReference Include="System.ComponentModel.Composition">
-      <Version>6.0.0</Version>
-    </PackageReference>
-  </ItemGroup>
+	<!-- add the dependencies -->
+	<ItemGroup>
+		<ProjectReference Include="..\..\BYTES.NET\BYTES.NET.csproj" />
+	</ItemGroup>
 
   <!-- publish NuGet package automatically to github (for release versions only) -->
   <Target Name="Push NuGet package" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
 	<Exec Command="dotnet nuget push &quot;bin\Release\$(AssemblyName).$(PackageVersion).nupkg&quot; --source &quot;github&quot;" />
   </Target>
+
 </Project>
