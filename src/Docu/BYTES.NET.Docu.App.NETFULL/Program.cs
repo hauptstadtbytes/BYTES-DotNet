@@ -13,6 +13,7 @@ using BYTES.NET.AOP.API;
 using Newtonsoft.Json.Linq;
 
 //import internal namespace(s) required
+using BYTES.NET.Docu.App.NETFULL.Types;
 using BYTES.NET.Docu.App.NETFULL.Types.AOP;
 using BYTES.NET.Docu.App.NETFULL.Types.AOP.JSON;
 
@@ -23,10 +24,27 @@ namespace BYTES.NET.Docu.App.NETFULL
         static void Main(string[] args)
         {
             //perform the AOP demo
-            AOPDemo();
+            //AOPDemo();
+
+            //perform the web client demo
+            WebClientDemo();
 
             //do not close the console
             Console.ReadLine();
+        }
+
+        private static void WebClientDemo()
+        {
+            MockupClient client = new MockupClient("https://mockup.bytesapp.de/RESTAPI","sample", "pw123!");
+
+            foreach(APIUser user in client.GetUsers())
+            {
+                Console.WriteLine(user.FirstName + " " + user.LastName + " is " + user.Age + " y/o");
+            }
+
+            //Console.Write("Downloading sample file...");
+            //client.Download("http://cdn.hauptstadtbytes.de/ADBs.pdf", "test.pdf");
+            //Console.WriteLine("Done!");
         }
 
         private static void AOPDemo()

@@ -1,10 +1,12 @@
 ﻿//import .net namespace(s) required
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+//import namespace(s) required from 'Newtonsoft.json' framework
+using Newtonsoft.Json.Linq;
 
 //import namespace(s) required from 'BYTES.NET' framework
 using BYTES.NET.AOP;

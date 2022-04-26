@@ -54,7 +54,9 @@
     <Compile Include="Types\AOP\DemoObject.cs" />
     <Compile Include="Types\AOP\InheritedDemoObject.cs" />
     <Compile Include="Types\AOP\JSON\Animal.cs" />
+    <Compile Include="Types\AOP\JSON\APIUser.cs" />
     <Compile Include="Types\AOP\JSON\LazyJSONObject.cs" />
+    <Compile Include="Types\MockupClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
