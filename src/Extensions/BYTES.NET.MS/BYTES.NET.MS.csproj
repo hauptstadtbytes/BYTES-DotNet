@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <!-- enable multi-targetting and setup language properties-->
-	  <TargetFrameworks>net46;net48;net5.0;net6.0</TargetFrameworks>
+	  <TargetFrameworks>net48;net5.0;net6.0</TargetFrameworks>
 	  <LangVersion>9.0</LangVersion>
 	  <Nullable>enable</Nullable>
 
@@ -17,7 +17,7 @@
 	 <PackageProjectUrl>https://bytes-dotnet.readme.io/docs/getting-started</PackageProjectUrl>
 	 <RepositoryUrl>https://github.com/hauptstadtbytes/BYTES-DotNet</RepositoryUrl>
 	 <RepositoryType>git</RepositoryType>
-	 <PackageVersion>2.0.0-alpha1</PackageVersion>
+	 <PackageVersion>2.0.0-alpha2</PackageVersion>
 	 <PackageTags>Prototyping,Application Framework</PackageTags>
 
 	 <!--<PackageLicenseFile>meta\License.txt</PackageLicenseFile>-->
@@ -37,10 +37,6 @@
 	</ItemGroup>
 
 	<!-- define constants for framework differentiation; see also 'https://weblog.west-wind.com/posts/2017/jun/22/multitargeting-and-porting-a-net-library-to-net-core-20'-->
-	<PropertyGroup Condition=" '$(TargetFramework)' == 'net46'">
-		<DefineConstants>NET46;NETFULL</DefineConstants>
-	</PropertyGroup>
-
 	<PropertyGroup Condition=" '$(TargetFramework)' == 'net48'">
 		<DefineConstants>NET48;NETFULL</DefineConstants>
 	</PropertyGroup>
@@ -59,7 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<PackageReference Include="log4net" Version="2.0.14" />
+	<PackageReference Include="log4net" Version="2.0.15" />
   </ItemGroup>
 
   <!-- publish NuGet package automatically to github (for release versions only) -->

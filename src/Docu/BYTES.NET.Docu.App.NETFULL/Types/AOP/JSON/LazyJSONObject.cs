@@ -61,27 +61,5 @@ namespace BYTES.NET.Docu.App.NETFULL.Types.AOP.JSON
         }
 
         #endregion
-
-        #region protected method(s)
-
-        protected bool IsPropertyNullOrDefault<T>(string name, LazyJSONObject instance)
-        {
-            //get the property details
-            PropertyInfo propInfo = this.GetType().GetProperty(name);
-            Type propType = this.GetType().GetProperty(name).PropertyType;
-
-            if(propInfo.GetValue(instance) == null){
-                return true;
-            }
-
-            if (propInfo.GetValue(instance).Equals(default(T)))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        #endregion
     }
 }
