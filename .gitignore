@@ -26,3 +26,11 @@ src/Docu/BYTES.NET.Docu/bin/
 src/Docu/BYTES.NET.Docu/obj/
 src/Extensions/BYTES.NET.AOP/bin/
 src/Extensions/BYTES.NET.AOP/obj/
+src-2023/.vs/
+src-2023/BYTES.NET.WPF/bin/
+src-2023/BYTES.NET.WPF/obj/
+src-2023/BYTES.NET/.vs/
+src-2023/BYTES.NET/bin/
+src-2023/BYTES.NET/obj/
+src-2023/Tests & References/BYTES.NET.WPF.App/bin/
+src-2023/Tests & References/BYTES.NET.WPF.App/obj/

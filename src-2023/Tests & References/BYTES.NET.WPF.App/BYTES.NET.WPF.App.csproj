@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+	<!-- set language version; see also 'https://stackoverflow.com/questions/61434436/how-to-change-c-sharp-language-version-for-all-of-the-projects-in-my-solution-in' -->
+	<LangVersion>latest</LangVersion>
+	<!-- disable 'global using'; see also 'https://stackoverflow.com/questions/68782558/c-sharp-10-disable-global-using' -->
+	<ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BYTES.NET.WPF\BYTES.NET.WPF.csproj" />
+    <ProjectReference Include="..\..\BYTES.NET\BYTES.NET.csproj" />
+  </ItemGroup>
+
+</Project>
