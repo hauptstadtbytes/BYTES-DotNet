@@ -14,4 +14,8 @@
 	  <ProjectReference Include="..\BYTES.NET\BYTES.NET.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Reference Include="PresentationFramework" />
+	</ItemGroup>
+
 </Project>
