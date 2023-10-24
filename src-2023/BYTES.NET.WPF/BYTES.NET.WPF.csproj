@@ -10,7 +10,46 @@
 		<Nullable>enable</Nullable>
 		<!-- enable WPF support (a 'reference not found exception will be thrown otherwise'; see also 'https://stackoverflow.com/questions/68160249/how-to-create-net-core-lib-targeting-wpf-on-windows' -->
 		<UseWPF>true</UseWPF>
+
+		<!-- add the metadata required for nuget packaging (see also 'https://kaylumah.nl/2021/03/27/set-nuget-metadata-via-msbuild.html') -->
+		<Description>An extension of the BYTES.NET framework for supporting the Windows Presentation Foundation</Description>
+		<!-- <PackageReadmeFile>README.MD</PackageReadmeFile> -->
+		<!-- <PackageReleaseNotes>nuget.exe added to 'content' directory</PackageReleaseNotes> -->
+		<Authors>Sebastian Raese</Authors>
+		<Company>hauptstadtbytes GmbH</Company>
+		<Copyright>Copyright (c) 2023 hauptstadtbytes GmbH</Copyright>
+
+		<PackageProjectUrl>https://bytes-dotnet.readme.io/docs/getting-started</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/hauptstadtbytes/BYTES-DotNet</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageVersion>1.0.0-alpha1</PackageVersion>
+		<PackageTags>WPF</PackageTags>
+
+		<!--<PackageLicenseFile>meta\License.txt</PackageLicenseFile>-->
+		<PackageLicenseUrl>https://bytes-dotnet.readme.io/docs/public-license</PackageLicenseUrl>
+		<PackageIcon>meta\Icon.png</PackageIcon>
+
+		<!-- generate a XML documentation automatically -->
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
 	</PropertyGroup>
+
+	<!-- add external resources/ files (for the NuGet package); see also 'https://docs.microsoft.com/de-de/nuget/reference/msbuild-targets') -->
+	<ItemGroup>
+		<None Include="..\Resources\License.txt" Pack="true" PackagePath="\meta\" />
+		<None Include="..\Resources\Icon.png" Pack="true" PackagePath="\meta\" />
+	</ItemGroup>
+
+	<!-- add references/ dependencies (for the NuGet package); see also 'https://devblogs.microsoft.com/nuget/nuget-now-fully-integrated-into-msbuild/') -->
+	<!--<ItemGroup>
+		<PackageReference Include="BYTES.NET" Version="1.0" />
+	</ItemGroup>-->
+
+	<!-- publish NuGet package automatically to github (for release versions only) -->
+	<Target Name="Push NuGet package" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
+		<Exec Command="dotnet nuget push &quot;bin\Release\$(AssemblyName).$(PackageVersion).nupkg&quot; --source &quot;github&quot;" />
+	</Target>
 
 	<ItemGroup>
 	  <ProjectReference Include="..\BYTES.NET\BYTES.NET.csproj" />
