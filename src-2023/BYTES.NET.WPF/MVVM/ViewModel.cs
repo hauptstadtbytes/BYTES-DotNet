@@ -1,10 +1,12 @@
-﻿using System;
+﻿//import .net namespace(s) required
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace BYTES.NET.WPF.MVVM
 {
@@ -72,6 +74,43 @@ namespace BYTES.NET.WPF.MVVM
             foreach (string property in properties)
             {
                 OnPropertyChanged(revalidate, property);
+            }
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// generic MVVM view model class, supporing a view type definition
+    /// </summary>
+    /// <typeparam name="TView"></typeparam>
+    public abstract class ViewModel<TView> : ViewModel where TView : Control
+    {
+        #region private variable(s)
+
+        private TView _view = default(TView);
+
+        #endregion
+
+        #region public properties
+
+        public TView View
+        {
+            get
+            {
+                if (EqualityComparer<TView>.Default.Equals(_view, default(TView)))
+                {
+                    _view = (TView)Activator.CreateInstance(typeof(TView));
+
+                    _view.DataContext = this;
+                }
+
+                return _view;
+            }
+            set
+            {
+                _view = value;
+                OnPropertyChanged();
             }
         }
 

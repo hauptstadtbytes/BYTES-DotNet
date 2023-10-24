@@ -17,12 +17,21 @@
                 <Grid Margin="5">
                     <StackPanel>
 
-                        <!-- add the button 'say hello' example -->
+                        <!-- the basic binding and relay commands example -->
                         <DockPanel LastChildFill="True">
                             <TextBlock Text="Window Title:" FontWeight="Bold" DockPanel.Dock="Left" Margin="0,0,5,0" />
                             <Button Content="Prompt Text" Command="{Binding Path=Commands[PromptTextCmd]}" CommandParameter="{Binding Path=Text, ElementName=TitleText}" DockPanel.Dock="Right" Margin="5,0,0,0" />
                             <TextBox Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="TitleText" />
                         </DockPanel>
+                        
+                        <!-- the child view models/ views example-->
+                        <ItemsControl Margin="0,10,0,0" ItemsSource="{Binding Animals}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <UserControl Content="{Binding Path=View}" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
 
                     </StackPanel>
                 </Grid>
