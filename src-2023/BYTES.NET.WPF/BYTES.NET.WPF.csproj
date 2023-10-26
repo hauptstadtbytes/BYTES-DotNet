@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<!-- enable multi-targetting; see also 'https://www.cafe-encounter.net/p2312/multi-targetting-net-framework-and-net-core-in-a-single-project' -->
@@ -22,7 +22,7 @@
 		<PackageProjectUrl>https://bytes-dotnet.readme.io/docs/getting-started</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/hauptstadtbytes/BYTES-DotNet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageVersion>1.0.0-alpha1</PackageVersion>
+		<PackageVersion>1.0.0.1-alpha3</PackageVersion>
 		<PackageTags>WPF</PackageTags>
 
 		<!--<PackageLicenseFile>meta\License.txt</PackageLicenseFile>-->
@@ -41,18 +41,9 @@
 		<None Include="..\Resources\Icon.png" Pack="true" PackagePath="\meta\" />
 	</ItemGroup>
 
-	<!-- add references/ dependencies (for the NuGet package); see also 'https://devblogs.microsoft.com/nuget/nuget-now-fully-integrated-into-msbuild/') -->
-	<!--<ItemGroup>
-		<PackageReference Include="BYTES.NET" Version="1.0" />
-	</ItemGroup>-->
-
-	<!-- publish NuGet package automatically to github (for release versions only) -->
+	<!-- publish NuGet package automatically to github (for release versions only, using the source from 'NuGet.config' file in the solution level directory -->
 	<Target Name="Push NuGet package" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
 		<Exec Command="dotnet nuget push &quot;bin\Release\$(AssemblyName).$(PackageVersion).nupkg&quot; --source &quot;github&quot;" />
 	</Target>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\BYTES.NET\BYTES.NET.csproj" />
-	</ItemGroup>
 
 </Project>

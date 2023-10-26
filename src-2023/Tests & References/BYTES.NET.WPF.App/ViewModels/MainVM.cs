@@ -49,6 +49,9 @@ namespace BYTES.NET.WPF.App.ViewModels
         /// </summary>
         public MainVM()
         {
+
+            this.Title = "Sample";
+            
             this.Commands.Add("PromptTextCmd", new ViewModelRelayCommand(PromptText));
 
             _animals = GetAnimals();

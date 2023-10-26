@@ -50,7 +50,10 @@ namespace BYTES.NET.WPF.MVVM
         {
 
             //raise the 'PropertyChanged' event
-            PropertyChanged(this, new PropertyChangedEventArgs(property));
+            if(this.PropertyChanged != null) //otherwise there might be a 'NullReferenceException' when using 'this.<property>' i.e. in constructor
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
+            }
 
         }
 
