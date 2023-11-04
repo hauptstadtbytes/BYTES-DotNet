@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SampleDictonaryChild>
+  <ListItem Counter="1">One</ListItem>
+  <ListItem Counter="2">Two</ListItem>
+  <ListItem Counter="3">Three</ListItem>
+</SampleDictonaryChild>

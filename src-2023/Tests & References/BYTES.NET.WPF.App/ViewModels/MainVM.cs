@@ -22,6 +22,12 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #endregion
 
+        #region private variable(s), for the validation example(s)
+
+        private int? _theAnswer = null;
+
+        #endregion
+
         #region public properties
 
         public string Title
@@ -42,6 +48,19 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #endregion
 
+        #region public properties, for the validation example(s)
+
+        public int? TheAnswer
+        {
+            get => _theAnswer; set
+            {
+                _theAnswer = value;
+                OnPropertyChanged(true); //the 'true' parameter triggers the (re-evaluation)
+            }
+        }
+
+        #endregion
+
         #region public new instance method(s)
 
         /// <summary>
@@ -51,24 +70,19 @@ namespace BYTES.NET.WPF.App.ViewModels
         {
 
             this.Title = "Sample";
-            
+            _animals = GetAnimals();
+
+            //add command(s)
             this.Commands.Add("PromptTextCmd", new ViewModelRelayCommand(PromptText));
 
-            _animals = GetAnimals();
+            //add validation rule(s)
+            //this.ValidationRules.Add(new ViewModelValidationRule("TheAnswer",))
+            
         }
 
         #endregion
 
         #region private method(s)
-
-        /// <summary>
-        /// prompts the title text/ a relay command example
-        /// </summary>
-        /// <param name="arg"></param>
-        private void PromptText(object arg)
-        {
-            MessageBox.Show((string)arg);
-        }
 
         /// <summary>
         /// returns an example array of animals
@@ -83,6 +97,32 @@ namespace BYTES.NET.WPF.App.ViewModels
 
             return output.ToArray();
         }
+
+        #endregion
+
+        #region private method(s), for the command example(s)
+
+        /// <summary>
+        /// prompts the title text/ a relay command example
+        /// </summary>
+        /// <param name="arg"></param>
+        private void PromptText(object arg)
+        {
+            MessageBox.Show((string)arg);
+        }
+
+        #endregion
+
+        #region private method(s), for the validation example(s)
+
+        /// <summary>
+        /// prompts the title text/ a relay command example
+        /// </summary>
+        /// <param name="arg"></param>
+        //private ViewModelValidationResult[] ValidateTheAnswer(object arg)
+        //{
+           
+        //}
 
         #endregion
 

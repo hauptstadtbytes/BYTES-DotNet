@@ -1,8 +1,10 @@
 ﻿//import .net namespace(s) required
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,17 +12,33 @@ using System.Windows.Controls;
 
 namespace BYTES.NET.WPF.MVVM
 {
-    public abstract class ViewModel : INotifyPropertyChanged
+    /// <summary>
+    /// the (basic) MVVM ViewModel class
+    /// </summary>
+    public abstract class ViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
     {
-        #region public event(s) for implementing 'INotifyPropertyChanged'
+        #region public event(s) implementing 'INotifyPropertyChanged'
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
+        #endregion
+
+        #region public event(s) implementing 'INotifyDataErrorInfo'
+
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
         #endregion
 
         #region private variable(s), supporting relay command(s)
 
         private Dictionary<string, ViewModelRelayCommand> _commands = new Dictionary<string, ViewModelRelayCommand>();
+
+        #endregion
+
+        #region private variable(s), supporting ViewModel validation
+
+        private List<ViewModelValidationRule> _validationRules = new List<ViewModelValidationRule>();
+        private Dictionary<string, List<ViewModelValidationResult>> _validationResults = new Dictionary<string, List<ViewModelValidationResult>>(StringComparer.OrdinalIgnoreCase);
 
         #endregion
 
@@ -34,6 +52,36 @@ namespace BYTES.NET.WPF.MVVM
                 _commands = value;
                 OnPropertyChanged();
             }
+        }
+
+        #endregion
+
+        #region public propertie(s), supporting ViewModel validation
+
+        public virtual List<ViewModelValidationRule> ValidationRules
+        {
+            get => _validationRules;
+            set
+            {
+                _validationRules = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool HasErrors { get => _validationResults.Count > 0; }
+
+        #endregion
+
+        #region public method(s), supporting ViewModel validation
+
+        public IEnumerable? GetErrors(string propertyName)
+        {
+            if (_validationResults.ContainsKey(propertyName))
+            {
+                return _validationResults[propertyName].ToArray();
+            }
+
+            return null;
         }
 
         #endregion
@@ -55,6 +103,11 @@ namespace BYTES.NET.WPF.MVVM
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
             }
 
+            //(re-)validate
+            if (revalidate)
+            {
+                Validate(property);
+            }
         }
 
         /// <summary>
@@ -81,10 +134,155 @@ namespace BYTES.NET.WPF.MVVM
         }
 
         #endregion
+
+        #region protected method(s) supporting 'INotifyDataErrorInfo'
+
+        /// <summary>
+        /// (re-)evaluates all properties given
+        /// </summary>
+        /// <param name="properties"></param>
+        /// <remarks>if properties equal to 'null', all (public) properties will be (re-)validated</remarks>
+        protected void Validate(string[] properties = null)
+        {
+
+            //clear the validation results
+            _validationResults = new Dictionary<string, List<ViewModelValidationResult>>(StringComparer.OrdinalIgnoreCase);
+
+            //get a list of all public properties
+            if (properties == null)
+            {
+                List<string> props = new List<string>();
+
+                foreach (PropertyInfo info in this.GetType().GetProperties(BindingFlags.Public))
+                {
+                    props.Add(info.Name);
+                }
+
+                properties = props.ToArray();
+            }
+
+            //get the validation result(s)
+            foreach (string property in properties)
+            {
+
+                if (!_validationResults.ContainsKey(property))
+                {
+                    _validationResults.Add(property, new List<ViewModelValidationResult>());
+                }
+
+                foreach (ViewModelValidationRule rule in _validationRules)
+                {
+
+                    if (rule.Properties.Length == 0 || rule.Properties.Contains(property))
+                    {
+
+                        foreach (ViewModelValidationResult result in rule.Validate(property))
+                        {
+                            _validationResults[property].Add(result);
+                        }
+
+                    }
+
+                }
+
+            }
+
+            //strip the dictionary
+            List<string> keys = new List<string>();
+            foreach (string key in _validationResults.Keys)
+            {
+                keys.Add(key);
+            }
+
+            foreach (string property in keys.ToArray())
+            {
+                if (_validationResults[property].Count < 1)
+                {
+                    _validationResults.Remove(property);
+                }
+            }
+
+            //update the GUI
+            OnPropertyChanged("HasErrors");
+            OnErrorsChanged(properties);
+
+        }
+
+        /// <summary>
+        /// overloaded method (re-)validating a single property given
+        /// </summary>
+        /// <param name="property"></param>
+        protected void Validate(string property)
+        {
+            Validate(new string[] { property });
+        }
+
+        /// <summary>
+        /// raises the 'ErrorsChanged' event
+        /// </summary>
+        /// <param name="properties"></param>
+        protected void OnErrorsChanged(string[]? properties = null)
+        {
+            if (this.ErrorsChanged != null) //otherwise there might be a 'NullReferenceException'
+            {
+                if (properties == null)
+                {
+                    ErrorsChanged(this, new DataErrorsChangedEventArgs(null));
+                }
+
+                foreach (string property in properties)
+                {
+                    ErrorsChanged(this, new DataErrorsChangedEventArgs(property));
+                }
+            }
+        }
+
+        /// <summary>
+        /// overloaded method, supporting to raise the 'ErrorsChanged' event for a dedicated property
+        /// </summary>
+        /// <param name="property"></param>
+        protected void OnErrorsChanged(string property)
+        {
+            OnErrorsChanged(new string[] { property });
+        }
+
+        /// <summary>
+        /// return a dictionary of all errors by property name
+        /// </summary>
+        /// <param name="properties"></param>
+        /// <returns></returns>
+        public Dictionary<string, List<ViewModelValidationResult>> GetErrors(string[] properties = null)
+        {
+            Dictionary<string, List<ViewModelValidationResult>> output = new Dictionary<string, List<ViewModelValidationResult>>();
+
+            //add validation errors from current instance
+            if (properties == null)
+            {
+
+                output = new Dictionary<string, List<ViewModelValidationResult>>(_validationResults, StringComparer.OrdinalIgnoreCase);
+
+            }
+            else
+            {
+
+                foreach (string property in properties)
+                {
+                    if (_validationResults.ContainsKey(property))
+                    {
+                        output.Add(property, _validationResults[property]);
+                    }
+                }
+
+            }
+
+            return output;
+        }
+
+        #endregion
     }
 
     /// <summary>
-    /// generic MVVM view model class, supporing a view type definition
+    /// the MVVM view model class, supporing view type definition
     /// </summary>
     /// <typeparam name="TView"></typeparam>
     public abstract class ViewModel<TView> : ViewModel where TView : Control

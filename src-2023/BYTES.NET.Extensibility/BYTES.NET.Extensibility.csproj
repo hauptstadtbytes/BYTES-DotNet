@@ -2,17 +2,15 @@
 
 	<PropertyGroup>
 		<!-- enable multi-targetting; see also 'https://www.cafe-encounter.net/p2312/multi-targetting-net-framework-and-net-core-in-a-single-project' -->
-		<TargetFrameworks>net472;net48;net6.0-windows</TargetFrameworks>
+		<TargetFrameworks>net472;net48;net6.0;net6.0-windows</TargetFrameworks>
 		<!-- set language version; see also 'https://stackoverflow.com/questions/61434436/how-to-change-c-sharp-language-version-for-all-of-the-projects-in-my-solution-in' -->
 		<LangVersion>latest</LangVersion>
 		<!-- disable 'global using'; see also 'https://stackoverflow.com/questions/68782558/c-sharp-10-disable-global-using' -->
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
-		<!-- enable WPF support (a 'reference not found exception will be thrown otherwise'; see also 'https://stackoverflow.com/questions/68160249/how-to-create-net-core-lib-targeting-wpf-on-windows' -->
-		<UseWPF>true</UseWPF>
 
 		<!-- add the metadata required for nuget packaging (see also 'https://kaylumah.nl/2021/03/27/set-nuget-metadata-via-msbuild.html') -->
-		<Description>An extension for the BYTES.NET framework, supporting the Windows Presentation Foundation</Description>
+		<Description>An extension for the BYTES.NET framework, supporting (MEF-based) extensibility</Description>
 		<!-- <PackageReadmeFile>README.MD</PackageReadmeFile> -->
 		<!-- <PackageReleaseNotes>nuget.exe added to 'content' directory</PackageReleaseNotes> -->
 		<Authors>Sebastian Raese</Authors>
@@ -22,8 +20,8 @@
 		<PackageProjectUrl>https://bytes-dotnet.readme.io/docs/getting-started</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/hauptstadtbytes/BYTES-DotNet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageVersion>1.0.0.1-alpha4</PackageVersion>
-		<PackageTags>WPF</PackageTags>
+		<PackageVersion>1.0.0-alpha1</PackageVersion>
+		<PackageTags>Extensibility, Plugins, Reflection</PackageTags>
 
 		<!--<PackageLicenseFile>meta\License.txt</PackageLicenseFile>-->
 		<PackageLicenseUrl>https://bytes-dotnet.readme.io/docs/public-license</PackageLicenseUrl>
@@ -42,10 +40,35 @@
 		<None Include="..\Resources\License.txt" Pack="true" PackagePath="\meta\" />
 		<None Include="..\Resources\Icon.png" Pack="true" PackagePath="\meta\" />
 	</ItemGroup>
+	
+	<!-- define references and dependencies --> 
+	<ItemGroup>
+	  <PackageReference Include="System.ComponentModel.Composition" Version="7.0.0" />
+	</ItemGroup>
+	
+	<ItemGroup> <!-- to do: add the 'BYTES.NET' NuGet package as dependency -->
+	  <ProjectReference Include="..\BYTES.NET\BYTES.NET.csproj" />
+	</ItemGroup>
+
+	<!-- define constants for framework differentiation; see also 'https://weblog.west-wind.com/posts/2017/jun/22/multitargeting-and-porting-a-net-library-to-net-core-20'-->
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net472'">
+		<DefineConstants>NET472;NETFULL</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net48'">
+		<DefineConstants>NET48;NETFULL</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0'">
+		<DefineConstants>NET60;NETCORE</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-windows'">
+		<DefineConstants>WINDOWS;NET60;NETCORE</DefineConstants>
+	</PropertyGroup>
 
 	<!-- publish NuGet package automatically to github (for release versions only, using the source from 'NuGet.config' file in the solution level directory -->
 	<Target Name="Push NuGet package" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
 		<Exec Command="dotnet nuget push &quot;bin\Release\$(AssemblyName).$(PackageVersion).nupkg&quot; --source &quot;github&quot;" />
 	</Target>
-
 </Project>
