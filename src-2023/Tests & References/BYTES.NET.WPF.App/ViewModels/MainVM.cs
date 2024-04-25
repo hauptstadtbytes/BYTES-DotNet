@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using BYTES.NET.WPF.App.Views;
 
 //import namespace(s) required from 'BYTES.NET.WPF' framework
@@ -30,6 +31,16 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #region public properties
 
+        private string _outputText;
+        public string OutputText
+        {
+            get => _outputText;
+            set
+            {
+                _outputText = value;
+                OnPropertyChanged(nameof(OutputText));
+            }
+        }
         public string Title
         {
             get => _title; set
@@ -77,7 +88,15 @@ namespace BYTES.NET.WPF.App.ViewModels
 
             //add validation rule(s)
             //this.ValidationRules.Add(new ViewModelValidationRule("TheAnswer",))
-            
+
+            // add DialogueViewModel Command
+            this.Commands.Add("ShowDialogueCmd", new ViewModelRelayCommand(ShowDialog));
+
+            // Add ThreadViewModel Command
+            this.Commands.Add("ShowGUIThreadCmd", new ViewModelRelayCommand(ShowThread));
+
+            // Update the output text in the main window from different thread
+            //this.Commands.Add("UpdateOutputTextGUIThreadCmd", new ViewModelRelayCommand(UpdateOutputTextGUIThread));
         }
 
         #endregion
@@ -111,6 +130,43 @@ namespace BYTES.NET.WPF.App.ViewModels
             MessageBox.Show((string)arg);
         }
 
+        /// <summary>
+        /// opens up the DialogView and blocks the MainView 
+        /// </summary>
+        /// <param name="arg"></param>
+        private void ShowDialog(object arg)
+        {
+            DialogView dialog = new DialogView();
+            dialog.TextSubmitted += (sender, text) =>
+            {
+                // Get the text box from the main window
+                TextBlock OutputText = (TextBlock)Application.Current.MainWindow.FindName("OutputText");
+                // Update the text box in the main window with the text from the dialog
+                OutputText.Text = text;
+            };
+            dialog.ShowDialog();
+        }
+
+        /// <summary>
+        /// opena up the GUIThreadView on a different thread and lets the user input text to be updated in the main window
+        /// </summary>
+        /// <param name="arg"></param>
+        private void ShowThread(object arg)
+        {
+            GUIThreadView threadView = new GUIThreadView();
+            threadView.TextSubmitted += (sender, text) => UpdateOutputTextGUIThread(text);
+            threadView.Show();
+        }
+
+        /// <summary>
+        /// Updates the output text in the main window from a different thread
+        /// </summary>
+        /// <param name="text"></param>
+        public void UpdateOutputTextGUIThread(string text)
+        {
+            OutputText = text;
+            OnPropertyChanged(nameof(OutputText)); // Notify the UI of the change
+        }
         #endregion
 
         #region private method(s), for the validation example(s)
@@ -121,7 +177,7 @@ namespace BYTES.NET.WPF.App.ViewModels
         /// <param name="arg"></param>
         //private ViewModelValidationResult[] ValidateTheAnswer(object arg)
         //{
-           
+
         //}
 
         #endregion

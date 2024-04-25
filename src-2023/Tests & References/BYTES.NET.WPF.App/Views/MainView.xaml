@@ -10,7 +10,7 @@
     <Window.DataContext>
         <localVMs:MainVM />
     </Window.DataContext>
-    
+
     <Grid>
         <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TabItem Header="Basic MVVM">
@@ -23,7 +23,7 @@
                             <Button Content="Prompt Text" Command="{Binding Path=Commands[PromptTextCmd]}" CommandParameter="{Binding Path=Text, ElementName=TitleText}" DockPanel.Dock="Right" Margin="5,0,0,0" />
                             <TextBox Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="TitleText" />
                         </DockPanel>
-                        
+
                         <!-- a child view model/ view example-->
                         <ItemsControl Margin="0,10,0,0" ItemsSource="{Binding Animals}">
                             <ItemsControl.ItemTemplate>
@@ -39,7 +39,7 @@
             <TabItem Header="Validation">
                 <Grid Margin="5">
                     <StackPanel>
-                        
+
                         <!-- an in-line validation example (displaying an error message) -->
                         <DockPanel LastChildFill="True">
                             <TextBlock Text="The answer to life, the universe and everything is..." FontWeight="Bold" />
@@ -61,11 +61,7 @@
                                                                 <Style TargetType="{x:Type TextBlock}">
                                                                     <Setter Property="Foreground"
  Value="Orange" />
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding Path=ErrorContent.Level}" Value="{x:Static lib:ViewModelValidationRule+ResultLevels.IsError}">
-                                                                            <Setter Property="Foreground" Value="Red" />
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
+
                                                                 </Style>
                                                             </TextBlock.Style>
                                                         </TextBlock>
@@ -79,11 +75,29 @@
 
                             </TextBox>
                         </DockPanel>
-                        
+
                     </StackPanel>
                 </Grid>
             </TabItem>
+            <TabItem Header="Dialogue">
+                <Grid Margin="5">
+                    <TextBlock Name="OutputText" Text="Hallo" Margin="0,0,0,170"/>
+                    <Button Content="Show Dialogue" Command="{Binding Path=Commands[ShowDialogueCmd]}" Margin="0,231,0,0" />
+                </Grid>
+            </TabItem>
+
+            <TabItem Header="GUIThread" Height="20" VerticalAlignment="Top">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="145*"/>
+                        <ColumnDefinition Width="649*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="GUIOutputBox" Text="{Binding OutputText}" />
+                    <Button Content="Show GUIThread" Command="{Binding Path=Commands[ShowGUIThreadCmd]}" Margin="0,279,0,0" Grid.ColumnSpan="2" />
+                </Grid>
+            </TabItem>
+
         </TabControl>
     </Grid>
-    
+
 </Window>
