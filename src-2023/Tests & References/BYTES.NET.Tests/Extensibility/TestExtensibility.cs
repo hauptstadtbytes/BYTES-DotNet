@@ -79,6 +79,8 @@ namespace BYTES.NET.Tests.Extensibility
             DumpExtensions<ExtensionsManager<ISampleInterface, SampleMetadata>>(manager);
             Assert.AreEqual(1, manager.Extensions.Length);
 
+            Assert.AreEqual("Hello World!", manager.Extensions[0].Value().Transform("Any Text"));
+
             //enumerate, using the 'ExtensionsSource' type and metadata filtering (2)
             manager = new ExtensionsManager<ISampleInterface, SampleMetadata>();
 

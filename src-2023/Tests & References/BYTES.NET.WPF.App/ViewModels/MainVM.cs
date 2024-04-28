@@ -29,18 +29,17 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #endregion
 
+        #region private variable(s), for the dialog example(s)
+
+        private bool _blockingDialog = false;
+        private string _dialogMessage = "Hello World!";
+
+        #endregion
+
         #region public properties
 
         private string _outputText;
-        public string OutputText
-        {
-            get => _outputText;
-            set
-            {
-                _outputText = value;
-                OnPropertyChanged(nameof(OutputText));
-            }
-        }
+        
         public string Title
         {
             get => _title; set
@@ -72,6 +71,26 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #endregion
 
+        #region public properties for the dialog example(s)
+
+        public bool BlockingDialog
+        {
+            get => _blockingDialog; set
+            {
+                _blockingDialog = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string DialogMessage { get => _dialogMessage; set 
+            { 
+                _dialogMessage = value;
+                OnPropertyChanged();
+            } 
+        }
+
+        #endregion
+
         #region public new instance method(s)
 
         /// <summary>
@@ -90,10 +109,7 @@ namespace BYTES.NET.WPF.App.ViewModels
             //this.ValidationRules.Add(new ViewModelValidationRule("TheAnswer",))
 
             // add DialogueViewModel Command
-            this.Commands.Add("ShowDialogueCmd", new ViewModelRelayCommand(ShowDialog));
-
-            // Add ThreadViewModel Command
-            this.Commands.Add("ShowGUIThreadCmd", new ViewModelRelayCommand(ShowThread));
+            this.Commands.Add("ShowDialogCmd", new ViewModelRelayCommand(ShowDialog));
 
             // Update the output text in the main window from different thread
             //this.Commands.Add("UpdateOutputTextGUIThreadCmd", new ViewModelRelayCommand(UpdateOutputTextGUIThread));
@@ -130,43 +146,6 @@ namespace BYTES.NET.WPF.App.ViewModels
             MessageBox.Show((string)arg);
         }
 
-        /// <summary>
-        /// opens up the DialogView and blocks the MainView 
-        /// </summary>
-        /// <param name="arg"></param>
-        private void ShowDialog(object arg)
-        {
-            DialogView dialog = new DialogView();
-            dialog.TextSubmitted += (sender, text) =>
-            {
-                // Get the text box from the main window
-                TextBlock OutputText = (TextBlock)Application.Current.MainWindow.FindName("OutputText");
-                // Update the text box in the main window with the text from the dialog
-                OutputText.Text = text;
-            };
-            dialog.ShowDialog();
-        }
-
-        /// <summary>
-        /// opena up the GUIThreadView on a different thread and lets the user input text to be updated in the main window
-        /// </summary>
-        /// <param name="arg"></param>
-        private void ShowThread(object arg)
-        {
-            GUIThreadView threadView = new GUIThreadView();
-            threadView.TextSubmitted += (sender, text) => UpdateOutputTextGUIThread(text);
-            threadView.Show();
-        }
-
-        /// <summary>
-        /// Updates the output text in the main window from a different thread
-        /// </summary>
-        /// <param name="text"></param>
-        public void UpdateOutputTextGUIThread(string text)
-        {
-            OutputText = text;
-            OnPropertyChanged(nameof(OutputText)); // Notify the UI of the change
-        }
         #endregion
 
         #region private method(s), for the validation example(s)
@@ -179,6 +158,48 @@ namespace BYTES.NET.WPF.App.ViewModels
         //{
 
         //}
+
+        #endregion
+
+        #region private method(s) for dialog example(s)
+        /// <summary>
+        /// opens up the DialogView and blocks the MainView 
+        /// </summary>
+        /// <param name="arg"></param>
+        private void ShowDialog(object arg)
+        {
+            if (_blockingDialog) //a blocking dialog was requested
+            {
+
+                DialogView dialog = new DialogView();
+                dialog.TextSubmitted += (sender, text) =>
+                {
+                    // Get the text box from the main window
+                    TextBlock OutputText = (TextBlock)Application.Current.MainWindow.FindName("OutputText");
+                    // Update the text box in the main window with the text from the dialog
+                    OutputText.Text = text;
+                };
+                dialog.ShowDialog();
+
+            }
+            else //a non-blocking dialog was requested
+            {
+                GUIThreadView threadView = new GUIThreadView();
+                threadView.TextSubmitted += (sender, text) => UpdateOutputTextGUIThread(text);
+                threadView.Show();
+            }
+
+        }
+
+        /// <summary>
+        /// Updates the output text in the main window from a different thread
+        /// </summary>
+        /// <param name="text"></param>
+        public void UpdateOutputTextGUIThread(string text)
+        {
+            this.DialogMessage = text;
+            OnPropertyChanged("DialogMessage"); // Notify the UI of the change
+        }
 
         #endregion
 

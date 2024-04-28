@@ -5,11 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BYTES.NET.WPF.App.Views"
         xmlns:localVMs="clr-namespace:BYTES.NET.WPF.App.ViewModels"
+        xmlns:converters="clr-namespace:BYTES.NET.WPF.Converters;assembly=BYTES.NET.WPF"
         mc:Ignorable="d"
         Title="{Binding Title, Mode=OneWay}" Height="450" Width="800">
     <Window.DataContext>
         <localVMs:MainVM />
     </Window.DataContext>
+    
+    <!-- add ressources (like converters etc.) -->
+    <Window.Resources>
+        <converters:BooleanToIndexConverter x:Key="BoolToIndexConverter" />
+    </Window.Resources>
 
     <Grid>
         <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -79,21 +85,40 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Dialogue">
+            <TabItem Header="Dialog">
                 <Grid Margin="5">
-                    <TextBlock Name="OutputText" Text="Hallo" Margin="0,0,0,170"/>
-                    <Button Content="Show Dialogue" Command="{Binding Path=Commands[ShowDialogueCmd]}" Margin="0,231,0,0" />
-                </Grid>
-            </TabItem>
+                    <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        
+                        <!-- the control for selecting the blocking mode -->
+                        <DockPanel LastChildFill="False">
+                            <TextBlock Text="Blocking Dialog: "></TextBlock>
+                            <ComboBox SelectedIndex="{Binding BlockingDialog, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToIndexConverter}}" Margin="0,0,5,0">
+                                <ComboBox.Items>
+                                    <ComboBoxItem Content="True" />
+                                    <ComboBoxItem Content="False" />
+                                </ComboBox.Items>
+                            </ComboBox>
+                            <TextBlock Text="{Binding BlockingDialog}" />
+                        </DockPanel>
 
-            <TabItem Header="GUIThread" Height="20" VerticalAlignment="Top">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="145*"/>
-                        <ColumnDefinition Width="649*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="GUIOutputBox" Text="{Binding OutputText}" />
-                    <Button Content="Show GUIThread" Command="{Binding Path=Commands[ShowGUIThreadCmd]}" Margin="0,279,0,0" Grid.ColumnSpan="2" />
+                        <Separator HorizontalAlignment="Stretch" Margin="0,5,0,5" />
+                        
+                        <!-- the control for updating the message-->
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Text="Message: " />
+                            <TextBlock Text="{Binding DialogMessage}" Margin="5,0,0,0" />
+                        </DockPanel>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock Text="Update the message: " />
+                            <TextBox Text="{Binding DialogMessage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5,0,0,0" />
+                        </DockPanel>
+
+                        <Separator HorizontalAlignment="Stretch" Margin="0,5,0,5" />
+                        
+                        <!-- the control for opening the dialog -->
+                        <Button Content="ShowDialog" Command="{Binding Path=Commands[ShowDialogCmd]}"/>
+
+                    </StackPanel>
                 </Grid>
             </TabItem>
 
