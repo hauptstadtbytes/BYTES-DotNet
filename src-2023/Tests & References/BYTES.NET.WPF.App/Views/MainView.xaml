@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="{Binding Title, Mode=OneWay}" Height="450" Width="800">
     <Window.DataContext>
-        <localVMs:MainVM />
+        <localVMs:MainVM/>
     </Window.DataContext>
     
     <!-- add ressources (like converters etc.) -->
@@ -110,7 +110,7 @@
                         </DockPanel>
                         <DockPanel LastChildFill="True">
                             <TextBlock Text="Update the message: " />
-                            <TextBox Text="{Binding DialogMessage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5,0,0,0" />
+                            <TextBox Name="OutputText" Text="{Binding DialogMessage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5,0,0,0" />
                         </DockPanel>
 
                         <Separator HorizontalAlignment="Stretch" Margin="0,5,0,5" />

@@ -1,14 +1,27 @@
 <Window x:Class="BYTES.NET.WPF.App.Views.DialogView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BYTES.NET.WPF.App.Views"
+        xmlns:localVMs="clr-namespace:BYTES.NET.WPF.App.ViewModels"
+        xmlns:converters="clr-namespace:BYTES.NET.WPF.Converters;assembly=BYTES.NET.WPF"
+        mc:Ignorable="d"
         Title="DialogView" Height="450" Width="800">
+    <Window.DataContext>
+        <localVMs:DialogVM/>
+    </Window.DataContext>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Content="Click Me" Click="ButtonClick" HorizontalAlignment="Center" Margin="0,292,0,108" Grid.Row="1"/>
-        <TextBox Grid.Row="1" Name="InputText" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Margin="0,10,0,0"/>
+        <TextBlock Text="This window is to show how the thread blocking or non blocking dialog will work" Margin="10" Grid.Row="0"/>
+        <TextBlock Text="Text for the Mainwindow" Margin="0,169,0,0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <Button Content="Close" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Margin="0,239,0,0"
+        Command="{Binding CloseViewCommand}"/>
+        <TextBox Grid.Row="1" Name="InputText" Text="{Binding DialogMessage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="0,199,0,0"/>
     </Grid>
 </Window>

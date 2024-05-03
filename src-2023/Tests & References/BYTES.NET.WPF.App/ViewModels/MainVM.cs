@@ -21,6 +21,8 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         private AnimalVM[] _animals;
 
+        private DialogVM _dialogVM;
+
         #endregion
 
         #region private variable(s), for the validation example(s)
@@ -82,7 +84,9 @@ namespace BYTES.NET.WPF.App.ViewModels
             }
         }
 
-        public string DialogMessage { get => _dialogMessage; set 
+        public string DialogMessage { 
+            get => _dialogMessage; 
+            set 
             { 
                 _dialogMessage = value;
                 OnPropertyChanged();
@@ -171,24 +175,26 @@ namespace BYTES.NET.WPF.App.ViewModels
             if (_blockingDialog) //a blocking dialog was requested
             {
 
-                DialogView dialog = new DialogView();
-                dialog.TextSubmitted += (sender, text) =>
+                DialogVM dialog = new DialogVM();
+                dialog.instatiateView(new DialogView());
+                dialog.DialogMessage = _dialogMessage;
+                dialog.MessageUpdated += (sender, text) =>
                 {
-                    // Get the text box from the main window
-                    TextBlock OutputText = (TextBlock)Application.Current.MainWindow.FindName("OutputText");
-                    // Update the text box in the main window with the text from the dialog
-                    OutputText.Text = text;
+                    this.DialogMessage = text;
                 };
-                dialog.ShowDialog();
+                dialog.ShowDialog(BlockingDialog);
 
             }
             else //a non-blocking dialog was requested
             {
-                GUIThreadView threadView = new GUIThreadView();
-                threadView.TextSubmitted += (sender, text) => UpdateOutputTextGUIThread(text);
-                threadView.Show();
+                DialogVM dialog = new DialogVM(new DialogView());
+                dialog.DialogMessage = _dialogMessage;
+                dialog.MessageUpdated += (sender, text) =>
+                {
+                    this.DialogMessage = text;
+                };
+                dialog.ShowDialog(BlockingDialog);
             }
-
         }
 
         /// <summary>
