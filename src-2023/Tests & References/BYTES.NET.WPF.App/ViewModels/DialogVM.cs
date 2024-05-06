@@ -1,4 +1,5 @@
-﻿using System;
+﻿//import .net namespace(s) required
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,63 +9,48 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using BYTES.NET.WPF.App.Views;
+
+//import namespace(s) required from BYTES.NET.WPF framework
 using BYTES.NET.WPF.MVVM;
+
+//import internal namespace(s) required
+using BYTES.NET.WPF.App.Views;
 
 namespace BYTES.NET.WPF.App.ViewModels
 {
-    public class DialogVM : DialogViewModel
+    public class DialogVM : DialogViewModel<DialogView>
     {
-        public ICommand CloseViewCommand { get; }
-        /// <summary>
-        /// Event that is raised when the user submits the text
-        /// </summary>
-        public event EventHandler<string> MessageUpdated;
-        /// <summary>
-        /// bool to determine if the dialog is blocking
-        /// </summary>
-        public bool isBlocking { get; set; }
 
-        /// <summary>
-        /// String to hold the dialog message
-        /// </summary>
+        #region private variable(s)
+
         private string _dialogMessage;
-        
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="_isBlocking"></param>
-        public DialogVM()
-        {
-            CloseViewCommand = new ViewModelRelayCommand(CloseView);
-        }
 
-        public DialogVM(Window MyView)
-        {
-            CloseViewCommand = new ViewModelRelayCommand(CloseView);
-            _myView = MyView;
-            
-        }
+        #endregion
 
-        // Method to close the view
-        private void CloseView()
-        {
-            _myView?.Close();
-        }
+        #region public properties
 
-
-        /// <summary>
-        /// string to hold the dialog message
-        /// </summary>
         public string DialogMessage
         {
             get => _dialogMessage;
             set
             {
-                 _dialogMessage = value;
-                 OnPropertyChanged();
-                 MessageUpdated?.Invoke(this, _dialogMessage);
+                _dialogMessage = value;
+                OnPropertyChanged();
             }
         }
+
+        #endregion
+
+        #region public new instance method(s)
+
+        /// <summary>
+        /// the constructor instance
+        /// </summary>
+        public DialogVM()
+        {
+        }
+
+        #endregion
+        
     }
 }

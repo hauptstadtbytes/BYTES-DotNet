@@ -92,7 +92,7 @@
                         <!-- the control for selecting the blocking mode -->
                         <DockPanel LastChildFill="False">
                             <TextBlock Text="Blocking Dialog: "></TextBlock>
-                            <ComboBox SelectedIndex="{Binding BlockingDialog, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToIndexConverter}}" Margin="0,0,5,0">
+                            <ComboBox SelectedIndex="{Binding ShowDialogBlocking, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={StaticResource BoolToIndexConverter}}" Margin="0,0,5,0">
                                 <ComboBox.Items>
                                     <ComboBoxItem Content="True" />
                                     <ComboBoxItem Content="False" />
@@ -116,7 +116,7 @@
                         <Separator HorizontalAlignment="Stretch" Margin="0,5,0,5" />
                         
                         <!-- the control for opening the dialog -->
-                        <Button Content="ShowDialog" Command="{Binding Path=Commands[ShowDialogCmd]}"/>
+                        <Button Content="Show the Dialog for Updating the Message" Command="{Binding Path=Commands[ShowDialogCmd]}"/>
 
                     </StackPanel>
                 </Grid>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿//import .net (default) namespace(s)
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,169 +9,142 @@ using System.Threading;
 using System.Windows.Threading;
 using System.Runtime.InteropServices;
 using System.Windows;
-using BYTES.NET.WPF.MVVM;
+using System.Windows.Controls;
 
 namespace BYTES.NET.WPF.MVVM
 {
     ///<summary>
     ///dialog viemodel base class
     ///</summary>
-    public abstract class DialogViewModel : ViewModel
+    public abstract class DialogViewModel<TView> : ViewModel where TView : Window
     {
-        #region private Variables for blocking dialog
-        private bool _dialogResult = false;
-        private EventWaitHandle _myBlock = null;
+        #region private variable(s)
+
+        private bool _isBlocking = false;
+
+        private Window? _myView = null;
+
         #endregion
 
-        #region private Variables for non-blocking dialog
-        /// <summary>
-        /// Cancellation token source for the ViewModel
-        /// </summary>
-        // went with cancellation token refer to https://learn.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads
+        #region private variable(s), required for non-blocking dialogs
+
+        private Thread _myThread;
+
+        ///<remarks>see 'https://learn.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads' for additional details</remarks>
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+
         #endregion
 
-        #region public Properties for blocking dialog
-        /// <summary>
-        /// dialog result
-        /// </summary>
-        public bool DialogResult
+        #region public event(s), required for closing the dialog
+
+        public delegate void DialogClosedEventHandler(object source);
+
+        public event DialogClosedEventHandler DialogClosed;
+
+        #endregion
+
+        #region public properties
+
+        public bool IsBlocking { get => _isBlocking; }
+
+        public TView View
         {
-            get { return _dialogResult; }
+            get
+            {
+                if (_myView == null)
+                {
+                    _myView = (TView)Activator.CreateInstance(typeof(TView));
+
+                    _myView.DataContext = this;
+                    _myView.Closed += OnClosed;
+                }
+
+                return (TView)_myView;
+            }
             set
             {
-                _dialogResult = value;
+                _myView = value;
+
+                _myView.DataContext = this;
+                _myView.Closed += OnClosed;
+
                 OnPropertyChanged();
-                if (_dialogResult)
-                {
-                    //windowclosed event werfen
-                }
             }
         }
+
+        public int ThreadID { get => _myThread.ManagedThreadId; }
+
         #endregion
 
-        #region public Properties for non-blocking dialog
-        /// <summary>
-        /// Thread ID
-        /// </summary>
-        public int ThreadID => _myThread.ManagedThreadId;
+        #region public new instance method(s)
 
         /// <summary>
-        /// event for closing the dialog
-        /// </summary>
-        public event Action<DialogViewModel> Closed;
-        #endregion
-
-        #region protected Properties for non-blocking dialog
-        /// <summary>
-        /// View for the ViewModel
-        /// </summary>
-        protected Window _myView;
-
-        /// <summary>
-        /// Lambda expression for the View
-        /// </summary>
-        public Window View => _myView;
-
-        /// <summary>
-        /// Thread for the ViewModel
-        /// </summary>
-        protected Thread _myThread;
-        #endregion
-
-        #region instance Method
-        /// <summary>
-        /// default constructor
+        /// the default constructor
         /// </summary>
         public DialogViewModel()
         {
-            
+            //create a (default) command for closing the dialog
+            this.Commands.Add("CloseDialogCmd", new ViewModelRelayCommand(CloseDialog));
         }
+
         #endregion
 
-        #region public Methods
+        #region public method(s) for opening/ closing the dialog
+
         /// <summary>
-        /// method showing up the overlay as dialog
+        /// showing/ opening the dialog (view)
         /// </summary>
         /// <param name="isBlocking"></param>
         public void ShowDialog(bool isBlocking)
         {
-            if (isBlocking)
+            this._isBlocking = isBlocking; //set the blocking value
+            OnPropertyChanged("IsBlocking");
+
+            //show the view
+            if (this._isBlocking)
             {
-                ShowDialogBlocking();
+                this.View.ShowDialog(); //use the default (blocking) mechanism
             }
             else
             {
-                ShowDialogNonBlocking();
+                ShowDialogNonBlocking(); //use the custom (non-blocking) mechanism
             }
         }
 
         /// <summary>
-        /// 
+        /// closing the dialog
         /// </summary>
-        public void CloseDialog(bool isBlocking)
+        public void CloseDialog()
         {
-            DialogResult = true;
-            if (!isBlocking)
+            //close the view
+            View.Close();
+
+            //perform additional operations for non-blocking dialogs
+            if (!this._isBlocking)
             {
                 CloseNonBlocking();
             }
+
         }
-        /// <summary>
-        /// instatiates the view
-        /// </summary>
-        /// <param name="MyView"></param>
-        public void instatiateView(Window MyView)
-        {
-            _myView = MyView;
-            _myView.DataContext = this;
-        }
+
         #endregion
 
-        #region public Methods for blocking dialog
-        /// <summary>
-        /// method showing up the overlay as dialog
-        /// </summary>
-        /// <returns></returns>
-        public bool ShowDialogBlocking()
-        { 
-            _myBlock = new EventWaitHandle(false, EventResetMode.AutoReset);
-            _myView.ShowDialog();
-            WaitForEvent (_myBlock, new TimeSpan(24, 0, 0));          
-            _myBlock.Dispose();
-            return DialogResult;
-        }
-
+        #region private method(s) for showing/ closing the dialog
 
         /// <summary>
-        /// method closing the dialog, setting the result
+        /// method showing up the dialog in a non-blocking mode
         /// </summary>
-        /// <param name="result"></param>
-        protected void CloseBlocking(bool result)
+        private void ShowDialogNonBlocking()
         {
-            DialogResult = result;
-
-            if(_myBlock != null)
-            {
-                _myBlock.Set();
-            }
-        }
-        #endregion
-
-        #region public Methods for non-blocking dialog
-        /// <summary>
-        /// Shows the ViewModel
-        /// </summary>
-        public void ShowDialogNonBlocking()
-        {
-            //instatiateView(MyView);
+            //clean-up the environment
             if (_myThread != null)
             {
-                this.Closed?.Invoke(this);
-                _cancellationTokenSource.Cancel(); // Cancel the previous token
-                _myThread.Join(); // Wait for the previous thread to finish
+                _cancellationTokenSource.Cancel(); // cancel the previous token
+                _myThread.Join(); // wait for the previous thread to finish
                 _myThread = null;
             }
+
+            //start a new thread
             _cancellationTokenSource = new CancellationTokenSource(); // Create a new token source
             _myThread = new Thread(() => ShowViewNonBlocking(_cancellationTokenSource.Token));
             _myThread.SetApartmentState(ApartmentState.STA);
@@ -178,9 +152,22 @@ namespace BYTES.NET.WPF.MVVM
         }
 
         /// <summary>
-        /// Closes the ViewModel
+        /// supports the 'ShowDialogNonBlocking' method in opening the dialog view
         /// </summary>
-        public void CloseNonBlocking()
+        /// <param name="cancellationToken"></param>
+        private void ShowViewNonBlocking(CancellationToken cancellationToken)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                this.View.Show();
+            });
+
+        }
+
+        /// <summary>
+        /// method closing the dialog in non-blocking mode
+        /// </summary>
+        private void CloseNonBlocking()
         {
             if (_myThread != null)
             {
@@ -192,48 +179,21 @@ namespace BYTES.NET.WPF.MVVM
 
         #endregion
 
-        #region private Methods for blocking dialog
-        /// <summary>
-        /// method allowing to wait for an event (non-blocking the application thread)
-        /// </summary>
-        /// <param name="waitHandle"></param>
-        /// <param name="timeout"></param>
-        /// <returns></returns>
-        private bool WaitForEvent(EventWaitHandle waitHandle, TimeSpan? timeout = null)
-        {
-            bool didWait = false;
-            DispatcherFrame frame = new DispatcherFrame();
-            
-            // ParameterizedThreadStart delegation
-            ParameterizedThreadStart threadStart = new ParameterizedThreadStart((obj) =>
-            {
-                didWait = waitHandle.WaitOne(timeout ?? TimeSpan.FromHours(24));
-                frame.Continue = false;
-            });
 
-            Thread thread = new Thread(threadStart);
-            thread.Start();
-            Dispatcher.PushFrame(frame);
-            return didWait;
+        #region private method(s) supporting events
+
+        /// <summary>
+        /// method for raising the 'Closed' event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClosed(object sender, EventArgs e)
+        {
+            DialogClosed(this);
         }
+
         #endregion
 
-        #region private Methods for non-blocking dialog
-        private void ShowViewNonBlocking(CancellationToken cancellationToken)
-        {
-            Application.Current.Dispatcher.Invoke(() =>
-            {
-                _myView = View;
-                _myView.DataContext = this;
-                _myView.Show();
-                _myView.Closed += OnWindowClosed;
-            });
-
-        }
-        private void OnWindowClosed(object sender, EventArgs e)
-        {
-            this.Closed?.Invoke(this);
-        }
     }
-    #endregion
+
 }

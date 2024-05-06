@@ -7,21 +7,26 @@
         xmlns:localVMs="clr-namespace:BYTES.NET.WPF.App.ViewModels"
         xmlns:converters="clr-namespace:BYTES.NET.WPF.Converters;assembly=BYTES.NET.WPF"
         mc:Ignorable="d"
-        Title="DialogView" Height="450" Width="800">
+        Title="Sample Dialog" Height="141" Width="800" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <localVMs:DialogVM/>
     </Window.DataContext>
     
-    <Grid>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="This window is to show how the thread blocking or non blocking dialog will work" Margin="10" Grid.Row="0"/>
-        <TextBlock Text="Text for the Mainwindow" Margin="0,169,0,0" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-        <Button Content="Close" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="1" Margin="0,239,0,0"
-        Command="{Binding CloseViewCommand}"/>
-        <TextBox Grid.Row="1" Name="InputText" Text="{Binding DialogMessage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="0,199,0,0"/>
+        <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TextBlock Text="This sample dialog is intended for updating the message in the main view"/>
+            
+            <DockPanel LastChildFill="True" Margin="0,5,0,5">
+                <TextBlock Text="The message text: " />
+                <TextBox Text="{Binding DialogMessage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5,0,0,0" />
+            </DockPanel>
+
+            <Button Content="Save and Close" Command="{Binding Path=Commands[CloseDialogCmd]}"/>
+        </StackPanel>
     </Grid>
 </Window>

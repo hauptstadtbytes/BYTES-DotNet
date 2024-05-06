@@ -1,12 +1,12 @@
 ﻿//import .net (default) namespace(s)
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using BYTES.NET.WPF.App.Views;
 
 //import namespace(s) required from 'BYTES.NET.WPF' framework
 using BYTES.NET.WPF.MVVM;
@@ -33,7 +33,7 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #region private variable(s), for the dialog example(s)
 
-        private bool _blockingDialog = false;
+        private bool _showDialogBlocking = false;
         private string _dialogMessage = "Hello World!";
 
         #endregion
@@ -75,11 +75,11 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #region public properties for the dialog example(s)
 
-        public bool BlockingDialog
+        public bool ShowDialogBlocking
         {
-            get => _blockingDialog; set
+            get => _showDialogBlocking; set
             {
-                _blockingDialog = value;
+                _showDialogBlocking = value;
                 OnPropertyChanged();
             }
         }
@@ -115,8 +115,6 @@ namespace BYTES.NET.WPF.App.ViewModels
             // add DialogueViewModel Command
             this.Commands.Add("ShowDialogCmd", new ViewModelRelayCommand(ShowDialog));
 
-            // Update the output text in the main window from different thread
-            //this.Commands.Add("UpdateOutputTextGUIThreadCmd", new ViewModelRelayCommand(UpdateOutputTextGUIThread));
         }
 
         #endregion
@@ -166,45 +164,51 @@ namespace BYTES.NET.WPF.App.ViewModels
         #endregion
 
         #region private method(s) for dialog example(s)
+
         /// <summary>
-        /// opens up the DialogView and blocks the MainView 
+        /// opens up the DialogView (possibly blocking the MainView instance)
         /// </summary>
         /// <param name="arg"></param>
         private void ShowDialog(object arg)
         {
-            if (_blockingDialog) //a blocking dialog was requested
-            {
+            //create a new instance of the dialog view model
+            DialogVM dialog = new DialogVM() { DialogMessage = this.DialogMessage };
 
-                DialogVM dialog = new DialogVM();
-                dialog.instatiateView(new DialogView());
-                dialog.DialogMessage = _dialogMessage;
-                dialog.MessageUpdated += (sender, text) =>
-                {
-                    this.DialogMessage = text;
-                };
-                dialog.ShowDialog(BlockingDialog);
-
-            }
-            else //a non-blocking dialog was requested
+            //set the event handlers
+            if(!ShowDialogBlocking)
             {
-                DialogVM dialog = new DialogVM(new DialogView());
-                dialog.DialogMessage = _dialogMessage;
-                dialog.MessageUpdated += (sender, text) =>
-                {
-                    this.DialogMessage = text;
-                };
-                dialog.ShowDialog(BlockingDialog);
+                dialog.PropertyChanged += HandleDialogPropertyChanged;
             }
+            
+            dialog.DialogClosed += HandleDialogClosed;
+
+            //open the dialog
+            dialog.ShowDialog(ShowDialogBlocking);
         }
 
         /// <summary>
-        /// Updates the output text in the main window from a different thread
+        /// handles the property changed event for the dialog
         /// </summary>
-        /// <param name="text"></param>
-        public void UpdateOutputTextGUIThread(string text)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void HandleDialogPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            this.DialogMessage = text;
-            OnPropertyChanged("DialogMessage"); // Notify the UI of the change
+            if(e.PropertyName == "DialogMessage")
+            {
+                DialogVM dialog = (DialogVM)sender;
+                this.DialogMessage = dialog.DialogMessage + " (OnPropertyChanged)";
+            }
+            
+        }
+
+        /// <summary>
+        /// handles the dialog closing
+        /// </summary>
+        /// <param name="sender"></param>
+        private void HandleDialogClosed(object? sender)
+        {
+            DialogVM dialog = (DialogVM)sender;
+            this.DialogMessage = dialog.DialogMessage + " (On Closed)";
         }
 
         #endregion
