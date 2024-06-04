@@ -113,40 +113,38 @@ namespace BYTES.NET.Tests.Primitives
             string reference = "Phone";
 
             //do a basic test, calculating the similarities
-            double result = theValue.SimilarityTo(reference);
+            double result = theValue.TrigramSimilarityTo(reference);
             Debug.WriteLine("The similarity of '" + reference + "' to '" + theValue + "' is '" + result.ToString("G") + "'");
             Assert.AreEqual(1, result);
 
             reference = "Phones";
-            result = theValue.SimilarityTo(reference);
+            result = theValue.TrigramSimilarityTo(reference);
             Debug.WriteLine("The similarity of '" + reference + "' to '" + theValue + "' is '" + result.ToString("G") + "'");
             Assert.AreEqual(System.Convert.ToDouble(10) / System.Convert.ToDouble(15), result);
 
             reference = "Postpone";
-            result = theValue.SimilarityTo(reference);
+            result = theValue.TrigramSimilarityTo(reference);
             Debug.WriteLine("The similarity of '" + reference + "' to '" + theValue + "' is '" + result.ToString("G") + "'");
             Assert.IsTrue(0.5 > result);
 
             string[] options = new string[] { "Phone", "Phones", "Postpone" };
-            Dictionary<string, double> resultDictionary = theValue.SimilarityTo(options);
+            Dictionary<string, double> resultDictionary = theValue.TrigramSimilarityTo(options);
             Debug.WriteLine("The similarity of '" + theValue + "' to '" + System.String.Join(",", options) + "' is '" + string.Join(",", resultDictionary.Select(x => x.Key + "=" + x.Value).ToArray()) + "'");
             Assert.AreEqual(1, resultDictionary["Phone"]);
 
             //get the best match
-            options = new string[] { "Phones", "Postpone" };
-            double threshold = 0.65;
-            string resultString = theValue.GetBestMatch(options, threshold);
-            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' (using a threshold of '" + threshold.ToString() + "') is '" + resultString + "'");
+            options = new string[] { "Phones", "Postpone" };      
+            string resultString = theValue.GetBestMatchUsingLevenshtein(options);
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + resultString + "'");
             Assert.AreEqual("Phones", resultString);
-
-            threshold = 0.70;
-            resultString = theValue.GetBestMatch(options, threshold);
-            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' (using a threshold of '" + threshold.ToString() + "') is '" + resultString + "'");
-            Assert.AreEqual(System.String.Empty, resultString);
+          
+            resultString = theValue.GetBestMatchUsingLevenshtein(options);
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue  + "' is '" + resultString + "'");
+            Assert.AreEqual("Phones", resultString);
 
             theValue = "Match";
             options = new string[] { "Hash", "Batch", "Mitch" };
-            resultString = theValue.GetBestMatch(options);
+            resultString = theValue.GetBestMatchUsingLevenshtein(options);
             Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + resultString + "'");
             Assert.AreEqual("Batch", resultString);
 
@@ -184,25 +182,25 @@ namespace BYTES.NET.Tests.Primitives
             string str1 = "cat";
             string str2 = "cut";
             double levenshtein = str1.LevenshteinDistanceNormalized(str2);
-            double trigram = str1.SimilarityTo(str2);
+            double trigram = str1.TrigramSimilarityTo(str2);
             Assert.IsTrue(levenshtein < trigram);
 
             str1 = "quick brown fox";
             str2 = "quicker brown fox";
             levenshtein = str1.LevenshteinDistanceNormalized(str2);
-            trigram = str1.SimilarityTo(str2);
+            trigram = str1.TrigramSimilarityTo(str2);
             Assert.IsTrue(levenshtein < trigram);
 
             str1 = "the quick brown fox jumps over the lazy dog";
             str2 = "the quic brown fox jumps over the lazi dog";
             levenshtein = str1.LevenshteinDistanceNormalized(str2);
-            trigram = str1.SimilarityTo(str2);
+            trigram = str1.TrigramSimilarityTo(str2);
             Assert.IsTrue(levenshtein < trigram);
 
             str1 = "the quick brown fox jumps over the lazy dog";
             str2 = "the quic bron fox jump over he lazi dog";
             levenshtein = str1.LevenshteinDistanceNormalized(str2);
-            trigram = str1.SimilarityTo(str2);
+            trigram = str1.TrigramSimilarityTo(str2);
             Assert.IsTrue(levenshtein < trigram);
         }
 

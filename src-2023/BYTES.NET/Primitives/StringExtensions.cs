@@ -336,63 +336,6 @@ namespace BYTES.NET.Primitives
 
         }
 
-        #endregion
-
-        #region private method(s)
-
-        /// <summary>
-        /// caldulates all trigrams from a string given
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        private static string[] GetTrigrams(string source)
-        {
-
-            List<string> output = new List<string>();
-
-            for (int i = 0; i <= source.Length + 1; i++)
-            {
-
-                int index = i - 2;
-                string trigram = string.Empty;
-
-                switch (index)
-                {
-                    case -2:
-                        trigram = "  " + source.Substring(0, 1).ToUpper();
-                        break;
-
-                    case -1:
-                        trigram = " " + source.Substring(0, 2).ToUpper();
-                        break;
-
-                    default:
-                        if (index == (source.Length - 2))
-                        {
-                            trigram = source.Substring(index, 2).ToUpper() + " ";
-                            break;
-                        }
-                        else if (index == (source.Length - 1))
-                        {
-                            trigram = source.Substring(index, 1).ToUpper() + "  ";
-                            break;
-                        }
-                        else
-                        {
-                            trigram = source.Substring(index, 3).ToUpper();
-                            break;
-                        }
-
-                }
-
-                output.Add(trigram);
-
-            }
-
-            return output.ToArray();
-
-        }
-
         #region Levenshtein Distance
 
         /// <summary>
@@ -470,7 +413,6 @@ namespace BYTES.NET.Primitives
         /// </summary>
         /// <param name="target"></param>
         /// <param name="options"></param>
-        /// <param name="threshold"></param>
         /// <returns></returns>
         public static string GetBestMatchUsingLevenshtein(this string target, string[] options)
         {
@@ -483,7 +425,9 @@ namespace BYTES.NET.Primitives
             // Return the best match
             return bestMatch.Key ?? string.Empty;
         }
+
         #endregion
+
         /// <summary>
         /// Method to select which algorythm to use
         /// </summary>
@@ -501,9 +445,9 @@ namespace BYTES.NET.Primitives
             {
                 return GetBestMatchUsingLevenshtein(target, options);
             }
-            else 
-            { 
-                return "no algorithm found"; 
+            else
+            {
+                return "no algorithm found";
             }
         }
 
@@ -514,13 +458,13 @@ namespace BYTES.NET.Primitives
         /// <param name="target"></param>
         /// <param name="option"></param>
         /// <returns></returns>
-        public static double GetSimilarity (string algorythm, string target, string option)
+        public static double GetSimilarity(string algorythm, string target, string option)
         {
-            if(algorythm == "Trigram")
+            if (algorythm == "Trigram")
             {
                 return TrigramSimilarityTo(target, option);
             }
-            if(algorythm == "Levensthein")
+            if (algorythm == "Levensthein")
             {
                 return LevenshteinDistanceNormalized(target, option);
             }
@@ -528,9 +472,65 @@ namespace BYTES.NET.Primitives
             {
                 return -1;
             }
-        } 
+        }
+
         #endregion
 
+        #region private method(s)
 
+        /// <summary>
+        /// caldulates all trigrams from a string given
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        private static string[] GetTrigrams(string source)
+        {
+
+            List<string> output = new List<string>();
+
+            for (int i = 0; i <= source.Length + 1; i++)
+            {
+
+                int index = i - 2;
+                string trigram = string.Empty;
+
+                switch (index)
+                {
+                    case -2:
+                        trigram = "  " + source.Substring(0, 1).ToUpper();
+                        break;
+
+                    case -1:
+                        trigram = " " + source.Substring(0, 2).ToUpper();
+                        break;
+
+                    default:
+                        if (index == (source.Length - 2))
+                        {
+                            trigram = source.Substring(index, 2).ToUpper() + " ";
+                            break;
+                        }
+                        else if (index == (source.Length - 1))
+                        {
+                            trigram = source.Substring(index, 1).ToUpper() + "  ";
+                            break;
+                        }
+                        else
+                        {
+                            trigram = source.Substring(index, 3).ToUpper();
+                            break;
+                        }
+
+                }
+
+                output.Add(trigram);
+
+            }
+
+            return output.ToArray();
+
+        }
+
+        #endregion
     }
 }
