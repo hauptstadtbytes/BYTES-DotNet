@@ -157,5 +157,95 @@ namespace BYTES.NET.Tests.Primitives
             input = input.Replace("*", "[\\w|\\W]*");
             return new Regex("^" + input + "$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
         }
-    }
+
+        [TestMethod]
+        public void TestLevenshteinDistance()
+        {
+            string str1 = "kitten";
+            string str2 = "sitting";
+            Assert.IsTrue(str1.LevenshteinDistanceNormalized(str2) < 0.25);
+
+            str1 = "hello";
+            str2 = "holla";
+            Assert.IsTrue(str1.LevenshteinDistanceNormalized(str2) < 0.25);
+
+            str1 = "short";
+            str2 = "shortest";
+            Assert.IsTrue(str1.LevenshteinDistanceNormalized(str2) < 0.25);
+
+            str1 = "longer";
+            str2 = "longest";
+            Assert.IsTrue(str1.LevenshteinDistanceNormalized(str2) < 0.25);
+        }
+
+        [TestMethod]
+        public void CompareTrigramToLevenshtein()
+        {
+            string str1 = "cat";
+            string str2 = "cut";
+            double levenshtein = str1.LevenshteinDistanceNormalized(str2);
+            double trigram = str1.SimilarityTo(str2);
+            Assert.IsTrue(levenshtein < trigram);
+
+            str1 = "quick brown fox";
+            str2 = "quicker brown fox";
+            levenshtein = str1.LevenshteinDistanceNormalized(str2);
+            trigram = str1.SimilarityTo(str2);
+            Assert.IsTrue(levenshtein < trigram);
+
+            str1 = "the quick brown fox jumps over the lazy dog";
+            str2 = "the quic brown fox jumps over the lazi dog";
+            levenshtein = str1.LevenshteinDistanceNormalized(str2);
+            trigram = str1.SimilarityTo(str2);
+            Assert.IsTrue(levenshtein < trigram);
+
+            str1 = "the quick brown fox jumps over the lazy dog";
+            str2 = "the quic bron fox jump over he lazi dog";
+            levenshtein = str1.LevenshteinDistanceNormalized(str2);
+            trigram = str1.SimilarityTo(str2);
+            Assert.IsTrue(levenshtein < trigram);
+        }
+
+            [TestMethod]
+            public void TestLevenstheinIsSimilarWithinThreshold()
+            {
+                string str1 = "kitten";
+                string str2 = "sitting";
+                double threshold = 0.3;
+                Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+
+                str1 = "hello";
+                str2 = "holla";
+                threshold = 0.25;
+                Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+
+                str1 = "short";
+                str2 = "shortest";
+                threshold = 0.4;
+                Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+
+                str1 = "longer";
+                str2 = "longest";
+                threshold = 0.3;
+                Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+
+                // Edge cases
+                str1 = "";
+                str2 = "test";
+                threshold = 0.50;
+                Assert.IsFalse(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+
+                str1 = "test";
+                str2 = "";
+                threshold = 0.50;
+                Assert.IsFalse(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+
+                // Special characters
+                str1 = "cat!";
+                str2 = "cat?";
+                threshold = 0.25;
+                Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+            }
+        }
+    
 }
