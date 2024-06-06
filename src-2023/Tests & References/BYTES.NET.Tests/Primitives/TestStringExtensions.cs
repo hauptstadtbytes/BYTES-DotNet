@@ -1,15 +1,11 @@
 ﻿//import .net (default) namespace(s) required
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
-
 //import namespace(s) required from 'BYTES.NET' framework
 using BYTES.NET.Primitives;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BYTES.NET.Tests.Primitives
 {
@@ -133,13 +129,9 @@ namespace BYTES.NET.Tests.Primitives
             Assert.AreEqual(1, resultDictionary["Phone"]);
 
             //get the best match
-            options = new string[] { "Phones", "Postpone" };      
+            options = new string[] { "Phones", "Postpone" };
             string resultString = theValue.GetBestMatchUsingLevenshtein(options);
             Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + resultString + "'");
-            Assert.AreEqual("Phones", resultString);
-          
-            resultString = theValue.GetBestMatchUsingLevenshtein(options);
-            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue  + "' is '" + resultString + "'");
             Assert.AreEqual("Phones", resultString);
 
             theValue = "Match";
@@ -204,46 +196,46 @@ namespace BYTES.NET.Tests.Primitives
             Assert.IsTrue(levenshtein < trigram);
         }
 
-            [TestMethod]
-            public void TestLevenstheinIsSimilarWithinThreshold()
-            {
-                string str1 = "kitten";
-                string str2 = "sitting";
-                double threshold = 0.3;
-                Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+        [TestMethod]
+        public void TestLevenstheinIsSimilarWithinThreshold()
+        {
+            string str1 = "kitten";
+            string str2 = "sitting";
+            double threshold = 0.3;
+            Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
 
-                str1 = "hello";
-                str2 = "holla";
-                threshold = 0.25;
-                Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+            str1 = "hello";
+            str2 = "holla";
+            threshold = 0.25;
+            Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
 
-                str1 = "short";
-                str2 = "shortest";
-                threshold = 0.4;
-                Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+            str1 = "short";
+            str2 = "shortest";
+            threshold = 0.4;
+            Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
 
-                str1 = "longer";
-                str2 = "longest";
-                threshold = 0.3;
-                Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+            str1 = "longer";
+            str2 = "longest";
+            threshold = 0.3;
+            Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
 
-                // Edge cases
-                str1 = "";
-                str2 = "test";
-                threshold = 0.50;
-                Assert.IsFalse(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+            // Edge cases
+            str1 = "";
+            str2 = "test";
+            threshold = 0.50;
+            Assert.IsFalse(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
 
-                str1 = "test";
-                str2 = "";
-                threshold = 0.50;
-                Assert.IsFalse(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
+            str1 = "test";
+            str2 = "";
+            threshold = 0.50;
+            Assert.IsFalse(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
 
-                // Special characters
-                str1 = "cat!";
-                str2 = "cat?";
-                threshold = 0.25;
-                Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
-            }
+            // Special characters
+            str1 = "cat!";
+            str2 = "cat?";
+            threshold = 0.25;
+            Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
         }
-    
+    }
+
 }

@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using BYTES.NET.Primitives;
+
 
 //import namespace(s) required from 'BYTES.NET.WPF' framework
 using BYTES.NET.WPF.MVVM;
@@ -22,6 +24,14 @@ namespace BYTES.NET.WPF.App.ViewModels
         private AnimalVM[] _animals;
 
         private DialogVM _dialogVM;
+
+        private double _trigramDistance;
+
+        private double _levenshteinDistance;
+
+        private string _firstPattern;
+
+        private string _secondPattern;
 
         #endregion
 
@@ -54,6 +64,42 @@ namespace BYTES.NET.WPF.App.ViewModels
         public AnimalVM[] Animals { get => GetAnimals(); set
             {
                 _animals = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TrigramDistance
+        {
+            get => _trigramDistance; set
+            {
+                _trigramDistance = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double LevenshteinDistance
+        {
+            get => _levenshteinDistance; set
+            {
+                _levenshteinDistance = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string FirstPattern
+        {
+            get => _firstPattern; set
+            {
+                _firstPattern = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SecondPattern
+        {
+            get => _secondPattern; set
+            {
+                _secondPattern = value;
                 OnPropertyChanged();
             }
         }
@@ -114,6 +160,9 @@ namespace BYTES.NET.WPF.App.ViewModels
 
             // add DialogueViewModel Command
             this.Commands.Add("ShowDialogCmd", new ViewModelRelayCommand(ShowDialog));
+
+            // add the Pattern Matching Command
+            this.Commands.Add("DistanceCmd", new ViewModelRelayCommand(CalculateDistance));
 
         }
 
@@ -213,5 +262,14 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #endregion
 
+        #region private methods(s) for pattern matching
+
+        private void CalculateDistance(object arg)
+        {
+            TrigramDistance = FirstPattern.TrigramSimilarityTo(SecondPattern);
+            LevenshteinDistance = FirstPattern.LevenshteinDistanceNormalized(SecondPattern);
+        }
+
+        #endregion
     }
 }
