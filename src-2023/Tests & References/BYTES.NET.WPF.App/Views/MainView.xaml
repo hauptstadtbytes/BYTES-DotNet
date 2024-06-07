@@ -124,16 +124,16 @@
             <TabItem Header="Pattern Matching">
                 <Grid>
                     <StackPanel>
-                        <TextBlock Text="Pattern Matching"/>
-                        <TextBlock Text="First Pattern"/>
+                        <TextBlock Text="Pattern Matching" FontWeight="Bold" Margin=" 0 5 0 10"/>
+                        <TextBlock Text="First Pattern" FontWeight="Bold"/>
                         <TextBox Text="{Binding FirstPattern}"/>
-                        <TextBlock Text="Matching Pattern"/>
+                        <TextBlock Text="Matching Pattern" Margin="0 10 0 0" FontWeight="Bold"/>
                         <TextBox Text="{Binding SecondPattern}"/>
-                        <TextBlock Text="Trigram Distance:"/>
-                        <TextBlock Text="{Binding TrigramDistance}"/>
-                        <TextBlock Text="Levensthein Distance:"/>
+                        <TextBlock Text="Trigram Distance:" Margin="0 10 0 0"/>
+                        <TextBlock Text="{Binding TrigramDistance}" />
+                        <TextBlock Text="Levensthein Distance:" Margin="0 10 0 0"/>
                         <TextBlock Text="{Binding LevenshteinDistance}"/>
-                        <Button Content="Claculate Distances" Command="{Binding Path=Commands[DistanceCmd]}"/>
+                        <Button Content="Claculate Distances" Command="{Binding Path=Commands[DistanceCmd]}" Margin="0 20 0 0"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
