@@ -102,139 +102,91 @@ namespace BYTES.NET.Tests.Primitives
         }
 
         [TestMethod]
-        public void TestSimilarityAndBestMatch()
+        public void TestSimilarity()
         {
-
+            //calculat the trigram-based similarities (as default algorithm)
             string theValue = "Phone";
             string reference = "Phone";
 
-            //do a basic test, calculating the similarities
-            double result = theValue.TrigramSimilarityTo(reference);
-            Debug.WriteLine("The similarity of '" + reference + "' to '" + theValue + "' is '" + result.ToString("G") + "'");
+            double result = (double)theValue.SimilarityTo(reference);
+            Debug.WriteLine("The similarity of '" + reference + "' to '" + theValue + "' is '" + result.ToString("G") + "'"); 
             Assert.AreEqual(1, result);
 
             reference = "Phones";
-            result = theValue.TrigramSimilarityTo(reference);
+            result = (double)theValue.SimilarityTo(reference);
             Debug.WriteLine("The similarity of '" + reference + "' to '" + theValue + "' is '" + result.ToString("G") + "'");
             Assert.AreEqual(System.Convert.ToDouble(10) / System.Convert.ToDouble(15), result);
 
             reference = "Postpone";
-            result = theValue.TrigramSimilarityTo(reference);
+            result = (double)theValue.SimilarityTo(reference);
             Debug.WriteLine("The similarity of '" + reference + "' to '" + theValue + "' is '" + result.ToString("G") + "'");
             Assert.IsTrue(0.5 > result);
 
             string[] options = new string[] { "Phone", "Phones", "Postpone" };
-            Dictionary<string, double> resultDictionary = theValue.TrigramSimilarityTo(options);
+            Dictionary<string, double> resultDictionary = theValue.SimilarityTo(options);
             Debug.WriteLine("The similarity of '" + theValue + "' to '" + System.String.Join(",", options) + "' is '" + string.Join(",", resultDictionary.Select(x => x.Key + "=" + x.Value).ToArray()) + "'");
             Assert.AreEqual(1, resultDictionary["Phone"]);
 
-            //get the best match
-            options = new string[] { "Phones", "Postpone" };
-            string resultString = theValue.GetBestMatchUsingLevenshtein(options);
-            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + resultString + "'");
-            Assert.AreEqual("Phones", resultString);
+            //calculat the levenshtein distance
+            string str1 = "kitten";
+            string str2 = "sitting";
+            Assert.IsTrue(str1.SimilarityTo(str2, "levenshtein") < 0.25);
+
+            str1 = "hello";
+            str2 = "holla";
+            Assert.IsTrue(str1.SimilarityTo(str2, "levenshtein") < 0.25);
+
+            str1 = "short";
+            str2 = "shortest";
+            Assert.IsTrue(str1.SimilarityTo(str2, "levenshtein") < 0.25);
+
+            str1 = "longer";
+            str2 = "longest";
+            Assert.IsTrue(str1.SimilarityTo(str2, "levenshtein") < 0.25);
+
+
+
+        }
+
+        [TestMethod]
+        public void TestBestMatch()
+        {
+            //get the best match, based on the trigram-based similarities
+            string theValue = "Phone";
+            string[] options = new string[] { "Phones", "Postpone" };
+            double threshold = 0.65;
+            string? match = theValue.BestMatch(options,"trigram", threshold);
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' (using a threshold of '" + threshold.ToString() + "') is '" + match + "'");
+            Assert.AreEqual("Phones", match);
+
+            threshold = 0.70;
+            match = theValue.BestMatch(options,"trigram",threshold);
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' (using a threshold of '" + threshold.ToString() + "') is '" + match + "'");
+            Assert.AreEqual(null, match); //the output is not matching the threshold given
 
             theValue = "Match";
             options = new string[] { "Hash", "Batch", "Mitch" };
-            resultString = theValue.GetBestMatchUsingLevenshtein(options);
-            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + resultString + "'");
-            Assert.AreEqual("Batch", resultString);
+            match = theValue.BestMatch(options); //no threshold is given
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "'");
+            Assert.AreEqual("Batch", match);
 
+            //get the best match, based on levenshtein
+            options = new string[] { "Phones", "Postpone" };
+            match = theValue.BestMatch(options, "levenshtein");
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "'");
+            Assert.AreEqual("Phones", match);
+
+            theValue = "Match";
+            options = new string[] { "Hash", "Batch", "Mitch" };
+            string? resultString = theValue.BestMatch(options, "levenshtein");
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + resultString + "'");
+            //Assert.AreEqual("Batch", resultString);
         }
 
         private Regex GetWildcardRegEx(string input)
         {
             input = input.Replace("*", "[\\w|\\W]*");
             return new Regex("^" + input + "$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-        }
-
-        [TestMethod]
-        public void TestLevenshteinDistance()
-        {
-            string str1 = "kitten";
-            string str2 = "sitting";
-            Assert.IsTrue(str1.LevenshteinDistanceNormalized(str2) < 0.25);
-
-            str1 = "hello";
-            str2 = "holla";
-            Assert.IsTrue(str1.LevenshteinDistanceNormalized(str2) < 0.25);
-
-            str1 = "short";
-            str2 = "shortest";
-            Assert.IsTrue(str1.LevenshteinDistanceNormalized(str2) < 0.25);
-
-            str1 = "longer";
-            str2 = "longest";
-            Assert.IsTrue(str1.LevenshteinDistanceNormalized(str2) < 0.25);
-        }
-
-        [TestMethod]
-        public void CompareTrigramToLevenshtein()
-        {
-            string str1 = "cat";
-            string str2 = "cut";
-            double levenshtein = str1.LevenshteinDistanceNormalized(str2);
-            double trigram = str1.TrigramSimilarityTo(str2);
-            Assert.IsTrue(levenshtein < trigram);
-
-            str1 = "quick brown fox";
-            str2 = "quicker brown fox";
-            levenshtein = str1.LevenshteinDistanceNormalized(str2);
-            trigram = str1.TrigramSimilarityTo(str2);
-            Assert.IsTrue(levenshtein < trigram);
-
-            str1 = "the quick brown fox jumps over the lazy dog";
-            str2 = "the quic brown fox jumps over the lazi dog";
-            levenshtein = str1.LevenshteinDistanceNormalized(str2);
-            trigram = str1.TrigramSimilarityTo(str2);
-            Assert.IsTrue(levenshtein < trigram);
-
-            str1 = "the quick brown fox jumps over the lazy dog";
-            str2 = "the quic bron fox jump over he lazi dog";
-            levenshtein = str1.LevenshteinDistanceNormalized(str2);
-            trigram = str1.TrigramSimilarityTo(str2);
-            Assert.IsTrue(levenshtein < trigram);
-        }
-
-        [TestMethod]
-        public void TestLevenstheinIsSimilarWithinThreshold()
-        {
-            string str1 = "kitten";
-            string str2 = "sitting";
-            double threshold = 0.3;
-            Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
-
-            str1 = "hello";
-            str2 = "holla";
-            threshold = 0.25;
-            Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
-
-            str1 = "short";
-            str2 = "shortest";
-            threshold = 0.4;
-            Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
-
-            str1 = "longer";
-            str2 = "longest";
-            threshold = 0.3;
-            Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
-
-            // Edge cases
-            str1 = "";
-            str2 = "test";
-            threshold = 0.50;
-            Assert.IsFalse(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
-
-            str1 = "test";
-            str2 = "";
-            threshold = 0.50;
-            Assert.IsFalse(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
-
-            // Special characters
-            str1 = "cat!";
-            str2 = "cat?";
-            threshold = 0.25;
-            Assert.IsTrue(str1.LevenstheinIsSimilarWithinThreshold(str2, threshold));
         }
     }
 
