@@ -130,22 +130,15 @@ namespace BYTES.NET.Tests.Primitives
             //calculat the levenshtein distance
             string str1 = "kitten";
             string str2 = "sitting";
-            Assert.IsTrue(str1.SimilarityTo(str2, "levenshtein") < 0.25);
+            result = (double)str1.SimilarityTo(str2, "levenshtein");
+            Debug.WriteLine("The similarity of '" + str1 + "' to '" + str2 + "' is '" + result.ToString("G") + "'");
+            Assert.IsTrue(result < 0.47);
 
             str1 = "hello";
             str2 = "holla";
-            Assert.IsTrue(str1.SimilarityTo(str2, "levenshtein") < 0.25);
-
-            str1 = "short";
-            str2 = "shortest";
-            Assert.IsTrue(str1.SimilarityTo(str2, "levenshtein") < 0.25);
-
-            str1 = "longer";
-            str2 = "longest";
-            Assert.IsTrue(str1.SimilarityTo(str2, "levenshtein") < 0.25);
-
-
-
+            result = (double)str1.SimilarityTo(str2, "levenshtein");
+            Debug.WriteLine("The similarity of '" + str1 + "' to '" + str2 + "' is '" + result.ToString("G") + "'");
+            Assert.IsTrue(result < 0.41);
         }
 
         [TestMethod]

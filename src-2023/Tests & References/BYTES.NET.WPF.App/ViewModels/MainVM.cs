@@ -26,21 +26,7 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         private DialogVM _dialogVM;
 
-        private double _trigramDistance;
-
-        private double _levenshteinDistance;
-
-        private string _firstPattern;
-
-        private string _secondPattern;
-
-        private string _matchReference;
-
-        private string _firstMatch;
-
-        private string _secondMatch;
-
-        private string _match;
+        private StringMatchingVM _matchingVM = new StringMatchingVM(); //contains the entire example for string matching
 
         #endregion
 
@@ -77,76 +63,7 @@ namespace BYTES.NET.WPF.App.ViewModels
             }
         }
 
-        public double TrigramDistance
-        {
-            get => _trigramDistance; set
-            {
-                _trigramDistance = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public double LevenshteinDistance
-        {
-            get => _levenshteinDistance; set
-            {
-                _levenshteinDistance = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string FirstPattern
-        {
-            get => _firstPattern; set
-            {
-                _firstPattern = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string SecondPattern
-        {
-            get => _secondPattern; set
-            {
-                _secondPattern = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string MatchReference
-        {
-            get => _matchReference; set
-            {
-                _matchReference = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string FirstMatch
-        {
-            get => _firstMatch; set
-            {
-                _firstMatch = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string SecondMatch
-        {
-            get => _secondMatch; set
-            {
-                _secondMatch = value;
-                OnPropertyChanged();
-            }
-        }
-        public string Match
-        {
-            get => _match; set
-            {
-                _match = value;
-                OnPropertyChanged();
-            }
-        }
+        public StringMatchingVM StringMatching { get => _matchingVM; }
 
         #endregion
 
@@ -195,11 +112,6 @@ namespace BYTES.NET.WPF.App.ViewModels
 
             this.Title = "Sample";
             _animals = GetAnimals();
-            _matchReference = "Phone";
-            _firstMatch = "Phones";
-            _secondMatch = "Postpone";
-            _firstPattern = "Phone";
-            _secondPattern = "Phones";
 
             //add command(s)
             this.Commands.Add("PromptTextCmd", new ViewModelRelayCommand(PromptText));
@@ -209,13 +121,6 @@ namespace BYTES.NET.WPF.App.ViewModels
 
             // add DialogueViewModel Command
             this.Commands.Add("ShowDialogCmd", new ViewModelRelayCommand(ShowDialog));
-
-            // add the Pattern Matching Command
-            this.Commands.Add("DistanceCmd", new ViewModelRelayCommand(CalculateDistance));
-
-            // add the Commands for the Best Match
-            this.Commands.Add("BestMatchTrigramCmd", new ViewModelRelayCommand(BestMatchTrigram));
-            this.Commands.Add("BestMatchLevenshteinCmd", new ViewModelRelayCommand(BestMatchLevenshtein));
 
         }
 
@@ -314,52 +219,6 @@ namespace BYTES.NET.WPF.App.ViewModels
         }
 
         #endregion
-
-        #region private methods(s) for pattern matching
-
-        private void CalculateDistance(object arg)
-        {
-            if(FirstPattern ==  "" || SecondPattern == "")
-            {
-                return;
-            }
-            else
-            {
-                TrigramDistance = (double)FirstPattern.SimilarityTo(SecondPattern, "Trigram");
-                LevenshteinDistance = (double)FirstPattern.SimilarityTo(SecondPattern, "Levenshtein");
-            }
-        }
-
-        #endregion
-
-        #region method(s) for best match
-
-        private void BestMatchTrigram(object arg)
-        {
-            if(MatchReference == "" || FirstMatch == "" || SecondMatch == "")
-            {
-                return;
-            }
-            else
-            {
-                var options = new List<string> { FirstMatch, SecondMatch };
-                Match = MatchReference.BestMatch(options, "Trigram");
-            }
-        }
-
-        private void BestMatchLevenshtein(object arg)
-        {
-            if (MatchReference == "" || FirstMatch == "" || SecondMatch == "")
-            {
-                return;
-            }
-            else
-            {
-                var options = new List<string> { FirstMatch, SecondMatch };
-                Match = MatchReference.BestMatch(options, "Levenshtein");
-            }
-        }
-
-        #endregion
+  
     }
 }
