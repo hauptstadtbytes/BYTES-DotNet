@@ -1,235 +1,366 @@
-# BYTES.NET.Primitives.StringExtensions Documentation
-
+# StringExtensions Class Documentation
 ## Overview
-The `BYTES.NET.Primitives.StringExtensions` class provides a collection of extension methods for the `System.String` class. These methods enhance the functionality of strings by offering utilities for trimming characters, finding character or regex pattern occurrences, checking if an array of strings contains a specific value, expanding variables within a string, and calculating string similarity using trigram and Levenshtein distance algorithms.
+The StringExtensions class in the BYTES.NET.Primitives namespace provides various extension methods for string type operations. These methods include functionalities such as trimming characters, finding indexes of characters or patterns, checking for string containment, expanding variables, matching patterns using regular expressions, parsing key-value pairs, and calculating string similarities using different algorithms.
+
+### Namespace
+```csharp
+//import .net (default) namespace(s)
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using BYTES.NET.Primitives;
+
+//import namespace(s) required from 'BYTES.NET.WPF' framework
+using BYTES.NET.WPF.MVVM;
+```
+
+## Class Definition
+```csharp
+namespace BYTES.NET.Primitives
+{
+    public static class StringExtensions
+    {
+        // Methods defined here
+    }
+}
+```
 
 ## Methods
-
-### Trim
+### Trim (Available only in .NET Full)
 ```csharp
-Trim(this string text, char character)
+public static string Trim(this string text, char character)
 ```
-Removes all leading or trailing instances of a specified character from the string.
+Removes all leading or trailing instances of a character from the given string.
 
-#### Parameters:
+### Parameters:
 
-text: The original string.
-character: The character to remove.
-Returns:
+text (string): The input string.
+character (char): The character to trim.
 
-A string with leading and trailing instances of the specified character removed.
-### AllIndexesOf(Character)
+### Returns:
+
+string: The trimmed string.
+### AllIndexesOf (Character)
 ```csharp
-AllIndexesOf(this string str, char character)
+public static int[] AllIndexesOf(this string str, char character)
 ```
-Returns a zero-based list of all indexes of a character inside a string.
+Returns a zero-based list of all indexes of a character inside a given string.
 
-#### Parameters:
+### Parameters:
 
-str: The input string.
-character: The character to find indexes for.
-#### Returns:
+str (string): The input string.
+character (char): The character to find.
 
-An array of integers representing the indexes of the character in the string.
-### AllIndexesOf (Regex)
+### Returns:
+
+int[]: Array of indexes where the character occurs.
+
+## AllIndexesOf (Regex)
 ```csharp
-AllIndexesOf(this string str, Regex expression)
+public static int[] AllIndexesOf(this string str, Regex expression)
 ```
-Returns a zero-based list of all indexes of strings matching the given regex expression.
+Returns a zero-based list of all indexes of strings matching the given regular expression.
 
-#### Parameters:
+### Parameters:
 
-str: The input string.
-expression: The regex pattern to match.
-#### Returns:
+str (string): The input string.
+expression (Regex): The regular expression to match.
 
-An array of integers representing the indexes of matches in the string.
+### Returns:
+
+int[]: Array of indexes where the pattern occurs.
+
 ### Contains
 ```csharp
-Contains(this string[] strings, string match, bool ignoreCase = true)
+public static bool Contains(this string[] strings, string match, bool ignoreCase = true)
 ```
 Checks if a string array contains a specific value, optionally ignoring case.
 
-#### Parameters:
+### Parameters:
 
-strings: The array of strings to check.
-match: The value to search for.
-ignoreCase: A boolean indicating whether to ignore case during the search.
-#### Returns:
+strings (string[]): The array of strings.
+match (string): The string to match.
+ignoreCase (bool, optional): Ignore case when comparing. Default is true.
 
-A boolean indicating whether the value was found in the array.
-### Expand
+### Returns:
+
+bool: true if the string is found, otherwise false.
+
+## Expand
 ```csharp
-Expand(this System.String text, Dictionary<string, string> variables, bool ignoreCase = true)
+public static string Expand(this string text, Dictionary<string, string> variables, bool ignoreCase = true)
 ```
-Expands variables inside a string based on a dictionary of variable names and their replacements.
+Expands variables inside a given string.
 
-#### Parameters:
+### Parameters:
 
-text: The input string.
-variables: A dictionary mapping variable names to their replacements.
-ignoreCase: A boolean indicating whether to ignore case during replacement.
-#### Returns:
+text (string): The input string.
+variables (Dictionary<string, string>): Dictionary of variables to expand.
+ignoreCase (bool, optional): Ignore case when matching variables. Default is true.
 
-A string with variables expanded according to the provided dictionary.
-### MatchesPattern
+### Returns:
+
+string: The expanded string.
+
+## MatchesPattern (with out Match)
 ```csharp
-MatchesPattern(this string text, Regex pattern, out Match? match)
+public static bool MatchesPattern(this string text, Regex pattern, out Match? match)
 ```
-Eases regex-based matching for string values, returning the first successful match along with the match object.
+Checks if the string matches the given pattern using regular expressions, returning the match.
 
-#### Parameters:
+### Parameters:
 
-text: The input string.
-pattern: The regex pattern to match against.
-match: An out parameter receiving the first successful match.
-#### Returns:
+text (string): The input string.
+pattern (Regex): The regular expression pattern.
+match (Match, out): The match found.
 
-A boolean indicating whether a match was found.
-### SimilarityTo (String)
+### Returns:
+
+bool: true if a match is found, otherwise false.
+
+## MatchesPattern
 ```csharp
-SimilarityTo(this System.String text, string reference)
+public static bool MatchesPattern(this string text, Regex pattern)
+```
+Checks if the string matches the given pattern using regular expressions.
+
+### Parameters:
+
+text (string): The input string.
+pattern (Regex): The regular expression pattern.
+
+### Returns:
+
+bool: true if a match is found, otherwise false.
+
+## ParseKeyValue
+```csharp
+public static KeyValuePair<string, string> ParseKeyValue(this string text, char[] equalitySigns = null)
+```
+Returns a key-value pair from a string containing an equality character.
+
+### Parameters:
+
+text (string): The input string.
+equalitySigns (char[], optional): Array of equality signs. Default is ['=', ':'].
+
+### Returns:
+
+KeyValuePair<string, string>: The parsed key-value pair.
+
+## SimilarityTo (Single Reference)
+```csharp
+public static double? SimilarityTo(this string text, string reference, string algorithm = "trigram")
+```
+Returns the string similarity to a given reference string using the specified algorithm.
+
+### Parameters:
+
+text (string): The input string.
+reference (string): The reference string.
+algorithm (string, optional): The algorithm to use ('trigram' or 'levenshtein'). Default is trigram.
+
+### Returns:
+
+double?: The similarity score.
+
+## SimilarityTo (Multiple References)
+```csharp
+public static Dictionary<string, double> SimilarityTo(this string text, IEnumerable<string> reference, string algorithm = "trigram")
+```
+Returns the string similarity for an array of reference strings using the specified algorithm.
+
+### Parameters:
+
+text (string): The input string.
+reference (IEnumerable<string>): The array of reference strings.
+algorithm (string, optional): The algorithm to use ('trigram' or 'levenshtein'). Default is trigram.
+
+### Returns:
+
+Dictionary<string, double>: Dictionary of reference strings and their similarity scores.
+
+## BestMatch
+```csharp
+public static string? BestMatch(this string text, IEnumerable<string> options, out double dist, string algorithm = "trigram", double? threshold = null)
+```
+Returns the best match from a list of options given, respecting an optional threshold.
+
+### Parameters:
+
+text (string): The input string.
+options (IEnumerable<string>): The list of options.
+dist (double, out): The similarity score of the best match.
+algorithm (string, optional): The algorithm to use ('trigram' or 'levenshtein'). Default is trigram.
+threshold (double?, optional): The threshold value for the similarity score. Default is null.
+
+### Returns:
+
+string?: The best match if it meets the threshold, otherwise null.
+
+## BestMatch (Without out double)
+```csharp
+public static string? BestMatch(this string text, IEnumerable<string> options, string algorithm = "trigram", double? threshold = null)
+```
+Returns the best match from a list of options given, respecting an optional threshold
+
+### Parameters:
+
+text (string): The input string.
+options (IEnumerable<string>): The list of options.
+algorithm (string, optional): The algorithm to use ('trigram' or 'levenshtein'). Default is trigram.
+threshold (double?, optional): The threshold value for the similarity score. Default is null.
+
+### Returns:
+
+string?: The best match if it meets the threshold, otherwise null.
+
+## Private Helper Methods
+### GetTrigrams
+```csharp
+private static string[] GetTrigrams(string source)
+```
+Calculates all trigrams from a given string.
+
+### Parameters:
+
+source (string): The input string.
+
+### Returns:
+
+string[]: Array of trigrams.
+
+## TrigramSimilarityTo
+```csharp
+private static double TrigramSimilarityTo(string text, string reference)
 ```
 Calculates the trigram-based similarity between two strings.
 
-#### Parameters:
+### Parameters:
 
-text: The input string.
-reference: The reference string to compare against.
-#### Returns:
+text (string): The input string.
+reference (string): The reference string.
 
-A double representing the similarity score.
-### SimilarityTo (String Array)
+### Returns:
+
+double: The similarity score.
+
+### GetBestMatchUsingTrigrams
 ```csharp
-SimilarityTo(this System.String text, string[] reference)
+private static string? GetBestMatchUsingTrigrams(string text, IEnumerable<string> options, out double dist, double threshold = 0)
 ```
-Calculates the trigram-based similarity between a string and an array of reference strings.
+Returns the trigram-based best match from a list of string options, respecting a threshold value optionally.
 
-#### Parameters:
+### Parameters:
 
-text: The input string.
-reference: An array of reference strings to compare against.
-#### Returns:
+text (string): The input string.
+options (IEnumerable<string>): The list of options.
+dist (double, out): The similarity score of the best match.
+threshold (double, optional): The threshold value for the similarity score. Default is 0.
 
-A dictionary mapping reference strings to their similarity scores.
-### GetBestMatch
+### Returns:
+
+string?: The best match if it meets the threshold, otherwise null.
+
+### GetBestMatchUsingTrigrams(Without out double)
 ```csharp
-GetBestMatch(this System.String text, string[] options, double threshold = 0)
+private static string? GetBestMatchUsingTrigrams(string text, IEnumerable<string> options, double threshold = 0)
 ```
-Finds the best match from a list of string options based on similarity, optionally considering a threshold.
+Returns the trigram-based best match from a list of string options, respecting a threshold value optionally.
 
-#### Parameters:
+### Parameters:
 
-text: The input string.
-options: An array of potential matches.
-threshold: The minimum similarity score to consider a match valid.
-#### Returns:
+text (string): The input string.
+options (IEnumerable<string>): The list of options.
+threshold (double, optional): The threshold value for the similarity score. Default is 0.
 
-The best matching string or an empty string if no match exceeds the threshold.
-### LevenshteinDistanceNormalized
+### Returns:
+
+string?: The best match if it meets the threshold, otherwise null.
+
+## LevenshteinDistanceNormalizedTo
 ```csharp
-LevenshteinDistanceNormalized(this string first, string second)
+private static double LevenshteinDistanceNormalizedTo(string first, string second)
 ```
 Calculates the normalized Levenshtein distance between two strings.
 
-#### Parameters:
+### Parameters:
 
-first: The first string.
-second: The second string.
-#### Returns:
+first (string): The first string.
+second (string): The second string.
 
-The normalized Levenshtein distance between the two strings.
-### MinimumLevenshteinDistanceNormalized
+### Returns:
+
+double: The normalized Levenshtein distance.
+
+## GetBestMatchUsingLevenshteinDistanceNormalized
 ```csharp
-MinimumLevenshteinDistanceNormalized(this string target, IEnumerable<string> candidates)
+private static string? GetBestMatchUsingLevenshteinDistanceNormalized(string text, IEnumerable<string> options, out double dist, double? threshold = 0)
 ```
-Finds the minimum normalized Levenshtein distance among a collection of strings to a target string.
+Returns the Levenshtein-based best match from a list of string options, respecting a threshold value optionally.
 
-#### Parameters:
+### Parameters:
 
-target: The target string.
-candidates: A collection of candidate strings.
-#### Returns:
+text (string): The input string.
+options (IEnumerable<string>): The list of options.
+dist (double, out): The similarity score of the best match.
+threshold (double, optional): The threshold value for the similarity score. Default is 0.
 
-A dictionary with each candidate string and its corresponding normalized Levenshtein distance to the target string.
-### LevenstheinIsSimilarWithinThreshold
+### Returns:
+
+string?: The best match if it meets the threshold, otherwise null.
+
+## GetBestMatchUsingLevenshteinDistanceNormalized (Without out double)
 ```csharp
-LevenstheinIsSimilarWithinThreshold(this string first, string second, double threshold)
+private static string? GetBestMatchUsingLevenshteinDistanceNormalized(string text, IEnumerable<string> options, double? threshold = 0)
 ```
-Determines whether two strings are similar within a specified threshold.
+Returns the Levenshtein-based best match from a list of string options, respecting a threshold value optionally.
 
-#### Parameters:
+### Parameters:
 
-first: The first string.
-second: The second string.
-threshold: The maximum allowed normalized Levenshtein distance for the strings to be considered similar.
-#### Returns:
+text (string): The input string.
+options (IEnumerable<string>): The list of options.
+threshold (double, optional): The threshold value for the similarity score. Default is 0.
 
-A boolean indicating whether the strings are similar within the threshold.
-### GetBestMatchUsingLevenshtein
-```csharp
-GetBestMatchUsingLevenshtein(this string target, string[] options)
-```
-Determines the best match between the array of strings and the target.
+### Returns:
 
-#### Parameters:
+string?: The best match if it meets the threshold, otherwise null.
 
-target: The target string.
-options: The array of string options.
-#### Returns:
+## Pros and Cons of Algorithms
+### Trigram Algorithm
+#### Pros:
 
-The best matching string.
-### GetBestMatch
-```csharp
-GetBestMatch(string algorythm, string target, string[] options)
-```
-Selects which algorithm to use to determine the best match.
+Speed: Trigram comparison is generally faster, especially for longer strings.
 
-#### Parameters:
+Efficiency: It works well for approximate matching and can handle misspellings or variations in text efficiently.
 
-algorythm: The algorithm to use ("Trigram" or "Levensthein").
-target: The target string.
-options: The array of string options.
-#### Returns:
+Simplicity: Easy to implement and understand.
 
-The best matching string or a message indicating no algorithm was found.
-### GetSimilarity
-```csharp
-GetSimilarity(string algorythm, string target, string option)
-```
-Selects which algorithm to use to determine the similarity.
+#### Cons:
 
-#### Parameters:
+Accuracy: May not be as accurate for short strings or strings with significant differences.
 
-algorythm: The algorithm to use ("Trigram" or "Levensthein").
-target: The target string.
-option: The option string.
-#### Returns:
+Memory Usage: Can be memory-intensive for very long strings due to the generation of many trigrams.
 
-The similarity score or -1 if no algorithm was found.
+### Levenshtein Algorithm
+#### Pros:
 
-### Trigram vs. Levenshtein Distance
-#### Pros of Trigram Analysis
-##### Performance: 
-Generally faster for large datasets due to lower computational complexity.
-##### Simplicity: 
-Easier to implement and understand.
-Memory Efficiency: Uses less memory as it operates on smaller substrings.
-#### Cons of Trigram Analysis
-##### Accuracy: 
-Less accurate for short strings or strings with unique words, as common phrases might not share many trigrams.
-##### Context Sensitivity: 
-May not capture semantic meaning well, especially in languages with complex grammar.
-#### Pros of Levenshtein Distance
-##### Accuracy: 
-More accurate for comparing strings, especially in cases where small changes lead to significant differences.
-##### Flexibility: 
-Can handle insertions, deletions, and substitutions more gracefully.
-#### Cons of Levenshtein Distance
-##### Performance: 
-Significantly slower for large datasets due to higher computational complexity.
-##### Complexity:
-More complex to implement and understand.
-Memory Usage: Higher memory usage due to processing entire strings.
+Accuracy: Provides a precise measure of difference by considering insertions, deletions, and substitutions.
 
-In summary, trigram analysis is suitable for quick, approximate comparisons over large datasets, while Levenshtein distance offers a more precise but computationally intensive approach for detailed string comparisons.
+Flexibility: Effective for short strings and can accurately measure similarity even with significant differences.
+
+Standard Metric: Widely recognized and used in various applications for string comparison.
+
+#### Cons:
+
+Speed: Can be slower compared to trigram, especially for longer strings.
+
+Complexity: More computationally intensive, which can affect performance.
+
+Implementation: More complex to implement compared to trigram.

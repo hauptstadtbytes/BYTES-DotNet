@@ -155,32 +155,171 @@ namespace BYTES.NET.Tests.Primitives
             string theValue = "Phone";
             string[] options = new string[] { "Phones", "Postpone" };
             double threshold = 0.65;
-            string? match = theValue.BestMatch(options,"trigram", threshold);
-            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' (using a threshold of '" + threshold.ToString() + "') is '" + match + "'");
+            double dist = 0;
+            string? match = theValue.BestMatch(options, out dist, "trigram", threshold);
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' (using a threshold of '" + threshold.ToString() + "') is '" + match + "' with a simliarity of " + dist);
             Assert.AreEqual("Phones", match);
 
             threshold = 0.70;
-            match = theValue.BestMatch(options,"trigram",threshold);
-            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' (using a threshold of '" + threshold.ToString() + "') is '" + match + "'");
+            match = theValue.BestMatch(options, out dist, "trigram",threshold);
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' (using a threshold of '" + threshold.ToString() + "') is '" + match + "' with a simliarity of " + dist);
             Assert.AreEqual(null, match); //the output is not matching the threshold given
 
             theValue = "Match";
             options = new string[] { "Hash", "Batch", "Mitch" };
-            match = theValue.BestMatch(options); //no threshold is given
-            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "'");
+            match = theValue.BestMatch(options, out dist, "trigram"); //no threshold is given
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "' with a simliarity of " + dist);
             Assert.AreEqual("Batch", match);
 
             //get the best match, based on levenshtein
+            theValue = "Phone";
             options = new string[] { "Phones", "Postpone" };
-            match = theValue.BestMatch(options, "levenshtein");
-            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "'");
+            match = theValue.BestMatch(options, out dist, "trigram"); //no threshold is given
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "' with a simliarity of " + dist);
             Assert.AreEqual("Phones", match);
 
             theValue = "Match";
             options = new string[] { "Hash", "Batch", "Mitch" };
-            string? resultString = theValue.BestMatch(options, "levenshtein");
-            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + resultString + "'");
-            //Assert.AreEqual("Batch", resultString);
+            string? resultString = theValue.BestMatch(options, out dist, "levenshtein");
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + resultString + "' with a distance of " + dist);
+            Assert.AreEqual("Batch", resultString);
+
+            theValue = "Meier";
+            options = new string[] { "Maier", "Mayer", "Meyer" };
+            match = theValue.BestMatch(options, "levenshtein");
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "' ");
+            Assert.AreEqual("Maier", match);
+
+            theValue = "Phone";
+            options = new string[] { "Phones", "Telefon", "Telephone", "Mobile Phone" };
+            match = theValue.BestMatch(options, out dist, "levenshtein");
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "' with a distance of " + dist);
+            Assert.AreEqual("Phones", match);
+
+            theValue = "Mobile";
+            options = new string[] { "Phones", "Telefon", "Telephone", "Mobile Phone" };
+            match = theValue.BestMatch(options, out dist, "levenshtein");
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "' with a distance of " + dist);
+            Assert.AreEqual("Mobile Phone", match);
+
+            theValue = "München";
+            options = new string[] { "Muenchen", "Munic", "München" };
+            match = theValue.BestMatch(options, out dist, "levenshtein");
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "' with a distance of " + dist);
+            Assert.AreEqual("München", match);
+
+            theValue = "München";
+            options = new string[] { "Muenchen", "Munic"};
+            match = theValue.BestMatch(options, out dist, "levenshtein");
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "' with a distance of " + dist);
+            Assert.AreEqual("Muenchen", match);
+
+            theValue = "Hallo";
+            options = new string[] { "Welt", "Auto", "Franz", "Garten" };
+            match = theValue.BestMatch(options, out dist, "levenshtein");
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "' with a distance of " + dist);
+            Assert.AreEqual("Welt", match);
+
+            theValue = "Hallo";
+            options = new string[] { "Welt", "Auto", "Franz", "Garten" };
+            match = theValue.BestMatch(options, out dist, "levenshtein", 0.5);
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "' with a distance of " + dist);
+            Assert.AreEqual(null, match);
+        }
+
+        [TestMethod]
+        public void CompareSpeedBestMatch()
+        {
+            double dist = 0;
+            //See the faster Algorythm for a normal string
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            string theValue = "Phone";
+            string[] options = new string[] { "Phones", "Postpone" };
+            string? match = theValue.BestMatch(options, out dist, "trigram");
+            watch.Stop();
+            var elapsedMsTrigram = watch.ElapsedMilliseconds;
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + " is '" + match + "'");
+
+            watch = System.Diagnostics.Stopwatch.StartNew();
+            theValue = "Phone";
+            options = new string[] { "Phones", "Postpone" };
+            match = theValue.BestMatch(options, out dist, "levenshtein");
+            watch.Stop();
+            var elapsedMsLevenhstein = watch.ElapsedMilliseconds;
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "'");
+
+            if (elapsedMsTrigram < elapsedMsLevenhstein)
+            {
+                Debug.WriteLine("Trigram was faster than Levenhstein");
+            }
+            if (elapsedMsTrigram > elapsedMsLevenhstein)
+            {
+                Debug.WriteLine("Levenhstein was faster than Trigram");
+            }
+            else
+            {
+                Debug.WriteLine("Trigram and Levenhstein have the same speed");
+            }
+
+            //See the faster Algorythm for a short string
+            watch = System.Diagnostics.Stopwatch.StartNew();
+            theValue = "Ab";
+            options = new string[] { "Ab", "Abb" };
+            match = theValue.BestMatch(options, out dist, "trigram");
+            watch.Stop();
+            elapsedMsTrigram = watch.ElapsedMilliseconds;
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + " is '" + match + "'");
+
+            watch = System.Diagnostics.Stopwatch.StartNew();
+            theValue = "Ab";
+            options = new string[] { "Ab", "Abb" };
+            match = theValue.BestMatch(options, out dist, "levenshtein");
+            watch.Stop();
+            elapsedMsLevenhstein = watch.ElapsedMilliseconds;
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "'");
+
+            if (elapsedMsTrigram < elapsedMsLevenhstein)
+            {
+                Debug.WriteLine("Trigram was faster than Levenhstein");
+            }
+            if (elapsedMsTrigram > elapsedMsLevenhstein)
+            {
+                Debug.WriteLine("Levenhstein was faster than Trigram");
+            }
+            else
+            {
+                Debug.WriteLine("Trigram and Levenhstein have the same speed");
+            }
+
+            //See the faster Algorythm for a long string
+            watch = System.Diagnostics.Stopwatch.StartNew();
+            theValue = "Despite the persistent drizzle, the determined runner, who wore a bright yellow raincoat and a pair of sturdy running shoes, continued her morning jog along the scenic, tree-lined path, where the chirping birds and the rustling leaves created a symphony of nature, and she greeted the occasional passerby with a cheerful wave, while maintaining her steady pace and focusing on her breathing technique";
+            options = new string[] { "Despite persistent drizzle, the determined runner, who wore a bright yellow raincoat and a pair of sturdy running shoes, continued her morning jog along the scenic, tree-lined path, where the chirping birds and the rustling leaves created a symphony of nature, and she greeted the occasional passerby with a cheerful wave, while maintaining her steady pace and focusing on her breathing technique", "Despite the persistent drizzle, the determined runner, who wore a bright yellow raincoat and a pair of sturdy running shoes, continued her morning jog along the scenic, tree-lined path, where the chirping birds and the rustling leaves created a symphony of nature, and she greeted the occasional passerby with a cheerful wave, while maintaining her steady pace and focusing on her breathing technique" };
+            match = theValue.BestMatch(options, out dist, "trigram");
+            watch.Stop();
+            elapsedMsTrigram = watch.ElapsedMilliseconds;
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + " is '" + match + "'");
+
+            watch = System.Diagnostics.Stopwatch.StartNew();
+            theValue = "Despite the persistent drizzle, the determined runner, who wore a bright yellow raincoat and a pair of sturdy running shoes, continued her morning jog along the scenic, tree-lined path, where the chirping birds and the rustling leaves created a symphony of nature, and she greeted the occasional passerby with a cheerful wave, while maintaining her steady pace and focusing on her breathing technique";
+            options = new string[] { "Despite persistent drizzle, the determined runner, who wore a bright yellow raincoat and a pair of sturdy running shoes, continued her morning jog along the scenic, tree-lined path, where the chirping birds and the rustling leaves created a symphony of nature, and she greeted the occasional passerby with a cheerful wave, while maintaining her steady pace and focusing on her breathing technique", "Despite the persistent drizzle, the determined runner, who wore a bright yellow raincoat and a pair of sturdy running shoes, continued her morning jog along the scenic, tree-lined path, where the chirping birds and the rustling leaves created a symphony of nature, and she greeted the occasional passerby with a cheerful wave, while maintaining her steady pace and focusing on her breathing technique" };
+            match = theValue.BestMatch(options, out dist, "levenshtein");
+            watch.Stop();
+            elapsedMsLevenhstein = watch.ElapsedMilliseconds;
+            Debug.WriteLine("The best match of '" + System.String.Join(",", options) + "' for '" + theValue + "' is '" + match + "'");
+
+            if (elapsedMsTrigram < elapsedMsLevenhstein)
+            {
+                Debug.WriteLine("Trigram was faster than Levenhstein");
+            }
+            if (elapsedMsTrigram > elapsedMsLevenhstein)
+            {
+                Debug.WriteLine("Levenhstein was faster than Trigram");
+            }
+            else
+            {
+                Debug.WriteLine("Trigram and Levenhstein have the same speed");
+            }
         }
 
         private Regex GetWildcardRegEx(string input)

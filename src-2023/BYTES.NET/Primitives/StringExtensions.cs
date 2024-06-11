@@ -309,8 +309,9 @@ namespace BYTES.NET.Primitives
         /// <param name="options"></param>
         /// <param name="algorithm">the algorithm used; options are 'trigram' and 'levenshtein'</param>
         /// <param name="threshold"></param>
+        /// <param name="dist"></param>
         /// <returns></returns>
-        public static string? BestMatch(this System.String text, IEnumerable<string> options, string algorithm = "trigram", double? threshold = null)
+        public static string? BestMatch(this System.String text, IEnumerable<string> options, out double dist, string algorithm = "trigram", double? threshold = null)
         {
             switch (algorithm.ToLower())
             {
@@ -319,12 +320,19 @@ namespace BYTES.NET.Primitives
                     {
                         threshold = 0;
                     }
-                    return GetBestMatchUsingTrigrams(text, options,(double)threshold);
+                    return GetBestMatchUsingTrigrams(text, options, out dist, (double)threshold);
                 case "levenshtein":
-                    return GetBestMatchUsingLevenshteinDistanceNormalized(text, options,threshold);
+                    return GetBestMatchUsingLevenshteinDistanceNormalized(text, options, out dist, threshold);
                 default:
+                    dist = 0;
                     return null;
             }
+        }
+        public static string? BestMatch(this System.String text, IEnumerable<string> options, string algorithm = "trigram", double? threshold = null)
+        {
+            double result = 0;
+
+            return BestMatch(text, options, out result, algorithm, threshold);
         }
 
         #endregion
@@ -417,8 +425,9 @@ namespace BYTES.NET.Primitives
         /// <param name="text"></param>
         /// <param name="options"></param>
         /// <param name="threshold"></param>
+        /// <param name="dist"></param>
         /// <returns></returns>
-        private static string? GetBestMatchUsingTrigrams(string text, IEnumerable<string> options, double threshold = 0)
+        private static string? GetBestMatchUsingTrigrams(string text, IEnumerable<string> options, out double dist, double threshold = 0)
         {
 
             KeyValuePair<string, double> output = default(KeyValuePair<string, double>); //use the default values {null,0}
@@ -435,6 +444,8 @@ namespace BYTES.NET.Primitives
 
             }
 
+            dist = output.Value;
+
             if (output.Value >= threshold)
             {
                 return output.Key;
@@ -442,6 +453,12 @@ namespace BYTES.NET.Primitives
 
             return null;
 
+        }
+
+        private static string? GetBestMatchUsingTrigrams(string text, IEnumerable<string> options, double threshold = 0)
+        {
+            double result = 0;
+            return GetBestMatchUsingTrigrams(text,options,out result,threshold);
         }
 
         #endregion
@@ -481,9 +498,9 @@ namespace BYTES.NET.Primitives
             }
 
             var totalCost = matrix[first.Length, second.Length];
-            var totalLength = first.Length + second.Length;
+            var averageLength = (first.Length + second.Length) / 2.0;
 
-            return (totalCost / (double)totalLength);
+            return (totalCost / (double)averageLength);
         }
 
         /// <summary>
@@ -492,26 +509,37 @@ namespace BYTES.NET.Primitives
         /// <param name="text"></param>
         /// <param name="options"></param>
         /// <param name="threshold"></param>
+        /// <param name="dist"></param>
         /// <returns></returns>
-        private static string? GetBestMatchUsingLevenshteinDistanceNormalized(string text, IEnumerable<string> options, double? threshold = null)
+        private static string? GetBestMatchUsingLevenshteinDistanceNormalized(string text, IEnumerable<string> options, out double dist, double? threshold = 0)
         {
+            KeyValuePair<string, double> output = new KeyValuePair<string, double>("", 10); //use a default with distance of 10 to ensure the matches are updated
 
-            Dictionary<string, double> distances = new Dictionary<string, double>();
-
-            foreach (var option in options)
+            foreach (string option in options)
             {
-                var distance = LevenshteinDistanceNormalizedTo(text,option);
-                distances[option] = distance;
+                var distance = LevenshteinDistanceNormalizedTo(text, option);
+
+                if (distance < output.Value)
+                {
+                    output = new KeyValuePair<string, double>(option, distance);
+                }
+            }
+            dist = output.Value;
+
+            // Respect the threshold if it is provided
+            if (output.Value > threshold)
+            {
+                return null;
             }
 
-            // Find the option with the lowest distance
-            var bestMatch = distances.OrderBy(pair => pair.Value).First();
-
-            // Return the best match
-            return bestMatch.Key ?? null;
-
+            return output.Key;
         }
 
+        private static string? GetBestMatchUsingLevenshteinDistanceNormalized(string text, IEnumerable<string> options, double? threshold = 0)
+        {
+            double result = 0;
+            return GetBestMatchUsingLevenshteinDistanceNormalized(text, options, out result, threshold);
+        }
         #endregion
 
     }

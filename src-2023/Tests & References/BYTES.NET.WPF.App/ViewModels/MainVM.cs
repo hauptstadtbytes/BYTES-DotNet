@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using BYTES.NET.Primitives;
 
 
@@ -32,6 +33,14 @@ namespace BYTES.NET.WPF.App.ViewModels
         private string _firstPattern;
 
         private string _secondPattern;
+
+        private string _matchReference;
+
+        private string _firstMatch;
+
+        private string _secondMatch;
+
+        private string _match;
 
         #endregion
 
@@ -104,6 +113,41 @@ namespace BYTES.NET.WPF.App.ViewModels
             }
         }
 
+        public string MatchReference
+        {
+            get => _matchReference; set
+            {
+                _matchReference = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string FirstMatch
+        {
+            get => _firstMatch; set
+            {
+                _firstMatch = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SecondMatch
+        {
+            get => _secondMatch; set
+            {
+                _secondMatch = value;
+                OnPropertyChanged();
+            }
+        }
+        public string Match
+        {
+            get => _match; set
+            {
+                _match = value;
+                OnPropertyChanged();
+            }
+        }
+
         #endregion
 
         #region public properties, for the validation example(s)
@@ -151,6 +195,11 @@ namespace BYTES.NET.WPF.App.ViewModels
 
             this.Title = "Sample";
             _animals = GetAnimals();
+            _matchReference = "Phone";
+            _firstMatch = "Phones";
+            _secondMatch = "Postpone";
+            _firstPattern = "Phone";
+            _secondPattern = "Phones";
 
             //add command(s)
             this.Commands.Add("PromptTextCmd", new ViewModelRelayCommand(PromptText));
@@ -163,6 +212,10 @@ namespace BYTES.NET.WPF.App.ViewModels
 
             // add the Pattern Matching Command
             this.Commands.Add("DistanceCmd", new ViewModelRelayCommand(CalculateDistance));
+
+            // add the Commands for the Best Match
+            this.Commands.Add("BestMatchTrigramCmd", new ViewModelRelayCommand(BestMatchTrigram));
+            this.Commands.Add("BestMatchLevenshteinCmd", new ViewModelRelayCommand(BestMatchLevenshtein));
 
         }
 
@@ -266,8 +319,45 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         private void CalculateDistance(object arg)
         {
-            TrigramDistance = FirstPattern.TrigramSimilarityTo(SecondPattern);
-            LevenshteinDistance = FirstPattern.LevenshteinDistanceNormalized(SecondPattern);
+            if(FirstPattern ==  "" || SecondPattern == "")
+            {
+                return;
+            }
+            else
+            {
+                TrigramDistance = (double)FirstPattern.SimilarityTo(SecondPattern, "Trigram");
+                LevenshteinDistance = (double)FirstPattern.SimilarityTo(SecondPattern, "Levenshtein");
+            }
+        }
+
+        #endregion
+
+        #region method(s) for best match
+
+        private void BestMatchTrigram(object arg)
+        {
+            if(MatchReference == "" || FirstMatch == "" || SecondMatch == "")
+            {
+                return;
+            }
+            else
+            {
+                var options = new List<string> { FirstMatch, SecondMatch };
+                Match = MatchReference.BestMatch(options, "Trigram");
+            }
+        }
+
+        private void BestMatchLevenshtein(object arg)
+        {
+            if (MatchReference == "" || FirstMatch == "" || SecondMatch == "")
+            {
+                return;
+            }
+            else
+            {
+                var options = new List<string> { FirstMatch, SecondMatch };
+                Match = MatchReference.BestMatch(options, "Levenshtein");
+            }
         }
 
         #endregion

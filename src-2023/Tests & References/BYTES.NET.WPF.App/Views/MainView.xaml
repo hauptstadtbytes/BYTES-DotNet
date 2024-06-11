@@ -121,19 +121,38 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
-            <TabItem Header="Pattern Matching">
+            <TabItem Header="String Distance Calculator">
                 <Grid>
                     <StackPanel>
-                        <TextBlock Text="Pattern Matching" FontWeight="Bold" Margin=" 0 5 0 10"/>
+                        <TextBlock Text="Distance Calculation" FontWeight="Bold" Margin=" 0 5 0 10"/>
                         <TextBlock Text="First Pattern" FontWeight="Bold"/>
                         <TextBox Text="{Binding FirstPattern}"/>
                         <TextBlock Text="Matching Pattern" Margin="0 10 0 0" FontWeight="Bold"/>
                         <TextBox Text="{Binding SecondPattern}"/>
-                        <TextBlock Text="Trigram Distance:" Margin="0 10 0 0"/>
+                        <TextBlock Text="Trigram Distance (Higher Value is better):" Margin="0 10 0 0"/>
                         <TextBlock Text="{Binding TrigramDistance}" />
-                        <TextBlock Text="Levensthein Distance:" Margin="0 10 0 0"/>
+                        <TextBlock Text="Levensthein Distance (Lower Value is better):" Margin="0 10 0 0"/>
                         <TextBlock Text="{Binding LevenshteinDistance}"/>
                         <Button Content="Claculate Distances" Command="{Binding Path=Commands[DistanceCmd]}" Margin="0 20 0 0"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Best Match">
+                <Grid>
+                    <StackPanel>
+                        <TextBlock Text="Best Match" FontWeight="Bold" Margin=" 0 5 0 10"/>
+                        <TextBlock Text="Match Reference" FontWeight="Bold"/>
+                        <TextBox Text="{Binding MatchReference}"/>
+                        <TextBlock Text="Matching Pattern 1" Margin="0 10 0 0" FontWeight="Bold"/>
+                        <TextBox Text="{Binding FirstMatch}"/>
+                        <TextBlock Text="Matching Pattern 2" Margin="0 10 0 0" FontWeight="Bold"/>
+                        <TextBox Text="{Binding SecondMatch}"/>
+                        <TextBlock Text="Best Match:" Margin="0 10 0 0"/>
+                        <TextBlock Text="{Binding Match}" />
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Content="Best Match Trigram" Command="{Binding Path=Commands[BestMatchTrigramCmd]}" Margin="0 20 30 0"/>
+                            <Button Content="Best Match Levenshtein" Command="{Binding Path=Commands[BestMatchLevenshteinCmd]}" Margin="0 20 0 0"/>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </TabItem>
