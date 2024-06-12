@@ -24,8 +24,8 @@ namespace BYTES.NET.WPF.App.ViewModels
         private string _textOne = "Phone";
         private string _textTwo = "Phones";
 
-        private double? _trigramSimilarity = 0;
-        private double? _levenshteinSimilarity = 0;
+        private string _trigramSimilarity = "N/A";
+        private string _levenshteinSimilarity = "N/A";
 
         private List<string> _options = new List<string>() {"Phones","CellPhones","Postpone","Mobile Phone"};
 
@@ -56,7 +56,7 @@ namespace BYTES.NET.WPF.App.ViewModels
             }
         }
 
-        public double? TrigramSimilarity
+        public string TrigramSimilarity
         {
             get => _trigramSimilarity; set
             {
@@ -65,7 +65,7 @@ namespace BYTES.NET.WPF.App.ViewModels
             }
         }
 
-        public double? LevenshteinSimilarity
+        public string LevenshteinSimilarity
         {
             get => _levenshteinSimilarity; set
             {
@@ -120,9 +120,24 @@ namespace BYTES.NET.WPF.App.ViewModels
         /// </summary>
         private void UpdateSimilarities()
         {
+            if(string.IsNullOrEmpty(this.TextOne) || string.IsNullOrEmpty(this.TextTwo))
+            {
+                this.TrigramSimilarity = "<must not be empty>";
+                this.LevenshteinSimilarity = "<must not be empty>";
 
-            this.TrigramSimilarity = (double?)_textOne.SimilarityTo(_textTwo, "Trigram");
-            this.LevenshteinSimilarity = (double?)_textOne.SimilarityTo(_textTwo, "Levenshtein");
+                return;
+            }
+
+            if(this.TextOne.Length < 3 || this.TextTwo.Length < 3)
+            {
+                this.TrigramSimilarity = "<must be at least 3 chars long>";
+            }
+            else
+            {
+                this.TrigramSimilarity = ((double?)_textOne.SimilarityTo(_textTwo, "Trigram")).ToString();
+            }
+            
+            this.LevenshteinSimilarity = ((double?)_textOne.SimilarityTo(_textTwo, "Levenshtein")).ToString();
         }
 
         /// <summary>
@@ -139,7 +154,22 @@ namespace BYTES.NET.WPF.App.ViewModels
         //updates the best matches found
         private void UpdateBestMatches()
         {
-            this.TrigramBestMatch = TextOne.BestMatch(this.Options, "Trigram");
+            if (string.IsNullOrEmpty(this.TextOne))
+            {
+                this.TrigramBestMatch = "<must not be empty>";
+
+                return;
+            }
+
+            if (this.TextOne.Length < 3)
+            {
+                this.TrigramBestMatch = "<must be at least 3 chars long>";
+            }
+            else
+            {
+                this.TrigramBestMatch = TextOne.BestMatch(this.Options, "Trigram");
+            }
+
             this.LevenshteinBestMatch = TextOne.BestMatch(this.Options, "Levenshtein");
         }
 
