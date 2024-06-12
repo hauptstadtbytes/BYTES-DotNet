@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using BYTES.NET.Primitives;
+
 
 //import namespace(s) required from 'BYTES.NET.WPF' framework
 using BYTES.NET.WPF.MVVM;
@@ -22,6 +25,8 @@ namespace BYTES.NET.WPF.App.ViewModels
         private AnimalVM[] _animals;
 
         private DialogVM _dialogVM;
+
+        private StringMatchingVM _matchingVM = new StringMatchingVM(); //contains the entire example for string matching
 
         #endregion
 
@@ -57,6 +62,8 @@ namespace BYTES.NET.WPF.App.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public StringMatchingVM StringMatching { get => _matchingVM; }
 
         #endregion
 
@@ -212,6 +219,6 @@ namespace BYTES.NET.WPF.App.ViewModels
         }
 
         #endregion
-
+  
     }
 }

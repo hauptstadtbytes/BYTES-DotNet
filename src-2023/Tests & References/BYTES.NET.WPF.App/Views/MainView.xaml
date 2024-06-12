@@ -88,7 +88,7 @@
             <TabItem Header="Dialog">
                 <Grid Margin="5">
                     <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                        
+
                         <!-- the control for selecting the blocking mode -->
                         <DockPanel LastChildFill="False">
                             <TextBlock Text="Blocking Dialog: "></TextBlock>
@@ -102,7 +102,7 @@
                         </DockPanel>
 
                         <Separator HorizontalAlignment="Stretch" Margin="0,5,0,5" />
-                        
+
                         <!-- the control for updating the message-->
                         <DockPanel LastChildFill="True">
                             <TextBlock Text="Message: " />
@@ -114,14 +114,18 @@
                         </DockPanel>
 
                         <Separator HorizontalAlignment="Stretch" Margin="0,5,0,5" />
-                        
+
                         <!-- the control for opening the dialog -->
                         <Button Content="Show the Dialog for Updating the Message" Command="{Binding Path=Commands[ShowDialogCmd]}"/>
 
                     </StackPanel>
                 </Grid>
             </TabItem>
-
+            <TabItem Header="String Matching">
+                <Grid Margin="5">
+                    <ContentPresenter Content="{Binding StringMatching.View}" />
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 

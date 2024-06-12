@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SampleObject>
-  <Root ID="42" Name="Hello World!" Group="Sample 1" />
+  <Data ID="42" Name="Hello World!" Group="Sample 1" />
 </SampleObject>

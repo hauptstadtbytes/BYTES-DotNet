@@ -10,12 +10,18 @@
     <Compile Update="Views\AnimalView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\StringMatchingView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\AnimalView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\StringMatchingView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

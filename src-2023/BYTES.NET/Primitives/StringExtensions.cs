@@ -256,47 +256,46 @@ namespace BYTES.NET.Primitives
         }
 
         /// <summary>
-        /// calculates the trigam-based similarity compared to a string given
+        /// returns the string similarity to a string given
         /// </summary>
         /// <param name="text"></param>
         /// <param name="reference"></param>
+        /// <param name="algorithm">the algorithm used; options are 'trigram' and 'levenshtein'</param>
         /// <returns></returns>
-        /// <remarks>see 'https://www.innodox.com/de/blog/meier-ist-nicht-gleich-maier-ist-nicht-gleich-mayer-aehnlichkeitssuche-im-alltagstest/' for more details</remarks>
-        public static double SimilarityTo(this System.String text, string reference)
+        public static double? SimilarityTo(this System.String text, string reference, string algorithm = "trigram")
         {
-
-            string[] inputTrigrams = GetTrigrams(text);
-            string[] referenceTrigrams = GetTrigrams(reference);
-
-            int counter = 0;
-            foreach (string trigram in referenceTrigrams)
+            switch(algorithm.ToLower())
             {
-
-                if (inputTrigrams.Contains(trigram))
-                {
-                    counter += 1;
-                }
-
+                case "trigram":
+                    return TrigramSimilarityTo(text,reference);
+                case "levenshtein":
+                    return LevenshteinDistanceNormalizedTo(text,reference);
+                default:
+                    return null;
             }
-
-            return (2 * (double)(counter)) / ((2 + (double)(reference.Length)) + (2 + (double)(text.Length))); //to prevent calculation issues, all 'int' type values have to be casted to 'double' type first
-
         }
 
         /// <summary>
-        /// calculates the trigam-based similarity compared to a string given, supporting a string array for reference
+        /// returns the string similarity for an array given
         /// </summary>
         /// <param name="text"></param>
         /// <param name="reference"></param>
+        /// <param name="algorithm">the algorithm used; options are 'trigram' and 'levenshtein'</param>
         /// <returns></returns>
-        public static Dictionary<string, double> SimilarityTo(this System.String text, string[] reference)
+        public static Dictionary<string, double> SimilarityTo(this System.String text, IEnumerable<string> reference, string algorithm = "trigram")
         {
 
             Dictionary<string, double> output = new Dictionary<string, double>();
 
             foreach (string referenceString in reference)
             {
-                output.Add(referenceString, text.SimilarityTo(referenceString));
+                double? similarity = text.SimilarityTo(referenceString, algorithm);
+
+                if(similarity != null)
+                {
+                    output.Add(referenceString, (double)similarity);
+                }
+                
             }
 
             return output;
@@ -304,41 +303,41 @@ namespace BYTES.NET.Primitives
         }
 
         /// <summary>
-        /// returns the best match from a given list of string options (optionally respecting a threshold value)
+        /// returns the best match from a list of options given (respecting an optional threshold)
         /// </summary>
         /// <param name="text"></param>
         /// <param name="options"></param>
+        /// <param name="algorithm">the algorithm used; options are 'trigram' and 'levenshtein'</param>
         /// <param name="threshold"></param>
+        /// <param name="dist"></param>
         /// <returns></returns>
-        public static string GetBestMatch(this System.String text, string[] options, double threshold = 0)
+        public static string? BestMatch(this System.String text, IEnumerable<string> options, out double dist, string algorithm = "trigram", double? threshold = null)
         {
-
-            KeyValuePair<string, double> output = default(KeyValuePair<string, double>); //use the default values {null,0}
-
-            foreach (string option in options)
+            switch (algorithm.ToLower())
             {
-
-                double similarity = text.SimilarityTo(option);
-
-                if (similarity > output.Value)
-                {
-                    output = new KeyValuePair<string, double>(option, similarity);
-                }
-
+                case "trigram":
+                    if(threshold == null)
+                    {
+                        threshold = 0;
+                    }
+                    return GetBestMatchUsingTrigrams(text, options, out dist, (double)threshold);
+                case "levenshtein":
+                    return GetBestMatchUsingLevenshteinDistanceNormalized(text, options, out dist, threshold);
+                default:
+                    dist = 0;
+                    return null;
             }
+        }
+        public static string? BestMatch(this System.String text, IEnumerable<string> options, string algorithm = "trigram", double? threshold = null)
+        {
+            double result = 0;
 
-            if (output.Value >= threshold)
-            {
-                return output.Key;
-            }
-
-            return System.String.Empty;
-
+            return BestMatch(text, options, out result, algorithm, threshold);
         }
 
         #endregion
 
-        #region private method(s)
+        #region private method(s) supporting trigram-based similarity
 
         /// <summary>
         /// caldulates all trigrams from a string given
@@ -393,6 +392,154 @@ namespace BYTES.NET.Primitives
 
         }
 
+        /// <summary>
+        /// calculates the trigam-based similarity
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="reference"></param>
+        /// <returns></returns>
+        private static double TrigramSimilarityTo(string text, string reference)
+        {
+
+            string[] inputTrigrams = GetTrigrams(text);
+            string[] referenceTrigrams = GetTrigrams(reference);
+
+            int counter = 0;
+            foreach (string trigram in referenceTrigrams)
+            {
+
+                if (inputTrigrams.Contains(trigram))
+                {
+                    counter += 1;
+                }
+
+            }
+
+            return (2 * (double)(counter)) / ((2 + (double)(reference.Length)) + (2 + (double)(text.Length))); //to prevent calculation issues, all 'int' type values have to be casted to 'double' type first
+
+        }
+
+        /// <summary>
+        /// returns the trigram-based best match from a list of string options given (respecting a threshold value optionally)
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="options"></param>
+        /// <param name="threshold"></param>
+        /// <param name="dist"></param>
+        /// <returns></returns>
+        private static string? GetBestMatchUsingTrigrams(string text, IEnumerable<string> options, out double dist, double threshold = 0)
+        {
+
+            KeyValuePair<string, double> output = default(KeyValuePair<string, double>); //use the default values {null,0}
+
+            foreach (string option in options)
+            {
+
+                double similarity = TrigramSimilarityTo(text,option);
+
+                if (similarity > output.Value)
+                {
+                    output = new KeyValuePair<string, double>(option, similarity);
+                }
+
+            }
+
+            dist = output.Value;
+
+            if (output.Value >= threshold)
+            {
+                return output.Key;
+            }
+
+            return null;
+
+        }
+
+        private static string? GetBestMatchUsingTrigrams(string text, IEnumerable<string> options, double threshold = 0)
+        {
+            double result = 0;
+            return GetBestMatchUsingTrigrams(text,options,out result,threshold);
+        }
+
+        #endregion
+
+        #region private method(s) supporting levenshtein-based similarity
+
+        /// <summary>
+        /// calculates the normalized Levenshtein distance between two strings.
+        /// </summary>
+        /// <param name="first">The first string.</param>
+        /// <param name="second">The second string.</param>
+        /// <returns>The normalized Levenshtein distance between the two strings.</returns>
+        private static double LevenshteinDistanceNormalizedTo(string first, string second)
+        {
+            var matrix = new int[first.Length + 1, second.Length + 1];
+
+            for (var i = 0; i <= first.Length; i++)
+            {
+                matrix[i, 0] = i;
+            }
+
+            for (var j = 0; j <= second.Length; j++)
+            {
+                matrix[0, j] = j;
+            }
+
+            for (var i = 1; i <= first.Length; i++)
+            {
+                for (var j = 1; j <= second.Length; j++)
+                {
+                    var cost = (first[i - 1] == second[j - 1]) ? 0 : 1;
+
+                    matrix[i, j] = Math.Min(
+                        Math.Min(matrix[i - 1, j] + 1, matrix[i, j - 1] + 1),
+                        matrix[i - 1, j - 1] + cost);
+                }
+            }
+
+            var totalCost = matrix[first.Length, second.Length];
+            var averageLength = (first.Length + second.Length) / 2.0;
+
+            return (totalCost / (double)averageLength);
+        }
+
+        /// <summary>
+        /// returns the trigram-based best match from a list of string options given (respecting a threshold value optionally)
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="options"></param>
+        /// <param name="threshold"></param>
+        /// <param name="dist"></param>
+        /// <returns></returns>
+        private static string? GetBestMatchUsingLevenshteinDistanceNormalized(string text, IEnumerable<string> options, out double dist, double? threshold = 0)
+        {
+            KeyValuePair<string, double> output = new KeyValuePair<string, double>("", 10); //use a default with distance of 10 to ensure the matches are updated
+
+            foreach (string option in options)
+            {
+                var distance = LevenshteinDistanceNormalizedTo(text, option);
+
+                if (distance < output.Value)
+                {
+                    output = new KeyValuePair<string, double>(option, distance);
+                }
+            }
+            dist = output.Value;
+
+            // Respect the threshold if it is provided
+            if (output.Value > threshold)
+            {
+                return null;
+            }
+
+            return output.Key;
+        }
+
+        private static string? GetBestMatchUsingLevenshteinDistanceNormalized(string text, IEnumerable<string> options, double? threshold = 0)
+        {
+            double result = 0;
+            return GetBestMatchUsingLevenshteinDistanceNormalized(text, options, out result, threshold);
+        }
         #endregion
 
     }
