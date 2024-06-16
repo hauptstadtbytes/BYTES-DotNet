@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BYTES.NET.WPF.App", "Tests 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BYTES.NET.Extensibility", "BYTES.NET.Extensibility\BYTES.NET.Extensibility.csproj", "{8635622C-6A69-4FB4-A48E-401A3919FCFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BYTES.NET.Tests", "Tests & References\BYTES.NET.Tests\BYTES.NET.Tests.csproj", "{ACCE6866-427B-4DD3-A929-F8089E4D99F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BYTES.NET.Tests", "Tests & References\BYTES.NET.Tests\BYTES.NET.Tests.csproj", "{ACCE6866-427B-4DD3-A929-F8089E4D99F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BYTES.NET.Automation", "BYTES.NET.Automation\BYTES.NET.Automation.csproj", "{DD5F83B1-CDDB-427A-AFE6-BBA3DB2D2E1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{ACCE6866-427B-4DD3-A929-F8089E4D99F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACCE6866-427B-4DD3-A929-F8089E4D99F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACCE6866-427B-4DD3-A929-F8089E4D99F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD5F83B1-CDDB-427A-AFE6-BBA3DB2D2E1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD5F83B1-CDDB-427A-AFE6-BBA3DB2D2E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD5F83B1-CDDB-427A-AFE6-BBA3DB2D2E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD5F83B1-CDDB-427A-AFE6-BBA3DB2D2E1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
