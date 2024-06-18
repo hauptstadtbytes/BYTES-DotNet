@@ -13,7 +13,7 @@ namespace BYTES.NET.WPF.Converters
     /// a converter class, suitablee for binding to a boolean value via XAML combobox
     /// </summary>
     /// <remarks>based on the article found at 'https://stackoverflow.com/questions/4335339/how-to-bind-a-boolean-to-combobox-in-wpf'</remarks>
-    public class BooleanToIndexConverter : IValueConverter
+    public class BooleanToIndexConverter : IValueConverter 
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

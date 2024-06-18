@@ -28,6 +28,13 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         private StringMatchingVM _matchingVM = new StringMatchingVM(); //contains the entire example for string matching
 
+        private bool _isChecked;
+
+        private bool _isVisible;
+
+        private string[] _userArray;
+
+        private string _arrayInputText;
         #endregion
 
         #region private variable(s), for the validation example(s)
@@ -60,6 +67,51 @@ namespace BYTES.NET.WPF.App.ViewModels
             {
                 _animals = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public bool IsChecked
+        {
+            get => _isChecked;
+            set
+            {
+                _isChecked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set
+            {
+                _isVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string[] UserArray
+        {
+            get { return _userArray; }
+            set
+            {
+                _userArray = value;
+                OnPropertyChanged(nameof(UserArray));
+            }
+        }
+
+        public string ArrayInputText
+        {
+            get { return _arrayInputText; }
+            set
+            {
+                _arrayInputText = value;
+                OnPropertyChanged(nameof(ArrayInputText));
+
+                // Convert comma-separated string to array
+                UserArray = !string.IsNullOrEmpty(value) ?
+                            value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray() :
+                            new string[0];
             }
         }
 
@@ -109,7 +161,7 @@ namespace BYTES.NET.WPF.App.ViewModels
         /// </summary>
         public MainVM()
         {
-
+            UserArray = new string[0];
             this.Title = "Sample";
             _animals = GetAnimals();
 
