@@ -28,13 +28,7 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         private StringMatchingVM _matchingVM = new StringMatchingVM(); //contains the entire example for string matching
 
-        private bool _isChecked;
-
-        private bool _isVisible;
-
-        private string[] _userArray;
-
-        private string _arrayInputText;
+        private string _sampleInputString = string.Empty;
         #endregion
 
         #region private variable(s), for the validation example(s)
@@ -70,48 +64,47 @@ namespace BYTES.NET.WPF.App.ViewModels
             }
         }
 
-        public bool IsChecked
-        {
-            get => _isChecked;
-            set
+        public string SampleInputString { get => _sampleInputString; set
             {
-                _isChecked = value;
+                _sampleInputString = value;
                 OnPropertyChanged();
+                OnPropertyChanged("SampleStringList");
+                OnPropertyChanged("SampleStringListCount");
+            } 
+        }
+
+        public string[] SampleStringList
+        {
+            get
+            {
+                if(_sampleInputString == null || string.IsNullOrEmpty(_sampleInputString))
+                {
+                    return [];
+                } else
+                {
+
+                    List<string> list = new List<string>();
+
+                    foreach (string s in _sampleInputString.Split(','))
+                    {
+                        if (!string.IsNullOrWhiteSpace(s))
+                        {
+                            list.Add(s);
+                        }
+                    }
+
+                    return list.ToArray();
+                }
+                
             }
         }
 
-        public bool IsVisible
+        public string SampleStringListCount
         {
-            get => _isVisible;
-            set
+            get
             {
-                _isVisible = value;
-                OnPropertyChanged();
-            }
-        }
+                return this.SampleStringList.Length.ToString();
 
-        public string[] UserArray
-        {
-            get { return _userArray; }
-            set
-            {
-                _userArray = value;
-                OnPropertyChanged(nameof(UserArray));
-            }
-        }
-
-        public string ArrayInputText
-        {
-            get { return _arrayInputText; }
-            set
-            {
-                _arrayInputText = value;
-                OnPropertyChanged(nameof(ArrayInputText));
-
-                // Convert comma-separated string to array
-                UserArray = !string.IsNullOrEmpty(value) ?
-                            value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray() :
-                            new string[0];
             }
         }
 
@@ -161,7 +154,7 @@ namespace BYTES.NET.WPF.App.ViewModels
         /// </summary>
         public MainVM()
         {
-            UserArray = new string[0];
+
             this.Title = "Sample";
             _animals = GetAnimals();
 

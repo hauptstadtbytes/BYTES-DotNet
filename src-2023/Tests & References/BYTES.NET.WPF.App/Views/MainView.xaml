@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:localVMs="clr-namespace:BYTES.NET.WPF.App.ViewModels"
         xmlns:converters="clr-namespace:BYTES.NET.WPF.Converters;assembly=BYTES.NET.WPF"
+        xmlns:s="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="{Binding Title, Mode=OneWay}" Height="450" Width="800">
     <Window.DataContext>
@@ -19,6 +20,10 @@
         <converters:NothingToVisibilityConverter x:Key="NothingToVisibilityConverter"/>
         <converters:NothingToBoolConverter x:Key="NothingToBoolConverter"/>
         <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter"/>
+
+        <!-- see 'https://stackoverflow.com/questions/4997446/boolean-commandparameter-in-xaml' for details on using booleans in XAML-->
+        <s:Boolean x:Key="True">True</s:Boolean>
+        <s:Boolean x:Key="False">False</s:Boolean>
     </Window.Resources>
 
     <Grid>
@@ -89,6 +94,74 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+            <TabItem Header="Converters">
+                <StackPanel>
+                    <!-- the 'BoolInvertConverter' example-->
+                    <TextBlock Text="BoolInvertConveter" FontWeight="Bold"/>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock Text="Check/ Uncheck" />
+                        <CheckBox x:Name="InvertCheckbox" Margin="5,0,5,0" />
+                        <TextBlock Text="to see how the value is inverted to " />
+                        <TextBlock Text="{Binding ElementName=InvertCheckbox, Path=IsChecked, Converter={StaticResource BoolInvertConverter}}" FontWeight="Bold" />
+                    </DockPanel>
+
+                    <!-- the 'BoolToIndexConverter' example-->
+                    <TextBlock Text="BoolToIndexConverter" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock Text="Check/ Uncheck" />
+                        <CheckBox x:Name="IndexCheckbox" Margin="5,0,5,0" />
+                        <TextBlock Text="to see how the selection is changed to " />
+                        <ComboBox SelectedIndex="{Binding ElementName=IndexCheckbox, Path=IsChecked, Converter={StaticResource BoolToIndexConverter}}" Margin="0,0,5,0">
+                            <ComboBox.Items>
+                                <ComboBoxItem Content="True" />
+                                <ComboBoxItem Content="False" />
+                            </ComboBox.Items>
+                        </ComboBox>
+                    </DockPanel>
+
+                    <!-- the 'BoolToVisibilityConverter' example-->
+                    <TextBlock Text="BoolToVisibilityConverter" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock Text="If" />
+                        <CheckBox x:Name="VisCheckbox" Margin="5,0,5,0" />
+                        <TextBlock Text="is unchecked, this text is prompted" Visibility="{Binding ElementName=VisCheckbox, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter},ConverterParameter={StaticResource False}}" FontWeight="Bold" />
+                        <TextBlock Text="is checked, another text is prompted" Visibility="{Binding ElementName=VisCheckbox, Path=IsChecked, Converter={StaticResource BoolToVisibilityConverter}}" FontWeight="Bold" />
+                    </DockPanel>
+
+                    <!-- the 'NothingToVisibilityConverter' example-->
+                    <TextBlock Text="NothingToVisibilityConverter" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock Text="If" />
+                        <TextBox x:Name="VisTextbox" Margin="5,0,5,0" Width="50" />
+                        <TextBlock Text="is empty/ nothing, this text is prompted" Visibility="{Binding ElementName=VisTextbox, Path=Text, Converter={StaticResource NothingToVisibilityConverter}}" FontWeight="Bold" />
+                        <TextBlock Text="is not empty, another text is prompted" Visibility="{Binding ElementName=VisTextbox, Path=Text, Converter={StaticResource NothingToVisibilityConverter},ConverterParameter={StaticResource False}}" FontWeight="Bold" />
+                    </DockPanel>
+
+                    <!-- the 'NothingToBoolConverter' example-->
+                    <TextBlock Text="NothingToBoolConverter" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock Text="Enter some text to show" />
+                        <TextBox x:Name="BoolTextbox" Margin="5,0,5,0" Width="50" />
+                        <TextBlock Text="to see how the output changes to " />
+                        <TextBlock Text="{Binding ElementName=BoolTextbox, Path=Text, Converter={StaticResource NothingToBoolConverter}}" FontWeight="Bold" />
+                    </DockPanel>
+
+                    <!-- the 'CountToVisibilityConverter' example-->
+                    <TextBlock Text="CountToVisibilityConverter" FontWeight="Bold" Margin="0,10,0,0"/>
+                    <DockPanel LastChildFill="True">
+                        <TextBlock Text="If us enter more than one item (separated by ,) to" />
+                        <TextBox Text="{Binding SampleInputString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5,0,5,0" Width="50" />
+                        <TextBlock Text="the message changes to " />
+                        <TextBlock Text="One" Visibility="{Binding SampleStringList, Mode=OneWay, Converter={StaticResource CountToVisibilityConverter}}" FontWeight="Bold" />
+                        <TextBlock Text=" + One more" Visibility="{Binding SampleStringList,Mode=OneWay, Converter={StaticResource CountToVisibilityConverter},ConverterParameter=2}" FontWeight="Bold" />
+                        <TextBlock Text=" + One more" Visibility="{Binding SampleStringList,Mode=OneWay, Converter={StaticResource CountToVisibilityConverter},ConverterParameter=3}" FontWeight="Bold" />
+                        <TextBlock Text=" for " />
+                        <TextBlock Text="{Binding SampleStringListCount}" />
+                        <TextBlock Text=" items found" />
+                    </DockPanel>
+
+                </StackPanel>
+            </TabItem>
             <TabItem Header="Dialog">
                 <Grid Margin="5">
                     <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -129,36 +202,6 @@
                 <Grid Margin="5">
                     <ContentPresenter Content="{Binding StringMatching.View}" />
                 </Grid>
-            </TabItem>
-            <TabItem Header="Converters">
-                <StackPanel>
-                    <TextBlock Text="BoolInvertConveter" FontWeight="Bold"/>
-                    <CheckBox Content="Is Checked" IsChecked="{Binding IsChecked}"/>
-                    <TextBlock Text="{Binding IsChecked, Converter={StaticResource BoolInvertConverter}}"/>
-
-                    <TextBlock Text="BoolToVisibilityConverter" FontWeight="Bold"/>
-                    <CheckBox Content="Is Visible" IsChecked="{Binding IsVisible}"/>
-                    <TextBlock Text="Hello, World!" Visibility="{Binding IsVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-
-                    <TextBlock Text="NothingToVisibilityConverter" FontWeight="Bold"/>
-                    <TextBox x:Name="UserInputTextBox"/>
-                    <!-- Show a message based on user input -->
-                    <TextBlock Text="Type something and see the message disappear when you clear the textbox:"
-                       Visibility="{Binding Text, ElementName=UserInputTextBox, Converter={StaticResource NothingToVisibilityConverter}}" />
-
-                    <TextBlock Text="NothingToBoolConverter" FontWeight="Bold"/>
-                    <TextBox x:Name="UserInputTextBoxBool"/>
-                    <!-- Checkbox that changes based on user input -->
-                    <CheckBox Content="Enable based on Input"
-                      IsEnabled="{Binding Text, ElementName=UserInputTextBoxBool, Converter={StaticResource NothingToBoolConverter}}" />
-
-                    <TextBlock Text="CountToVisibilityConverter" FontWeight="Bold"/>
-                    <TextBlock Text="Enter something in the Textbox below to make a list of the things you entered appear. You can create a new line by seperating the input with a ','"/>
-                    <TextBox x:Name="ArrayInputTextBox" Text="{Binding ArrayInputText, UpdateSourceTrigger=PropertyChanged}" />
-                    <!-- ListBox that shows or hides based on array length -->
-                    <ListBox ItemsSource="{Binding UserArray}"
-                     Visibility="{Binding UserArray, Converter={StaticResource CountToVisibilityConverter}}" />
-                </StackPanel>
             </TabItem>
         </TabControl>
     </Grid>

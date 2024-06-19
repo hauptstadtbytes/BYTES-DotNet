@@ -14,12 +14,17 @@ namespace BYTES.NET.WPF.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool boolValue = (value is bool) ? (bool)value : false;
-            bool boolParameter = (parameter is bool) ? (bool)parameter : true;
+            //bool boolValue = (value is bool) ? (bool)value : false;
+            //bool boolParameter = (parameter is bool) ? (bool)parameter : true;
 
-            if (boolParameter)
+            if(parameter == null)
             {
-                if (boolValue)
+                parameter = true;
+            }
+
+            if ((bool)parameter)
+            {
+                if ((bool)value)
                 {
                     return Visibility.Visible;
                 }
@@ -30,7 +35,8 @@ namespace BYTES.NET.WPF.Converters
             }
             else
             {
-                if (!boolValue)
+                //return Visibility.Collapsed;
+                if (!(bool)value)
                 {
                     return Visibility.Visible;
                 }

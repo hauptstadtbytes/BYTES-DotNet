@@ -22,7 +22,7 @@
 		<PackageProjectUrl>https://bytes-dotnet.readme.io/docs/getting-started</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/hauptstadtbytes/BYTES-DotNet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageVersion>1.0.0.1-alpha5</PackageVersion>
+		<PackageVersion>1.0.0.1-alpha.6</PackageVersion>
 		<PackageTags>WPF</PackageTags>
 
 		<!--<PackageLicenseFile>meta\License.txt</PackageLicenseFile>-->
