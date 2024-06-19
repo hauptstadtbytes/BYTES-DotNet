@@ -20,7 +20,7 @@
 	 <PackageProjectUrl>https://bytes-dotnet.readme.io/docs/getting-started</PackageProjectUrl>
 	 <RepositoryUrl>https://github.com/hauptstadtbytes/BYTES-DotNet</RepositoryUrl>
 	 <RepositoryType>git</RepositoryType>
-	 <PackageVersion>2.0.0</PackageVersion>
+	 <PackageVersion>2.0.1-alpha1</PackageVersion>
 	 <PackageTags>Prototyping,Application Framework</PackageTags>
 
 	 <!--<PackageLicenseFile>meta\License.txt</PackageLicenseFile>-->
@@ -39,6 +39,18 @@
   <ItemGroup>
 	  <None Include="..\Resources\License.txt" Pack="true" PackagePath="\meta\" />
 	  <None Include="..\Resources\Icon.png" Pack="true" PackagePath="\meta\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\PresentationCore.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\PresentationFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Workflow.ComponentModel" />
+    <Reference Include="WindowsBase">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\WindowsBase.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <!-- define constants for framework differentiation; see also 'https://weblog.west-wind.com/posts/2017/jun/22/multitargeting-and-porting-a-net-library-to-net-core-20'-->

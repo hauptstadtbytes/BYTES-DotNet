@@ -28,6 +28,7 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         private StringMatchingVM _matchingVM = new StringMatchingVM(); //contains the entire example for string matching
 
+        private string _sampleInputString = string.Empty;
         #endregion
 
         #region private variable(s), for the validation example(s)
@@ -60,6 +61,50 @@ namespace BYTES.NET.WPF.App.ViewModels
             {
                 _animals = value;
                 OnPropertyChanged();
+            }
+        }
+
+        public string SampleInputString { get => _sampleInputString; set
+            {
+                _sampleInputString = value;
+                OnPropertyChanged();
+                OnPropertyChanged("SampleStringList");
+                OnPropertyChanged("SampleStringListCount");
+            } 
+        }
+
+        public string[] SampleStringList
+        {
+            get
+            {
+                if(_sampleInputString == null || string.IsNullOrEmpty(_sampleInputString))
+                {
+                    return [];
+                } else
+                {
+
+                    List<string> list = new List<string>();
+
+                    foreach (string s in _sampleInputString.Split(','))
+                    {
+                        if (!string.IsNullOrWhiteSpace(s))
+                        {
+                            list.Add(s);
+                        }
+                    }
+
+                    return list.ToArray();
+                }
+                
+            }
+        }
+
+        public string SampleStringListCount
+        {
+            get
+            {
+                return this.SampleStringList.Length.ToString();
+
             }
         }
 
