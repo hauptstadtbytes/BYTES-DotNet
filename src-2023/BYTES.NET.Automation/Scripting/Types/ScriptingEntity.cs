@@ -4,21 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Schema;
+
+using System.Xml;
 
 
 //import namespace(s) requried from 'BYTES.NET' framework
 using BYTES.NET.Persistance.API;
-;
 
-namespace BYTES.NET.Automation.Scripting
+namespace BYTES.NET.Automation.Scripting.Types
 {
-    /// <summary>
-    /// the (automation) script (base) class
-    /// </summary>
-    [Serializable]
-    public class Script : IXmlPersistable
+    public abstract class ScriptingEntity : IXmlPersistable
     {
         #region private variable(s)
 
