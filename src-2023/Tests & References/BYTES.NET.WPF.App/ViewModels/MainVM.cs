@@ -328,9 +328,13 @@ namespace BYTES.NET.WPF.App.ViewModels
         /// <param name="arg"></param>
         private void LogMessage(object arg)
         {
+            // Create a new log entry
             LogEntry entry = new LogEntry(LogText, SelectedInformationLevel);
+
+
             if (!string.IsNullOrEmpty(LogText))
             {
+                // Log the entry
                 _log.Write(entry);
 
                 // Add the log entry to the collection
