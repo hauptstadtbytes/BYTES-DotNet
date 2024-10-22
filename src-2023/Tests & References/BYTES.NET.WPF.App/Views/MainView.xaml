@@ -11,7 +11,7 @@
     <Window.DataContext>
         <localVMs:MainVM/>
     </Window.DataContext>
-    
+
     <!-- add ressources (like converters etc.) -->
     <Window.Resources>
         <converters:BooleanToIndexConverter x:Key="BoolToIndexConverter" />
@@ -200,8 +200,51 @@
             </TabItem>
             <TabItem Header="String Matching">
                 <Grid Margin="5">
-                    <ContentPresenter Content="{Binding StringMatching.View}" />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="32*"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="79*"/>
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter Content="{Binding StringMatching.View}" Grid.ColumnSpan="3" />
                 </Grid>
+            </TabItem>
+
+            <TabItem Header="Logging">
+                <StackPanel>
+                    <TextBlock Text="Log Message:" />
+                    <TextBox x:Name="LogText" Text="{Binding LogText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Information Level"/>
+                    <ComboBox ItemsSource="{Binding InformationLevels}" SelectedItem="{Binding SelectedInformationLevel, Mode=TwoWay}" />
+                    <Button Content="Log Entry" Command="{Binding Commands[LogCmd]}"/>
+
+                    <!-- Scrollable Log Entries Display -->
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Height="311">
+                        <ItemsControl ItemsSource="{Binding LogEntries}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="5">
+
+                                        <!-- Display Timestamp -->
+                                        <TextBlock Text="{Binding TimeStamp, StringFormat='{}{0:MM/dd/yyyy HH:mm:ss}'}" FontWeight="Bold"/>
+
+                                        <!-- Display Information Level with Label -->
+                                        <DockPanel>
+                                            <TextBlock Text="Information Level: " FontWeight="Bold" />
+                                            <TextBlock Text="{Binding Level}" FontStyle="Italic"/>
+                                        </DockPanel>
+
+                                        <!-- Display Message with Label -->
+                                        <DockPanel>
+                                            <TextBlock Text="Message: " FontWeight="Bold" />
+                                            <TextBlock Text="{Binding Message}" />
+                                        </DockPanel>
+
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
             </TabItem>
         </TabControl>
     </Grid>

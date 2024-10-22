@@ -1,6 +1,7 @@
 ﻿//import .net (default) namespace(s)
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using BYTES.NET.Logging;
 using BYTES.NET.Primitives;
 
 
@@ -41,6 +43,18 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         private bool _showDialogBlocking = false;
         private string _dialogMessage = "Hello World!";
+
+        #endregion
+
+        #region private variable(s), for the logging example(s)
+
+        private string _logText;
+
+        private Log _log;
+
+        private LogEntry.InformationLevel _selectedInformationLevel;
+
+        private ObservableCollection<LogEntry> _logEntries = new ObservableCollection<LogEntry>();
 
         #endregion
 
@@ -147,6 +161,40 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #endregion
 
+        #region public properties for the logging example(s)
+
+        public string LogText
+        {
+            get => _logText; set
+            {
+                _logText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Array InformationLevels => Enum.GetValues(typeof(LogEntry.InformationLevel));
+
+        public LogEntry.InformationLevel SelectedInformationLevel
+        {
+            get => _selectedInformationLevel;
+            set
+            {
+                _selectedInformationLevel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ObservableCollection<LogEntry> LogEntries
+        {
+            get => _logEntries;
+            set
+            {
+                _logEntries = value;
+                OnPropertyChanged();
+            }
+        }
+        #endregion
+
         #region public new instance method(s)
 
         /// <summary>
@@ -166,6 +214,13 @@ namespace BYTES.NET.WPF.App.ViewModels
 
             // add DialogueViewModel Command
             this.Commands.Add("ShowDialogCmd", new ViewModelRelayCommand(ShowDialog));
+
+            //add logging Command
+            this.Commands.Add("LogCmd", new ViewModelRelayCommand(LogMessage));
+
+            // initialize Logging Components
+            SelectedInformationLevel = LogEntry.InformationLevel.Info;
+            _log = new Log("MainLog");
 
         }
 
@@ -264,6 +319,28 @@ namespace BYTES.NET.WPF.App.ViewModels
         }
 
         #endregion
-  
+
+        #region private method(s) for logging example(s)
+
+        /// <summary>
+        /// logs a message
+        /// </summary>
+        /// <param name="arg"></param>
+        private void LogMessage(object arg)
+        {
+            LogEntry entry = new LogEntry(LogText, SelectedInformationLevel);
+            if (!string.IsNullOrEmpty(LogText))
+            {
+                _log.Write(entry);
+
+                // Add the log entry to the collection
+                LogEntries.Add(entry);
+
+                // Clear the log text after logging
+                LogText = string.Empty;
+            }
+        }
+        #endregion
+
     }
 }
