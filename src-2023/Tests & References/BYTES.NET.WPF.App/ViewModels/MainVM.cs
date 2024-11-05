@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +11,15 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using BYTES.NET.Logging;
+using BYTES.NET.Logging.Appenders;
 using BYTES.NET.Primitives;
+
+using Ookii.Dialogs.Wpf;
 
 
 //import namespace(s) required from 'BYTES.NET.WPF' framework
 using BYTES.NET.WPF.MVVM;
+using Microsoft.Win32;
 
 namespace BYTES.NET.WPF.App.ViewModels
 {
@@ -50,11 +55,15 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         private string _logText;
 
+        private string _filePath;
+
         private Log _log;
 
         private LogEntry.InformationLevel _selectedInformationLevel;
 
         private ObservableCollection<LogEntry> _logEntries = new ObservableCollection<LogEntry>();
+
+        private PlainTextAppender _plainTextAppender = new PlainTextAppender("C:\\Users\\Public\\Documents", "log.txt");
 
         #endregion
 
@@ -193,6 +202,16 @@ namespace BYTES.NET.WPF.App.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public string FilePath
+        {
+            get => _filePath;
+            set
+            {
+                _filePath = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         #region public new instance method(s)
@@ -217,10 +236,12 @@ namespace BYTES.NET.WPF.App.ViewModels
 
             //add logging Command
             this.Commands.Add("LogCmd", new ViewModelRelayCommand(LogMessage));
+            this.Commands.Add("SelectPathCmd", new ViewModelRelayCommand(SelectPath));
 
             // initialize Logging Components
             SelectedInformationLevel = LogEntry.InformationLevel.Info;
             _log = new Log("MainLog");
+            
 
         }
 
@@ -330,7 +351,11 @@ namespace BYTES.NET.WPF.App.ViewModels
         {
             // Create a new log entry
             LogEntry entry = new LogEntry(LogText, SelectedInformationLevel);
-
+            
+            if(_log.getAppendersCount() == 0)
+            {
+                _log.AddAppender(_plainTextAppender);
+            }
 
             if (!string.IsNullOrEmpty(LogText))
             {
@@ -346,5 +371,21 @@ namespace BYTES.NET.WPF.App.ViewModels
         }
         #endregion
 
+        #region private methods for logging
+
+        private void SelectPath()
+        {
+            VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
+            dialog.Description = "Ordner auswählen";
+            dialog.UseDescriptionForTitle = true;
+            dialog.ShowNewFolderButton = false;
+            dialog.ShowDialog();
+
+            if (!string.IsNullOrWhiteSpace(dialog.SelectedPath))
+            {
+                _plainTextAppender.LogFilePath = dialog.SelectedPath;
+            }
+        }
+        #endregion
     }
 }

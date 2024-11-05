@@ -216,6 +216,7 @@
                     <TextBlock Text="Information Level"/>
                     <ComboBox ItemsSource="{Binding InformationLevels}" SelectedItem="{Binding SelectedInformationLevel, Mode=TwoWay}" />
                     <Button Content="Log Entry" Command="{Binding Commands[LogCmd]}"/>
+                    <Button Content="Select Path" Command="{Binding Commands[SelectPathCmd]}"/>
 
                     <!-- Scrollable Log Entries Display -->
                     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Height="311">

@@ -267,6 +267,10 @@ namespace BYTES.NET.Logging
             }
         }
 
+        public int getAppendersCount()
+        {
+            return _appenders.Count;
+        }
         #endregion
     }
 }
