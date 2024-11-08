@@ -50,6 +50,11 @@ namespace BYTES.NET.Logging
             set => _cacheLimit = value;
         }
 
+        public List<LogEntry> Cache
+        {
+            get => _cache;
+        }
+
         public bool LogModifications
         {
             get => _logModifications;
@@ -121,6 +126,14 @@ namespace BYTES.NET.Logging
             {
                 this.Inform("Appender of type '" + appender.GetType().ToString() + "' added");
             }
+        }
+
+        /// <summary>
+        /// removes all registered appenders
+        /// </summary>
+        public void ClearAppenders()
+        {
+            _appenders.Clear();
         }
 
         /// <summary>
@@ -272,5 +285,6 @@ namespace BYTES.NET.Logging
             return _appenders.Count;
         }
         #endregion
+
     }
 }

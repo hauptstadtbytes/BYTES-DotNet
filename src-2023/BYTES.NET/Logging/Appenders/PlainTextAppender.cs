@@ -13,75 +13,75 @@ namespace BYTES.NET.Logging.Appenders
     {
         #region private variable(s)
 
-        private string _logFilePath;
-
-        private string _logFile;
+        private string _filePath;
+        private string _fileName;
 
         #endregion
 
         #region public variable(s)
 
-        public string LogFilePath
+        public string FullPath
         {
-            get => _logFilePath;
-            set
-            {
-                _logFilePath = value;
-            }
+            get => Path.Combine(_filePath, $"{_fileName}.txt");
         }
 
         #endregion
 
-        #region ILogAppender implementation
+        #region constructor(s)/ public new instance method(s)
+
+        /// <summary>
+        /// default new instance method
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="fileName"></param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public PlainTextAppender(string filePath, string fileName)
+        {
+            _filePath = filePath ?? throw new ArgumentNullException(nameof(filePath));
+            _fileName = fileName;
+        }
+        #endregion
+
+        #region public method(s) implementing 'ILogAppender'
+
         public void OnAppended(Log log)
         {
-            CreateLogFile(log);
+            //CreateLogFile(log);
         }
 
         public void OnLogged(LogEntry entry)
         {
             WriteToLogFile(entry);
         }
+
         #endregion
 
         #region private method(s)
 
-        private void CreateLogFile(object logObject)
+        /// <summary>
+        /// creates a new text file (on disk)
+        /// </summary>
+        /// <param name="log"></param>
+        private void CreateLogFile(Log log)
         {
-            if (!File.Exists(_logFilePath + _logFile))
+            if (!File.Exists(this.FullPath))
             {
-                File.Create(_logFilePath + _logFile + ".txt");
+                File.Create(this.FullPath);
             }
         }
 
+        /// <summary>
+        /// writes a message to log file
+        /// </summary>
+        /// <param name="entry"></param>
         private void WriteToLogFile(LogEntry entry)
         {
-            string fullPath = Path.Combine(_logFilePath, $"{_logFile}.txt");
-            string logMessage = $"{DateTime.Now}: {entry.Message} Informationlevel: {entry.Level}\n";
+            string logMessage = $"{DateTime.Now}; {entry.Message}; Informationlevel; {entry.Level}\n";
 
-            try
-            {
-                File.AppendAllText(fullPath, logMessage);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                MessageBox.Show($"Error writing to log file: {ex.Message}", "Log Error", MessageBoxButton.OK);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An unexpected error occurred: {ex.Message}", "Log Error", MessageBoxButton.OK);
-            }
+            File.AppendAllText(this.FullPath, logMessage);
         }
 
 
-        #endregion
-
-        #region constructor(s)
-        public PlainTextAppender(string logFilePath, string logFile)
-        {
-            _logFilePath = logFilePath ?? throw new ArgumentNullException(nameof(logFilePath));
-            _logFile = logFile;
-        }
         #endregion
     }
 }

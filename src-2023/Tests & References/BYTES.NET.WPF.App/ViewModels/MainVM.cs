@@ -34,6 +34,7 @@ namespace BYTES.NET.WPF.App.ViewModels
         private DialogVM _dialogVM;
 
         private StringMatchingVM _matchingVM = new StringMatchingVM(); //contains the entire example for string matching
+        private LoggingVM _loggingVM = new LoggingVM(); //contains the entire logging example
 
         private string _sampleInputString = string.Empty;
         #endregion
@@ -48,22 +49,6 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         private bool _showDialogBlocking = false;
         private string _dialogMessage = "Hello World!";
-
-        #endregion
-
-        #region private variable(s), for the logging example(s)
-
-        private string _logText;
-
-        private string _filePath;
-
-        private Log _log;
-
-        private LogEntry.InformationLevel _selectedInformationLevel;
-
-        private ObservableCollection<LogEntry> _logEntries = new ObservableCollection<LogEntry>();
-
-        private PlainTextAppender _plainTextAppender = new PlainTextAppender("C:\\Users\\Public\\Documents", "log.txt");
 
         #endregion
 
@@ -132,6 +117,7 @@ namespace BYTES.NET.WPF.App.ViewModels
         }
 
         public StringMatchingVM StringMatching { get => _matchingVM; }
+        public LoggingVM Logging { get => _loggingVM; }
 
         #endregion
 
@@ -170,50 +156,6 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #endregion
 
-        #region public properties for the logging example(s)
-
-        public string LogText
-        {
-            get => _logText; set
-            {
-                _logText = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public Array InformationLevels => Enum.GetValues(typeof(LogEntry.InformationLevel));
-
-        public LogEntry.InformationLevel SelectedInformationLevel
-        {
-            get => _selectedInformationLevel;
-            set
-            {
-                _selectedInformationLevel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public ObservableCollection<LogEntry> LogEntries
-        {
-            get => _logEntries;
-            set
-            {
-                _logEntries = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string FilePath
-        {
-            get => _filePath;
-            set
-            {
-                _filePath = value;
-                OnPropertyChanged();
-            }
-        }
-        #endregion
-
         #region public new instance method(s)
 
         /// <summary>
@@ -233,16 +175,7 @@ namespace BYTES.NET.WPF.App.ViewModels
 
             // add DialogueViewModel Command
             this.Commands.Add("ShowDialogCmd", new ViewModelRelayCommand(ShowDialog));
-
-            //add logging Command
-            this.Commands.Add("LogCmd", new ViewModelRelayCommand(LogMessage));
-            this.Commands.Add("SelectPathCmd", new ViewModelRelayCommand(SelectPath));
-
-            // initialize Logging Components
-            SelectedInformationLevel = LogEntry.InformationLevel.Info;
-            _log = new Log("MainLog");
             
-
         }
 
         #endregion
@@ -341,51 +274,5 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #endregion
 
-        #region private method(s) for logging example(s)
-
-        /// <summary>
-        /// logs a message
-        /// </summary>
-        /// <param name="arg"></param>
-        private void LogMessage(object arg)
-        {
-            // Create a new log entry
-            LogEntry entry = new LogEntry(LogText, SelectedInformationLevel);
-            
-            if(_log.getAppendersCount() == 0)
-            {
-                _log.AddAppender(_plainTextAppender);
-            }
-
-            if (!string.IsNullOrEmpty(LogText))
-            {
-                // Log the entry
-                _log.Write(entry);
-
-                // Add the log entry to the collection
-                LogEntries.Add(entry);
-
-                // Clear the log text after logging
-                LogText = string.Empty;
-            }
-        }
-        #endregion
-
-        #region private methods for logging
-
-        private void SelectPath()
-        {
-            VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
-            dialog.Description = "Ordner auswählen";
-            dialog.UseDescriptionForTitle = true;
-            dialog.ShowNewFolderButton = false;
-            dialog.ShowDialog();
-
-            if (!string.IsNullOrWhiteSpace(dialog.SelectedPath))
-            {
-                _plainTextAppender.LogFilePath = dialog.SelectedPath;
-            }
-        }
-        #endregion
     }
 }

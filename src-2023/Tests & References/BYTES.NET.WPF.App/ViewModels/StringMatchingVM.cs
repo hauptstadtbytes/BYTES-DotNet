@@ -11,7 +11,6 @@ using BYTES.NET.WPF.MVVM;
 //import internal namespace(s) required
 using BYTES.NET.WPF.App.Views;
 using BYTES.NET.Primitives;
-using System.Windows;
 
 namespace BYTES.NET.WPF.App.ViewModels
 {
