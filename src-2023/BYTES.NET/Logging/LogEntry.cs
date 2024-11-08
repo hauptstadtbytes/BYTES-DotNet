@@ -99,7 +99,7 @@ namespace BYTES.NET.Logging
                 return true;
             }
 
-            //compare the local information level with the reshold
+            //compare the local information level with the threshold
             int threshVal = (int)Enum.Parse(typeof(LogEntry.InformationLevel), threshold.ToString());
             int entryVal = (int)Enum.Parse(typeof(LogEntry.InformationLevel), _level.ToString());
 

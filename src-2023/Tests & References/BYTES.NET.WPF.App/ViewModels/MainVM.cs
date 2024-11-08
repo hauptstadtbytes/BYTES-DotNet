@@ -1,18 +1,25 @@
 ﻿//import .net (default) namespace(s)
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using BYTES.NET.Logging;
+using BYTES.NET.Logging.Appenders;
 using BYTES.NET.Primitives;
+
+using Ookii.Dialogs.Wpf;
 
 
 //import namespace(s) required from 'BYTES.NET.WPF' framework
 using BYTES.NET.WPF.MVVM;
+using Microsoft.Win32;
 
 namespace BYTES.NET.WPF.App.ViewModels
 {
@@ -27,6 +34,7 @@ namespace BYTES.NET.WPF.App.ViewModels
         private DialogVM _dialogVM;
 
         private StringMatchingVM _matchingVM = new StringMatchingVM(); //contains the entire example for string matching
+        private LoggingVM _loggingVM = new LoggingVM(); //contains the entire logging example
 
         private string _sampleInputString = string.Empty;
         #endregion
@@ -109,6 +117,7 @@ namespace BYTES.NET.WPF.App.ViewModels
         }
 
         public StringMatchingVM StringMatching { get => _matchingVM; }
+        public LoggingVM Logging { get => _loggingVM; }
 
         #endregion
 
@@ -166,7 +175,7 @@ namespace BYTES.NET.WPF.App.ViewModels
 
             // add DialogueViewModel Command
             this.Commands.Add("ShowDialogCmd", new ViewModelRelayCommand(ShowDialog));
-
+            
         }
 
         #endregion
@@ -264,6 +273,6 @@ namespace BYTES.NET.WPF.App.ViewModels
         }
 
         #endregion
-  
+
     }
 }

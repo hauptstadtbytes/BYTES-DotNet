@@ -11,7 +11,7 @@
     <Window.DataContext>
         <localVMs:MainVM/>
     </Window.DataContext>
-    
+
     <!-- add ressources (like converters etc.) -->
     <Window.Resources>
         <converters:BooleanToIndexConverter x:Key="BoolToIndexConverter" />
@@ -200,8 +200,17 @@
             </TabItem>
             <TabItem Header="String Matching">
                 <Grid Margin="5">
-                    <ContentPresenter Content="{Binding StringMatching.View}" />
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="32*"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="79*"/>
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter Content="{Binding StringMatching.View}" Grid.ColumnSpan="3" />
                 </Grid>
+            </TabItem>
+
+            <TabItem Header="Logging">
+                <ContentPresenter Content="{Binding Logging.View}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
             </TabItem>
         </TabControl>
     </Grid>
