@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Script ID="b1f4749d-2661-4199-8507-6433c25864e3">
+  <Metadata>
+    <Name>a test script</Name>
+    <Description>a simple script for testing purposes</Description>
+  </Metadata>
+  <Arguments>
+    <Argument Name="RootSequence">00000000-0000-0000-0000-000000000000</Argument>
+  </Arguments>
+  <Sequences />
+</Script>

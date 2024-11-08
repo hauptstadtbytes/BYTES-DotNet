@@ -44,6 +44,9 @@
     <ProjectReference Include="..\BYTES.NET.Extensibility\BYTES.NET.Extensibility.csproj" />
     <ProjectReference Include="..\BYTES.NET\BYTES.NET.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.IO.Compression" />
+  </ItemGroup>
 
   <!-- publish NuGet package automatically to github (for release versions only, using the source from 'NuGet.config' file in the solution level directory -->
   <Target Name="Push NuGet package" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">

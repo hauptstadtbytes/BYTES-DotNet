@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BYTES.NET.Automation\BYTES.NET.Automation.csproj" />
     <ProjectReference Include="..\..\BYTES.NET.Extensibility\BYTES.NET.Extensibility.csproj" />
     <ProjectReference Include="..\..\BYTES.NET\BYTES.NET.csproj" />
   </ItemGroup>

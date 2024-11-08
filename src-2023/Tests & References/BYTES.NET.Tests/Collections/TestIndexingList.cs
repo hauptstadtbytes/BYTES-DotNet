@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 //import namespace(s) required from 'BYTES.NET' framework
 using BYTES.NET.Collections;
-using System.Diagnostics;
 
 namespace BYTES.NET.Tests.Collections
 {
