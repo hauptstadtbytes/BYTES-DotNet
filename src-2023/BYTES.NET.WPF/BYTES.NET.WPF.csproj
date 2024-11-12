@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<!-- enable multi-targetting; see also 'https://www.cafe-encounter.net/p2312/multi-targetting-net-framework-and-net-core-in-a-single-project' -->
-		<TargetFrameworks>net472;net48;net6.0-windows</TargetFrameworks>
+		<TargetFrameworks>net472;net48;net6.0-windows;net8.0-windows</TargetFrameworks>
 		<!-- set language version; see also 'https://stackoverflow.com/questions/61434436/how-to-change-c-sharp-language-version-for-all-of-the-projects-in-my-solution-in' -->
 		<LangVersion>latest</LangVersion>
 		<!-- disable 'global using'; see also 'https://stackoverflow.com/questions/68782558/c-sharp-10-disable-global-using' -->
@@ -42,6 +42,31 @@
 		<None Include="..\Resources\License.txt" Pack="true" PackagePath="\meta\" />
 		<None Include="..\Resources\Icon.png" Pack="true" PackagePath="\meta\" />
 	</ItemGroup>
+
+	<!-- define constants for framework differentiation; see also 'https://weblog.west-wind.com/posts/2017/jun/22/multitargeting-and-porting-a-net-library-to-net-core-20'-->
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net472'">
+		<DefineConstants>NET472;NETFULL</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net48'">
+		<DefineConstants>NET48;NETFULL</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0'">
+		<DefineConstants>NET60;NETCORE</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0-windows'">
+		<DefineConstants>WINDOWS;NET60;NETCORE</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net8.0'">
+		<DefineConstants>NET80;NETCORE</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net8.0-windows'">
+		<DefineConstants>WINDOWS;NET80;NETCORE</DefineConstants>
+	</PropertyGroup>
 
 	<!-- publish NuGet package automatically to github (for release versions only, using the source from 'NuGet.config' file in the solution level directory -->
 	<Target Name="Push NuGet package" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">

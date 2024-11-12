@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFrameworks>net6.0-windows;net8.0-windows</TargetFrameworks>
     <Nullable>enable</Nullable>
 	<UseWPF>true</UseWPF>
 	<!-- set language version; see also 'https://stackoverflow.com/questions/61434436/how-to-change-c-sharp-language-version-for-all-of-the-projects-in-my-solution-in' -->
