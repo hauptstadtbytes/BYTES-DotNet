@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BYTES.NET.Extensibility\BYTES.NET.Extensibility.csproj" />
+    <ProjectReference Include="..\..\BYTES.NET.Math\BYTES.NET.Math.csproj" />
     <ProjectReference Include="..\..\BYTES.NET\BYTES.NET.csproj" />
   </ItemGroup>
 

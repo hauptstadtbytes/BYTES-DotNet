@@ -1,4 +1,5 @@
-﻿using System;
+﻿//import .net (default) namespace(s) required
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace BYTES.NET.Math
 {
-        public class DataMatrix<TValue>
-        {
-            #region Protected Variables
 
-            protected TValue[,] _values = null;
+    public class DataMatrix<TValue>
+    {
+        #region protected variable(s)
 
-            #endregion
+        protected TValue[,] _values = null;
 
-            #region Public Properties
+        #endregion
 
-            public int XLength
+        #region public propertie(s)
+
+        public int XLength
             {
                 get
                 {
@@ -24,7 +26,7 @@ namespace BYTES.NET.Math
                 }
             }
 
-            public int YLength
+        public int YLength
             {
                 get
                 {
@@ -32,13 +34,13 @@ namespace BYTES.NET.Math
                 }
             }
 
-            /// <summary>
-            /// Coordinates are 1-based.
-            /// </summary>
-            /// <param name="xCoordinate"></param>
-            /// <param name="yCoordinate"></param>
-            /// <returns></returns>
-            public TValue this[int xCoordinate, int yCoordinate]
+        /// <summary>
+        /// </summary>
+        /// <param name="xCoordinate"></param>
+        /// <param name="yCoordinate"></param>
+        /// <returns></returns>
+        /// <remarks>corrdinates are 1-based</remarks>
+        public TValue this[int xCoordinate, int yCoordinate]
             {
                 get
                 {
@@ -56,77 +58,89 @@ namespace BYTES.NET.Math
                 }
             }
 
-            #endregion
+        #endregion
 
-            #region Constructors
+        #region public constructor(s)
 
-            /// <summary>
-            /// Default constructor.
-            /// </summary>
-            /// <param name="values"></param>
-            public DataMatrix(TValue[,] values)
+        /// <summary>
+        /// default new instance method
+        /// </summary>
+        /// <param name="values"></param>
+        public DataMatrix(TValue[,] values)
+        {
+            _values = values;
+        }
+
+        /// <summary>
+        /// overloaded constructor, accepting dimensions 
+        /// </summary>
+        /// <param name="xLength"></param>
+        /// <param name="yLength"></param>
+        public DataMatrix(int xLength, int yLength)
+        {
+            _values = new TValue[xLength, yLength];
+        }
+
+        #endregion
+
+        #region protected method(s)
+
+        /// <summary>
+        /// method called after a value is updated
+        /// </summary>
+        /// <param name="xCoordinate"></param>
+        /// <param name="yCoordinate"></param>
+        /// <param name="oldValue"></param>
+        /// <param name="newValue"></param>
+        protected virtual void OnValueUpdate(int xCoordinate, int yCoordinate, TValue oldValue, TValue newValue)
+        {
+        }
+
+        #endregion
+
+        #region public method(s)
+
+        /// <summary>
+        /// overloads the default 'toArray()' method
+        /// </summary>
+        /// <returns></returns>
+        public TValue[,] ToArray()
+        {
+            return _values;
+        }
+
+        #endregion
+
+        #region private method(s)
+
+        /// <summary>
+        /// Validates the given coordinates.
+        /// </summary>
+        /// <param name="xCoordinate"></param>
+        /// <param name="yCoordinate"></param>
+        private void ValidateCoordinates(int xCoordinate, int yCoordinate)
             {
-                _values = values;
-            }
-
-            /// <summary>
-            /// Overloaded constructor.
-            /// </summary>
-            /// <param name="xLength"></param>
-            /// <param name="yLength"></param>
-            public DataMatrix(int xLength, int yLength)
-            {
-                // Initialize the values array. Dimensions are reduced by one.
-                _values = new TValue[xLength, yLength];
-            }
-
-            #endregion
-
-            #region Protected Methods
-
-            /// <summary>
-            /// Method called after a value is updated.
-            /// </summary>
-            /// <param name="xCoordinate"></param>
-            /// <param name="yCoordinate"></param>
-            /// <param name="oldValue"></param>
-            /// <param name="newValue"></param>
-            protected virtual void OnValueUpdate(int xCoordinate, int yCoordinate, TValue oldValue, TValue newValue)
-            {
-            }
-
-            #endregion
-
-            #region Private Methods
-
-            /// <summary>
-            /// Validates the given coordinates.
-            /// </summary>
-            /// <param name="xCoordinate"></param>
-            /// <param name="yCoordinate"></param>
-            private void ValidateCoordinates(int xCoordinate, int yCoordinate)
-            {
-                if (xCoordinate - 1 < 0)
+                if (xCoordinate < 1)
                 {
                     throw new ArgumentException("Failed to validate x-coordinate. All coordinates have to be 1-based.");
                 }
 
-                if (xCoordinate - 1 >= XLength)
+                if (xCoordinate > XLength)
                 {
-                    throw new ArgumentException("Failed to validate x-coordinate. The value given is bigger than the x-Length.");
+                    throw new ArgumentException("Failed to validate x-coordinate. The value '" + xCoordinate + "' given is bigger than the rurrent x-Length of '" + XLength.ToString() + "'.");
                 }
 
-                if (yCoordinate - 1 < 0)
+                if (yCoordinate < 1)
                 {
                     throw new ArgumentException("Failed to validate y-coordinate. All coordinates have to be 1-based.");
                 }
 
-                if (yCoordinate - 1 >= YLength)
+                if (yCoordinate > YLength)
                 {
-                    throw new ArgumentException("Failed to validate y-coordinate. The value given is bigger than the y-Length.");
+                    throw new ArgumentException("Failed to validate y-coordinate. The value '" + yCoordinate + "' given is bigger than the current y-Length of '" + YLength.ToString() + "'.");
                 }
             }
 
-            #endregion
-        }
+         #endregion
     }
+}
