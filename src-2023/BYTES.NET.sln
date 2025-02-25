@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BYTES.NET.Extensibility", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BYTES.NET.Tests", "Tests & References\BYTES.NET.Tests\BYTES.NET.Tests.csproj", "{ACCE6866-427B-4DD3-A929-F8089E4D99F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BYTES.NET.Math", "BYTES.NET.Math\BYTES.NET.Math.csproj", "{B695152B-0575-4896-8217-313038A23692}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BYTES.NET.Math", "BYTES.NET.Math\BYTES.NET.Math.csproj", "{B695152B-0575-4896-8217-313038A23692}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BYTES.NET.Imaging", "Tests & References\BYTES.NET.Imaging\BYTES.NET.Imaging.csproj", "{B26CC93A-EABA-45F5-988A-E59C4CF8BE3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{B695152B-0575-4896-8217-313038A23692}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B695152B-0575-4896-8217-313038A23692}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B695152B-0575-4896-8217-313038A23692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B26CC93A-EABA-45F5-988A-E59C4CF8BE3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B26CC93A-EABA-45F5-988A-E59C4CF8BE3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B26CC93A-EABA-45F5-988A-E59C4CF8BE3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B26CC93A-EABA-45F5-988A-E59C4CF8BE3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +60,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{522903EA-0230-4191-AA85-55A943C850E5} = {18B25B41-BFB7-4449-AABB-3BB22AF16900}
 		{ACCE6866-427B-4DD3-A929-F8089E4D99F5} = {18B25B41-BFB7-4449-AABB-3BB22AF16900}
+		{B26CC93A-EABA-45F5-988A-E59C4CF8BE3F} = {18B25B41-BFB7-4449-AABB-3BB22AF16900}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05504A23-AF97-4978-81BC-66590BEA4FE7}

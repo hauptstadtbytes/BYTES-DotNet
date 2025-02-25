@@ -36,6 +36,7 @@ namespace BYTES.NET.WPF.App.ViewModels
         private StringMatchingVM _matchingVM = new StringMatchingVM(); //contains the entire example for string matching
         private LoggingVM _loggingVM = new LoggingVM(); //contains the entire logging example
 
+        private ImagingVM _imagingVM = new ImagingVM(); //contains the entire imaging example
         private string _sampleInputString = string.Empty;
         #endregion
 
@@ -70,6 +71,10 @@ namespace BYTES.NET.WPF.App.ViewModels
                 _animals = value;
                 OnPropertyChanged();
             }
+        }
+        public ImagingVM Imaging
+        {
+            get => _imagingVM;
         }
 
         public string SampleInputString { get => _sampleInputString; set

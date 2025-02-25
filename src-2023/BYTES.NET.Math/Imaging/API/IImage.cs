@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace BYTES.NET.Math.Imaging.API
 {
@@ -12,10 +13,5 @@ namespace BYTES.NET.Math.Imaging.API
         /// the name property
         /// </summary>
         string Name { get; }
-
-        /// <summary>
-        /// method returning a 'BitmapSource' class instance (i.e. for displaying the image in a WPF-based application)
-        /// </summary>
-        void GetBitmapSource();
     }
 }

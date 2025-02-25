@@ -1,6 +1,7 @@
 ﻿//import .net (default) namespace(s) required
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,6 +45,7 @@ namespace BYTES.NET.Math
             {
                 get
                 {
+                    Console.WriteLine(xCoordinate + " " + yCoordinate);
                     ValidateCoordinates(xCoordinate, yCoordinate);
                     return _values[xCoordinate - 1, yCoordinate - 1];
                 }
@@ -122,7 +124,7 @@ namespace BYTES.NET.Math
             {
                 if (xCoordinate < 1)
                 {
-                    throw new ArgumentException("Failed to validate x-coordinate. All coordinates have to be 1-based.");
+                    throw new ArgumentException("Failed to validate x-coordinate. All coordinates have to be 1-based." + xCoordinate + " " + yCoordinate);
                 }
 
                 if (xCoordinate > XLength)

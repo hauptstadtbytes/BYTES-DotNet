@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BYTES.NET.Math\BYTES.NET.Math.csproj" />
     <ProjectReference Include="..\..\BYTES.NET.WPF\BYTES.NET.WPF.csproj" />
     <ProjectReference Include="..\..\BYTES.NET\BYTES.NET.csproj" />
   </ItemGroup>

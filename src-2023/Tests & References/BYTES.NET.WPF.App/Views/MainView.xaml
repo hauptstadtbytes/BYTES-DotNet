@@ -149,7 +149,7 @@
                     <!-- the 'CountToVisibilityConverter' example-->
                     <TextBlock Text="CountToVisibilityConverter" FontWeight="Bold" Margin="0,10,0,0"/>
                     <DockPanel LastChildFill="True">
-                        <TextBlock Text="If us enter more than one item (separated by ,) to" />
+                        <TextBlock Text="If we enter more than one item (separated by ,) to" />
                         <TextBox Text="{Binding SampleInputString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="5,0,5,0" Width="50" />
                         <TextBlock Text="the message changes to " />
                         <TextBlock Text="One" Visibility="{Binding SampleStringList, Mode=OneWay, Converter={StaticResource CountToVisibilityConverter}}" FontWeight="Bold" />
@@ -211,6 +211,10 @@
 
             <TabItem Header="Logging">
                 <ContentPresenter Content="{Binding Logging.View}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+            </TabItem>
+
+            <TabItem Header="Imaging">
+                <ContentPresenter Content="{Binding Imaging.View}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
             </TabItem>
         </TabControl>
     </Grid>

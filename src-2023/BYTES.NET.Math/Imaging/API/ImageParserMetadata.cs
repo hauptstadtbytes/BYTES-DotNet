@@ -6,19 +6,34 @@ using System.Threading.Tasks;
 
 namespace BYTES.NET.Math.Imaging.API
 {
+    /// <summary>
+    /// Represents metadata for an image parser, extending the Metadata class.
+    /// </summary>
     public class ImageParserMetadata
     {
         #region Public Properties
-        public string Name;
-        public string FileExtension;
+
+        /// <summary>
+        /// Gets or sets the name of the image parser.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the supported file extensions for the image parser.
+        /// </summary>
+        public string[] FileExtensions { get; set; }
+
         #endregion
 
-        #region public new instance method(s)
-        public ImageParserMetadata(string name, string fileExtension)
+        #region Public New Instance Method(s)
+
+        /// <summary>
+        /// Default constructor for ImageParserMetadata.
+        /// </summary>
+        public ImageParserMetadata()
         {
-            Name = name;
-            FileExtension = fileExtension;
         }
+
         #endregion
     }
 }
