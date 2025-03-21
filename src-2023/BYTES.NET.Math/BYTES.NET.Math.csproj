@@ -42,8 +42,11 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.1" />
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.7" />
 		<PackageReference Include="SkiaSharp" Version="3.118.0-preview.2.3" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\BYTES.NET\BYTES.NET.csproj" />
 	</ItemGroup>
 
 	<!-- the 'BYTES.NET' project dependency -->

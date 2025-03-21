@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
-using BYTES.NET.Persistance.Imaging;
+using BYTES.NET.Persistance.API;
+using BYTES.NET.Math.Imaging.API;
 
-namespace BYTES.NET.Math.Imaging.API
+namespace BYTES.NET.Persistance.Imaging
 {
-    public interface IImage : IImagePersistable
+    public interface IImagePersistable : IPersistable
     {
+        public void loadImage(IImageParser parser);
+
         /// <summary>
         /// the name property
         /// </summary>
