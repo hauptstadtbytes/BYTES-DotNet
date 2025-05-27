@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BYTES.NET.Tests", "Tests & 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BYTES.NET.Automation", "BYTES.NET.Automation\BYTES.NET.Automation.csproj", "{DD5F83B1-CDDB-427A-AFE6-BBA3DB2D2E1C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BYTES.NET.Automation.CLI", "Tests & References\BYTES.NET.Automation.CLI\BYTES.NET.Automation.CLI.csproj", "{6928A503-343C-4151-A9D0-F2FF2F97B5B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{DD5F83B1-CDDB-427A-AFE6-BBA3DB2D2E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD5F83B1-CDDB-427A-AFE6-BBA3DB2D2E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD5F83B1-CDDB-427A-AFE6-BBA3DB2D2E1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6928A503-343C-4151-A9D0-F2FF2F97B5B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6928A503-343C-4151-A9D0-F2FF2F97B5B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6928A503-343C-4151-A9D0-F2FF2F97B5B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6928A503-343C-4151-A9D0-F2FF2F97B5B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +60,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{522903EA-0230-4191-AA85-55A943C850E5} = {18B25B41-BFB7-4449-AABB-3BB22AF16900}
 		{ACCE6866-427B-4DD3-A929-F8089E4D99F5} = {18B25B41-BFB7-4449-AABB-3BB22AF16900}
+		{6928A503-343C-4151-A9D0-F2FF2F97B5B4} = {18B25B41-BFB7-4449-AABB-3BB22AF16900}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {05504A23-AF97-4978-81BC-66590BEA4FE7}

@@ -6,21 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-
-
-//import internal namespace(s) required
-
 namespace BYTES.NET.Automation.Scripting
 {
     [Serializable]
     [XmlRoot("Call")]
-    public class Call
+    public class MethodCall
     {
         #region private variable(s)
 
         private Guid _id = Guid.NewGuid();
+
         private ScriptingEntityMetadata _metadata = new ScriptingEntityMetadata();
         private ScriptingEntityArguments _arguments = new ScriptingEntityArguments();
+
+        private string _method = string.Empty;
 
         #endregion
 
@@ -31,6 +30,9 @@ namespace BYTES.NET.Automation.Scripting
 
         [XmlElement("Metadata")]
         public ScriptingEntityMetadata Metadata { get => _metadata; set => _metadata = value; }
+
+        [XmlAttribute("Method")]
+        public string Method { get => _method; set => _method = value; }
 
         [XmlElement("Arguments")]
         public ScriptingEntityArguments Arguments { get => _arguments; set => _arguments = value; }

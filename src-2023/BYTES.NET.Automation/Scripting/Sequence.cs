@@ -18,7 +18,7 @@ namespace BYTES.NET.Automation.Scripting
         private ScriptingEntityMetadata _metadata = new ScriptingEntityMetadata();
         private ScriptingEntityArguments _arguments = new ScriptingEntityArguments();
 
-        private List<Call> _calls = new List<Call>();
+        private List<MethodCall> _calls = new List<MethodCall>();
 
         #endregion
 
@@ -34,7 +34,7 @@ namespace BYTES.NET.Automation.Scripting
         public ScriptingEntityArguments Arguments { get => _arguments; set => _arguments = value; }
 
         [XmlElement("Calls")]
-        public List<Call> Calls { get => _calls; set => _calls = value; }
+        public List<MethodCall> Calls { get => _calls; set => _calls = value; }
 
         #endregion
     }

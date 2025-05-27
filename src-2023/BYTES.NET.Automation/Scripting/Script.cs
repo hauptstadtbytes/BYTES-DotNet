@@ -123,7 +123,7 @@ namespace BYTES.NET.Automation.Scripting
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public ExecutionResult Run(ScriptExecutionContext context)
+        public ScriptExecutionResult Execute(ScriptExecutionContext context)
         {
             //execute the root sequence (prevalidation is done automatically)
             try
@@ -132,7 +132,7 @@ namespace BYTES.NET.Automation.Scripting
             }
             catch (Exception ex)
             {
-                return new ExecutionResult() { Successful = false , Message = "Script execuion failed: " + ex.Message };
+                return new ScriptExecutionResult() { Successful = false , Message = "Script execuion failed: " + ex.Message };
             }
 
         }

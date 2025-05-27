@@ -8,9 +8,11 @@ using System.Threading.Tasks;
 //import internal namespace(s) required
 using BYTES.NET.Automation.Scripting.API;
 
-namespace BYTES.NET.Automation
+namespace BYTES.NET.Automation.Scripting.API.Methods
 {
-    public class ScriptingMethod : IScriptingMethod
+    public abstract class ScriptingMethod : IScriptingMethod
     {
+        //execute the task
+        public abstract ExecutionResult Execute(ScriptingEntityArguments args, ScriptExecutionContext context); 
     }
 }

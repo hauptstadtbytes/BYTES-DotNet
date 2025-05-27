@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 
 namespace BYTES.NET.Automation.Scripting
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class ScriptingMethodMetadata: Attribute
+    public class ScriptExecutionResult : ExecutionResult
     {
+        #region (additional) public properties
+
+        public Guid Sequence { get; set; }
+
+        public int Step { get; set; }
+
+        #endregion
     }
 }
