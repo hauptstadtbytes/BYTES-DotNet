@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace IO.User
+namespace BYTES.NET.IO.User
 {
     public class Info
     {

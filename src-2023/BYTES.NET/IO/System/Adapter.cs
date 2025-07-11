@@ -5,7 +5,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IO.System
+namespace BYTES.NET.IO.System
 {
     public class Adapter
     {

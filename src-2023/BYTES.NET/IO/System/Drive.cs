@@ -2,7 +2,9 @@
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace IO.System
+using BYTES.NET.IO.Formatter;
+
+namespace BYTES.NET.IO.System
 {
     public class Drive
     {
@@ -45,7 +47,7 @@ namespace IO.System
             if (!IsReady)
                 return 0;
 
-            return Formatter.FormatMemory(_totalSpace, displayUnit, fullUnitsOnly);
+            return Formatter.Formatter.FormatMemory(_totalSpace, displayUnit, fullUnitsOnly);
         }
 
         /// <summary>
@@ -56,7 +58,7 @@ namespace IO.System
             if (!IsReady)
                 return 0;
 
-            return Formatter.FormatMemory(_freeSpace, displayUnit, fullUnitsOnly);
+            return Formatter.Formatter.FormatMemory(_freeSpace, displayUnit, fullUnitsOnly);
         }
 
         #endregion

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IO
+namespace BYTES.NET.IO.Formatter
 {
     public static class Formatter
     {

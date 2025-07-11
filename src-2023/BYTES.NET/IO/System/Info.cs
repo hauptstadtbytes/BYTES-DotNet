@@ -6,9 +6,9 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.Net.NetworkInformation;
-using BYTES.NET.IO;
+using BYTES.NET.IO.Formatter;
 
-namespace IO.System
+namespace BYTES.NET.IO.System
 {
     public class Info
     {
@@ -38,7 +38,7 @@ namespace IO.System
             {
                 totalMemory = (ulong)mo["TotalPhysicalMemory"];
             }
-            return Formatter.FormatMemory(totalMemory, displayUnit, fullUnitsOnly);
+            return Formatter.Formatter.FormatMemory(totalMemory, displayUnit, fullUnitsOnly);
         #else
             // Optional: provide fallback for non-Windows frameworks or throw exception
             return 15.6; // or throw new PlatformNotSupportedException();
