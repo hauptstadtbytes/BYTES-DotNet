@@ -1,0 +1,163 @@
+﻿<UserControl x:Class="BYTES.NET.WPF.App.Views.SystemView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:BYTES.NET.WPF.App.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Border Background="#FFF5F5F5" 
+            CornerRadius="8" 
+            Padding="20"
+            Margin="10">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" MinWidth="120"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Header -->
+                <TextBlock Grid.ColumnSpan="2"
+                           Text="System Information"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Margin="0,0,0,5"
+                           Foreground="#FF333333"/>
+
+                <!-- Host Name -->
+                <Label Grid.Row="1" Grid.Column="0" 
+                       Content="Host Name:" 
+                       FontWeight="SemiBold"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" 
+                           Text="{Binding HostName}" 
+                           Padding="5"/>
+
+                <!-- Domain Name -->
+                <Label Grid.Row="2" Grid.Column="0" 
+                       Content="Domain:" 
+                       FontWeight="SemiBold"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" 
+                           Text="{Binding DomainName}" 
+                           Padding="5"/>
+
+                <!-- Memory -->
+                <Label Grid.Row="3" Grid.Column="0" 
+                       Content="Memory:" 
+                       FontWeight="SemiBold"/>
+                <TextBlock Grid.Row="3" Grid.Column="1" 
+                           Text="{Binding MemoryGB}" 
+                           Padding="5"/>
+
+                <!-- Processor -->
+                <Label Grid.Row="4" Grid.Column="0" 
+                            Content="Processor:" 
+                            FontWeight="SemiBold"/>
+                <TextBlock Grid.Row="4" Grid.Column="1" 
+                            Text="{Binding ProcessorCount}" 
+                            Padding="5"/>
+                <!-- Current User -->
+                <Label Grid.Row="5" Grid.Column="0" 
+                Content="Current User:" 
+                FontWeight="SemiBold"/>
+                <TextBlock Grid.Row="5" Grid.Column="1" 
+                Text="{Binding CurrentUser}" 
+                Padding="5"/>
+
+                <!-- Network Adapters -->
+                <GroupBox Header="Network Adapters" Grid.Row="6" Grid.ColumnSpan="5" Margin="0,5,0,0">
+                    <ItemsControl ItemsSource="{Binding Adapters}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Expander Header="{Binding Key}" Margin="5">
+                                    <ItemsControl ItemsSource="{Binding Value}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="LightGray" BorderThickness="0,0,0,1" Padding="5" Margin="0,5,0,5">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" Padding="5"/>
+                                                        <TextBlock Grid.Column="1" Text="{Binding Description}" FontStyle="Italic" Padding="5"/>
+                                                        <TextBlock Grid.Column="2" Text="{Binding Id}" FontStyle="Italic" Padding="5"/>
+                                                        <TextBlock Grid.Column="3" Text="{Binding Address}" FontStyle="Italic" Padding="5"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Expander>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </GroupBox>
+
+                <!-- Disk Drives -->
+                <GroupBox Grid.Row="7" Grid.ColumnSpan="2"
+                          Header="Drives" Margin="0,10,0,0">
+                    <ItemsControl ItemsSource="{Binding FormattedDrives}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Expander Header="{Binding Key}" Margin="0,5">
+                                    <ItemsControl ItemsSource="{Binding Value}" Margin="10,0">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border BorderBrush="#FFDDDDDD" BorderThickness="0,0,0,1" Padding="5">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                        </Grid.RowDefinitions>
+
+                                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Path:" FontWeight="SemiBold" Margin="0,0,5,0"/>
+                                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path}"/>
+
+                                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Type:" FontWeight="SemiBold" Margin="0,0,5,0"/>
+                                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Type}"/>
+
+                                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Total space:" FontWeight="SemiBold" Margin="0,0,5,0"/>
+                                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding TotalSpace}"/>
+
+                                                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Free space:" FontWeight="SemiBold" Margin="0,0,5,0"/>
+                                                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding FreeSpace}"/>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </Expander>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </GroupBox>
+
+            </Grid>
+        </ScrollViewer>
+    </Border>
+</UserControl>

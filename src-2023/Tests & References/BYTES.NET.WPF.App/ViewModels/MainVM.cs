@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,6 +21,7 @@ using Ookii.Dialogs.Wpf;
 //import namespace(s) required from 'BYTES.NET.WPF' framework
 using BYTES.NET.WPF.MVVM;
 using Microsoft.Win32;
+using BYTES.NET.WPF.App.Views;
 
 namespace BYTES.NET.WPF.App.ViewModels
 {
@@ -35,6 +37,8 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         private StringMatchingVM _matchingVM = new StringMatchingVM(); //contains the entire example for string matching
         private LoggingVM _loggingVM = new LoggingVM(); //contains the entire logging example
+
+        private SystemVM _systemVM = new SystemVM(); //contains the entire system example
 
         private string _sampleInputString = string.Empty;
         #endregion
@@ -118,6 +122,8 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         public StringMatchingVM StringMatching { get => _matchingVM; }
         public LoggingVM Logging { get => _loggingVM; }
+
+        public SystemVM System { get => _systemVM; }
 
         #endregion
 

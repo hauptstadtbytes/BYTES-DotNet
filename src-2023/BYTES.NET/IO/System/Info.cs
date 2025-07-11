@@ -29,9 +29,7 @@ namespace IO.System
 
         public double Memory(string displayUnit = "GB", bool fullUnitsOnly = false)
         {
-            //var memoryInfo = GC.GetGCMemoryInfo();
-            //return Helper.FormatMemory((ulong)memoryInfo.TotalAvailableMemoryBytes, displayUnit, fullUnitsOnly);
-
+        #if NETFRAMEWORK || NET6_0_WINDOWS || NET7_0_WINDOWS || NET8_0_WINDOWS
             ObjectQuery query = new ObjectQuery("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem");
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
             ulong totalMemory = 0;
@@ -41,7 +39,10 @@ namespace IO.System
                 totalMemory = (ulong)mo["TotalPhysicalMemory"];
             }
             return Formatter.FormatMemory(totalMemory, displayUnit, fullUnitsOnly);
-
+        #else
+            // Optional: provide fallback for non-Windows frameworks or throw exception
+            return 15.6; // or throw new PlatformNotSupportedException();
+        #endif
         }
 
         public int Processors
@@ -88,12 +89,34 @@ namespace IO.System
             var output = new Dictionary<NetworkInterfaceType, List<Adapter>>();
             foreach (var adapter in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (!output.TryGetValue(adapter.NetworkInterfaceType, out var adapterList))
+                var typeValue = adapter.NetworkInterfaceType;
+
+                if (!Enum.IsDefined(typeof(NetworkInterfaceType), typeValue))
                 {
-                    adapterList = new List<Adapter>();
-                    output[adapter.NetworkInterfaceType] = adapterList;
+                    // Handle unknown or invalid enum values here:
+                    // For example, skip or group under a special 'Unknown' key
+
+                    // Option 1: Skip this adapter
+                    continue;
+
+                    // Option 2: Use a fallback key — you might create a special enum value for unknown or cast int to enum
+                    // but since enum is fixed, better to use a separate dictionary key
+                    const NetworkInterfaceType UnknownType = (NetworkInterfaceType)(-1); // your own "unknown" key
+                    if (!output.TryGetValue(UnknownType, out var adapterList))
+                    {
+                        adapterList = new List<Adapter>();
+                        output[UnknownType] = adapterList;
+                    }
+                    adapterList.Add(new Adapter(adapter));
+                    continue;
                 }
-                adapterList.Add(new Adapter(adapter));
+
+                if (!output.TryGetValue(typeValue, out var list))
+                {
+                    list = new List<Adapter>();
+                    output[typeValue] = list;
+                }
+                list.Add(new Adapter(adapter));
             }
             return output;
         }

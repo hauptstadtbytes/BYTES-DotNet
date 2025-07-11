@@ -30,5 +30,8 @@
     <Page Update="Views\StringMatchingView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\SystemView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
 </Project>
