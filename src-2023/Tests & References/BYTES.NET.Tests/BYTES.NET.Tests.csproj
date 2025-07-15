@@ -28,8 +28,4 @@
     <ProjectReference Include="..\..\BYTES.NET\BYTES.NET.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="IO\System\" />
-  </ItemGroup>
-
 </Project>
