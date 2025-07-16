@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<!-- enable multi-targetting; see also 'https://www.cafe-encounter.net/p2312/multi-targetting-net-framework-and-net-core-in-a-single-project' -->
-		<TargetFrameworks>net472;net48;net6.0-windows</TargetFrameworks>
+		<TargetFrameworks>net48;net6.0-windows;net8.0-windows</TargetFrameworks>
 		<!-- set language version; see also 'https://stackoverflow.com/questions/61434436/how-to-change-c-sharp-language-version-for-all-of-the-projects-in-my-solution-in' -->
 		<LangVersion>latest</LangVersion>
 		<!-- disable 'global using'; see also 'https://stackoverflow.com/questions/68782558/c-sharp-10-disable-global-using' -->
@@ -22,7 +22,7 @@
 		<PackageProjectUrl>https://bytes-dotnet.readme.io/docs/getting-started</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/hauptstadtbytes/BYTES-DotNet</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<PackageVersion>1.0.0.1-alpha.6</PackageVersion>
+		<PackageVersion>1.0.1.0-alpha.1</PackageVersion>
 		<PackageTags>WPF</PackageTags>
 
 		<!--<PackageLicenseFile>meta\License.txt</PackageLicenseFile>-->
@@ -45,7 +45,7 @@
 
 	<!-- publish NuGet package automatically to github (for release versions only, using the source from 'NuGet.config' file in the solution level directory -->
 	<Target Name="Push NuGet package" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
-		<Exec Command="dotnet nuget push &quot;bin\Release\$(AssemblyName).$(PackageVersion).nupkg&quot; --source &quot;github&quot;" />
+		<Exec Command="dotnet nuget push &quot;bin\Release\$(AssemblyName).$(PackageVersion).nupkg&quot; --source &quot;bytescloud.de&quot;" />
 	</Target>
 
 </Project>
