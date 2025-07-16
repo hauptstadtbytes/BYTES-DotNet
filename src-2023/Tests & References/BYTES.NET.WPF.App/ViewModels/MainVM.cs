@@ -10,16 +10,18 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using Microsoft.Win32;
+
+//import namespace(s) required from 'BYTES.NET' framework
 using BYTES.NET.Logging;
 using BYTES.NET.Logging.Appenders;
 using BYTES.NET.Primitives;
 
 using Ookii.Dialogs.Wpf;
 
-
 //import namespace(s) required from 'BYTES.NET.WPF' framework
 using BYTES.NET.WPF.MVVM;
-using Microsoft.Win32;
+using BYTES.NET.WPF.MVVM.Menu;
 
 namespace BYTES.NET.WPF.App.ViewModels
 {
@@ -121,7 +123,7 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #endregion
 
-        #region public properties, for the validation example(s)
+        #region public properties for the validation example(s)
 
         public int? TheAnswer
         {
@@ -153,6 +155,12 @@ namespace BYTES.NET.WPF.App.ViewModels
                 OnPropertyChanged();
             } 
         }
+
+        #endregion
+
+        #region public properties for the menu example(s)
+
+        public ObservableCollection<MenuItemViewModel> Menu { get => GetMenu(); }
 
         #endregion
 
@@ -198,7 +206,7 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #endregion
 
-        #region private method(s), for the command example(s)
+        #region private method(s) for the command example(s)
 
         /// <summary>
         /// prompts the title text/ a relay command example
@@ -211,7 +219,7 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #endregion
 
-        #region private method(s), for the validation example(s)
+        #region private method(s) for the validation example(s)
 
         /// <summary>
         /// prompts the title text/ a relay command example
@@ -221,6 +229,25 @@ namespace BYTES.NET.WPF.App.ViewModels
         //{
 
         //}
+
+        #endregion
+
+        #region private method(s) for the menu example(s)
+
+        private ObservableCollection<MenuItemViewModel> GetMenu()
+        {
+
+            ObservableCollection<MenuItemViewModel> output = new ObservableCollection<MenuItemViewModel>();
+
+            output.Add(new MenuItemViewModel() { Caption = "Menu" });
+
+            ObservableCollection<MenuItemViewModel> toolsMenu = new ObservableCollection<MenuItemViewModel>();
+            toolsMenu.Add(new MenuItemViewModel() { Caption = "Show Dialog", Command = new ViewModelRelayCommand(PromptText) });
+
+            output.Add(new MenuItemViewModel() { Caption = "Action", Children = toolsMenu });
+
+            return output;
+        }
 
         #endregion
 

@@ -15,14 +15,9 @@ namespace BYTES.NET.WPF.MVVM
     /// <summary>
     /// the (basic) MVVM ViewModel class
     /// </summary>
-    public abstract class ViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
+    public abstract class ViewModel : ViewModelBase, INotifyDataErrorInfo
     {
-        #region public event(s) implementing 'INotifyPropertyChanged'
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        #endregion
-
+        
         #region public event(s) implementing 'INotifyDataErrorInfo'
 
         public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
@@ -97,11 +92,7 @@ namespace BYTES.NET.WPF.MVVM
         protected void OnPropertyChanged(bool revalidate, [CallerMemberName] string property = null)
         {
 
-            //raise the 'PropertyChanged' event
-            if(this.PropertyChanged != null) //otherwise there might be a 'NullReferenceException' when using 'this.<property>' i.e. in constructor
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
+            OnPropertyChanged(property);
 
             //(re-)validate
             if (revalidate)
@@ -111,21 +102,11 @@ namespace BYTES.NET.WPF.MVVM
         }
 
         /// <summary>
-        /// overloading method for notifying on property change(s)
-        /// </summary>
-        /// <param name="property"></param>
-        /// <param name="revalidate"></param>
-        protected void OnPropertyChanged([CallerMemberName] string property = null, bool revalidate = false)
-        {
-            OnPropertyChanged(revalidate, property);
-        }
-
-        /// <summary>
         /// overloaded method, supporting an array of property name(s)
         /// </summary>
         /// <param name="properties"></param>
         /// <param name="revalidate"></param>
-        protected void OnPropertyChanged(string[] properties, bool revalidate = false)
+        protected void OnPropertyChanged(bool revalidate, string[] properties)
         {
             foreach (string property in properties)
             {
@@ -279,6 +260,7 @@ namespace BYTES.NET.WPF.MVVM
         }
 
         #endregion
+
     }
 
     /// <summary>

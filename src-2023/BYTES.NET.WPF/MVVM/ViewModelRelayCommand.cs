@@ -171,5 +171,6 @@ namespace BYTES.NET.WPF.MVVM
         }
 
         #endregion
+
     }
 }

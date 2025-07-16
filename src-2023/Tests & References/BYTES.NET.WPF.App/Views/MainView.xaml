@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:localVMs="clr-namespace:BYTES.NET.WPF.App.ViewModels"
+        xmlns:menuVMs="clr-namespace:BYTES.NET.WPF.MVVM.Menu;assembly=BYTES.NET.WPF"
         xmlns:converters="clr-namespace:BYTES.NET.WPF.Converters;assembly=BYTES.NET.WPF"
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
@@ -26,8 +27,30 @@
         <s:Boolean x:Key="False">False</s:Boolean>
     </Window.Resources>
 
-    <Grid>
-        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid Margin="5">
+        <!-- setup the window structure -->
+        <Grid.RowDefinitions>
+            <RowDefinition MaxHeight="20" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- add the main menu -->
+        <Menu Grid.Row="0" ItemsSource="{Binding Menu}">
+            <Menu.ItemContainerStyle>
+                <Style TargetType="{x:Type MenuItem}">
+                    <Setter Property="Command" Value="{Binding Command}" />
+                    <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
+                </Style>
+            </Menu.ItemContainerStyle>
+            <Menu.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type menuVMs:MenuItemViewModel}" ItemsSource="{Binding Path=Children}">
+                    <TextBlock Text="{Binding Caption}"/>
+                </HierarchicalDataTemplate>
+            </Menu.ItemTemplate>
+        </Menu>
+
+        <!-- add the tabs control -->
+        <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1">
             <TabItem Header="Basic MVVM">
                 <Grid Margin="5">
                     <StackPanel>
