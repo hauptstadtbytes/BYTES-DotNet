@@ -7,7 +7,10 @@
         xmlns:converters="clr-namespace:BYTES.NET.WPF.Converters"
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="{Binding Title}" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+        Title="{Binding Title}" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="NoResize">
+    
 
     <Window.Resources>
         <!-- add the converters -->
