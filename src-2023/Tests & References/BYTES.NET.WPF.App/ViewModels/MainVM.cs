@@ -309,14 +309,14 @@ namespace BYTES.NET.WPF.App.ViewModels
         //shows a progress dialog
         private async void ShowProgressDialog()
         {
-            var dialog = new ProgressDialogViewModel("Show the Progress")
+            var dialog = new ProgressDialogViewModel()
             {
                 Message = "This is a sample progress dialog for demonstration",
                 Total = this.ProgressTotal,
                 AllowCancel = this.AllowCancel
             };
 
-            dialog.DialogClosed += HandleDialogClosed;
+            //dialog.DialogClosed += HandleDialogClosed;
 
             // Subscribe to CancelRequested event
             dialog.CancelRequested += () =>
@@ -326,6 +326,7 @@ namespace BYTES.NET.WPF.App.ViewModels
 
                 // Optionally update some status or trigger cancellation logic here
                 DialogMessage = "Progress cancelled by user.";
+
             };
 
             dialog.ShowDialog(ShowDialogBlocking);
@@ -337,9 +338,8 @@ namespace BYTES.NET.WPF.App.ViewModels
                 dialog.Message = progressMessage;
 
                 // Log progress message
-                dialog.LogInfo(progressMessage);
+                //dialog.Log.Inform("Step " +  i.ToString());
                 
-
                 await Task.Delay(1000);
 
                 if (i == this.ProgressTotal)

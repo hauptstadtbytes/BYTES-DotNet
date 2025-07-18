@@ -13,8 +13,8 @@
     <Window.Resources>
         <!-- add the converters -->
         <converters:NothingToVisibilityConverter x:Key="NothingToVisibilityConverter"/>
-        <!-- BooleanToVisibilityConverter is built-in, but if you don’t have it, define your own -->
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
 
         <!-- see 'https://stackoverflow.com/questions/4997446/boolean-commandparameter-in-xaml' for details on using booleans in XAML-->
         <s:Boolean x:Key="True">True</s:Boolean>
@@ -41,41 +41,25 @@
             <TextBlock x:Name="MessageBlock" HorizontalAlignment="Stretch" Text="{Binding Message}" Margin="5" FontWeight="Bold"
                Visibility="{Binding ElementName=MessageBlock, Path=Text, Converter={StaticResource NothingToVisibilityConverter}, ConverterParameter={StaticResource False}}" />
 
-            <!-- Progress Grid -->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
+            <!-- Progress bar & cancel button -->
+            <DockPanel LastChildFill="True">
+                <Button DockPanel.Dock="Right" Content="Abbrechen" Margin="5" Width="75" Visibility="{Binding AllowCancel, Converter={StaticResource BooleanToVisibilityConverter}}" Command="{Binding Path=Commands[CancelCmd]}" />
+                <ProgressBar DockPanel.Dock="Left" Height="20" HorizontalAlignment="Stretch" IsIndeterminate="{Binding IsIndeterminate}" Value="{Binding Current}" Minimum="0" Maximum="{Binding Total}" />
+            </DockPanel>
+            
+            <!-- add the details -->
+            <Expander HorizontalAlignment="Stretch" Header="Details" IsExpanded="{Binding IsDetailsExpanded}" Visibility="{Binding LogCache, Mode=OneWay, Converter={StaticResource CountToVisibilityConverter},ConverterParameter=1}">
 
-                <ProgressBar Grid.Column="0"
-                     Height="20" HorizontalAlignment="Stretch"
-                     IsIndeterminate="{Binding IsIndeterminate}"
-                     Value="{Binding ProgressValue, Mode=OneWay}"
-                     Minimum="0" Maximum="100" />
+                <ListBox ItemsSource="{Binding LogCache, Mode=OneWay}" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Message}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                
+            </Expander>
 
-                <Button Grid.Column="1" Content="Abbrechen" Margin="5" MinWidth="75"
-                Visibility="{Binding AllowCancel, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Command="{Binding Path=Commands[CancelCmd]}" />
-            </Grid>
-
-            <StackPanel Margin="5">
-                <!-- Toggle Log Button -->
-                <Button Content="Toggle Logs"
-        Width="100" Height="25"
-        ToolTip="Logs anzeigen/ausblenden"
-        Command="{Binding Commands[ToggleLogCmd]}"
-        Visibility="{Binding HasLogEntries, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-                <!-- Logs TextBox -->
-                <TextBox Text="{Binding LogText, Mode=OneWay}" 
-         Margin="0,5,0,0"
-         VerticalScrollBarVisibility="Auto"
-         AcceptsReturn="True" 
-         IsReadOnly="True"
-         Height="150"
-         Visibility="{Binding HasLogsAndExpanded, Converter={StaticResource BooleanToVisibilityConverter}}" />
-            </StackPanel>
         </StackPanel>
 
     </Grid>
