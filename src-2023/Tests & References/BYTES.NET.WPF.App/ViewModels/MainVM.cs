@@ -42,6 +42,7 @@ namespace BYTES.NET.WPF.App.ViewModels
         private string _sampleInputString = string.Empty;
 
         private int _progressTotal = 0;
+        private bool _allowCancel = true;
         #endregion
 
         #region private variable(s), for the validation example(s)
@@ -137,14 +138,6 @@ namespace BYTES.NET.WPF.App.ViewModels
             }
         }
 
-        public int ProgressTotal
-        {
-            get => _progressTotal; set
-            {
-                _progressTotal = value;
-                OnPropertyChanged();
-            }
-        }
 
         #endregion
 
@@ -166,6 +159,29 @@ namespace BYTES.NET.WPF.App.ViewModels
                 _dialogMessage = value;
                 OnPropertyChanged();
             } 
+        }
+
+        #endregion
+
+        #region public properties for the progress dialog example(s)
+
+
+        public int ProgressTotal
+        {
+            get => _progressTotal; set
+            {
+                _progressTotal = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool AllowCancel
+        {
+            get => _allowCancel; set
+            {
+                _allowCancel = value;
+                OnPropertyChanged();
+            }
         }
 
         #endregion
@@ -196,6 +212,9 @@ namespace BYTES.NET.WPF.App.ViewModels
             // add DialogueViewModel Command(s)
             this.Commands.Add("ShowDialogCmd", new ViewModelRelayCommand(ShowDialog));
             this.Commands.Add("ShowProgressDialogCmd", new ViewModelRelayCommand(ShowProgressDialog));
+
+            // add ProgressDialogViewModel Command(s)
+
 
         }
 
@@ -293,15 +312,24 @@ namespace BYTES.NET.WPF.App.ViewModels
             var dialog = new ProgressDialogViewModel("Show the Progress")
             {
                 Message = "This is a sample progress dialog for demonstration",
-                Total = this.ProgressTotal // Pass total seconds from VM property
+                Total = this.ProgressTotal,
+                AllowCancel = this.AllowCancel
             };
 
             dialog.DialogClosed += HandleDialogClosed;
 
-            // Show dialog (blocking or not based on ShowDialogBlocking)
+            // Subscribe to CancelRequested event
+            dialog.CancelRequested += () =>
+            {
+                // Handle cancel action, e.g. close the dialog and do something else
+                dialog.CloseDialog();
+
+                // Optionally update some status or trigger cancellation logic here
+                DialogMessage = "Progress cancelled by user.";
+            };
+
             dialog.ShowDialog(ShowDialogBlocking);
 
-            // If total seconds is > 0, simulate progress
             if (this.ProgressTotal > 0)
             {
                 for (int i = 0; i <= this.ProgressTotal; i++)
@@ -309,15 +337,16 @@ namespace BYTES.NET.WPF.App.ViewModels
                     dialog.Current = i;
                     dialog.Message = $"Loading... {i} / {this.ProgressTotal} seconds";
 
-                    await Task.Delay(1000); // wait 1 second
+                    await Task.Delay(1000);
 
                     if (i == this.ProgressTotal)
                     {
-                        dialog.CloseDialog(); // close dialog on finish
+                        dialog.CloseDialog();
                     }
                 }
             }
         }
+
 
         /// <summary>
         /// handles the property changed event for the dialog
