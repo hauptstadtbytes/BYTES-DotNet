@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace BYTES.NET.WPF.MVVM
+namespace BYTES.NET.WPF.MVVM.Dialog
 {
     ///<summary>
     ///dialog viemodel base class

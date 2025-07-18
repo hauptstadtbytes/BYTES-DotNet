@@ -215,8 +215,13 @@
 
                         <Separator HorizontalAlignment="Stretch" Margin="0,5,0,5" />
 
-                        <!-- the control for opening the dialog -->
+                        <!-- the control for opening the (default) dialog -->
                         <Button Content="Show the Dialog for Updating the Message" Command="{Binding Path=Commands[ShowDialogCmd]}"/>
+
+                        <Separator HorizontalAlignment="Stretch" Margin="0,5,0,5" />
+
+                        <!-- the control for opening the progress dialog -->
+                        <Button Content="Show a Progress Dialog" Command="{Binding Path=Commands[ShowProgressDialogCmd]}"/>
 
                     </StackPanel>
                 </Grid>

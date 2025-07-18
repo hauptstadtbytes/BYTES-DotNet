@@ -76,6 +76,6 @@
 
 	<!-- publish NuGet package automatically to github (for release versions only, using the source from 'NuGet.config' file in the solution level directory -->
 	<Target Name="Push NuGet package" AfterTargets="Pack" Condition="'$(Configuration)' == 'Release'">
-		<Exec Command="dotnet nuget push &quot;bin\Release\$(AssemblyName).$(PackageVersion).nupkg&quot; --source &quot;bytescloud.de&quot;" />
+		<Exec Command="dotnet nuget push &quot;$(BIN_PATH)\Release\$(AssemblyName).$(PackageVersion).nupkg&quot; --source &quot;bytescloud.de&quot;" />
 	</Target>
 </Project>

@@ -22,6 +22,7 @@ using Ookii.Dialogs.Wpf;
 //import namespace(s) required from 'BYTES.NET.WPF' framework
 using BYTES.NET.WPF.MVVM;
 using BYTES.NET.WPF.MVVM.Menu;
+using BYTES.NET.WPF.MVVM.Dialog;
 
 namespace BYTES.NET.WPF.App.ViewModels
 {
@@ -181,9 +182,10 @@ namespace BYTES.NET.WPF.App.ViewModels
             //add validation rule(s)
             //this.ValidationRules.Add(new ViewModelValidationRule("TheAnswer",))
 
-            // add DialogueViewModel Command
+            // add DialogueViewModel Command(s)
             this.Commands.Add("ShowDialogCmd", new ViewModelRelayCommand(ShowDialog));
-            
+            this.Commands.Add("ShowProgressDialogCmd", new ViewModelRelayCommand(ShowProgressDialog));
+
         }
 
         #endregion
@@ -269,6 +271,17 @@ namespace BYTES.NET.WPF.App.ViewModels
             }
             
             dialog.DialogClosed += HandleDialogClosed;
+
+            //open the dialog
+            dialog.ShowDialog(ShowDialogBlocking);
+        }
+
+        //shows a progress dialog
+        private void ShowProgressDialog()
+        {
+            //create a new instance of the dialog view model
+            ProgressDialogViewModel dialog = new ProgressDialogViewModel("Show the Progress") { Message = "This is a sample progress dialog for demonstration" };
+            //ProgressDialogViewModel dialog = new ProgressDialogViewModel("Show the Progress");
 
             //open the dialog
             dialog.ShowDialog(ShowDialogBlocking);

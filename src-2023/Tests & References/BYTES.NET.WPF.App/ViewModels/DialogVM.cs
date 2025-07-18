@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 
 //import namespace(s) required from BYTES.NET.WPF framework
-using BYTES.NET.WPF.MVVM;
+using BYTES.NET.WPF.MVVM.Dialog;
 
 //import internal namespace(s) required
 using BYTES.NET.WPF.App.Views;
