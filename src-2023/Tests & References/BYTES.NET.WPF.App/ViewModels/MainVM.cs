@@ -283,6 +283,9 @@ namespace BYTES.NET.WPF.App.ViewModels
             ProgressDialogViewModel dialog = new ProgressDialogViewModel("Show the Progress") { Message = "This is a sample progress dialog for demonstration" };
             //ProgressDialogViewModel dialog = new ProgressDialogViewModel("Show the Progress");
 
+            //handle closing
+            dialog.DialogClosed += HandleDialogClosed;
+
             //open the dialog
             dialog.ShowDialog(ShowDialogBlocking);
         }
@@ -308,8 +311,14 @@ namespace BYTES.NET.WPF.App.ViewModels
         /// <param name="sender"></param>
         private void HandleDialogClosed(object? sender)
         {
-            DialogVM dialog = (DialogVM)sender;
-            this.DialogMessage = dialog.DialogMessage + " (On Closed)";
+            if (sender is DialogVM dialog)
+            {
+                this.DialogMessage = dialog.DialogMessage + " (On Closed)";
+            }
+            else if (sender is ProgressDialogViewModel progressDialog)
+            {
+                this.DialogMessage = progressDialog.Message + " (Progress Closed)";
+            }
         }
 
         #endregion
