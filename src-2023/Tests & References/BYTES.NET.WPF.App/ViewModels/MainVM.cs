@@ -40,6 +40,8 @@ namespace BYTES.NET.WPF.App.ViewModels
         private LoggingVM _loggingVM = new LoggingVM(); //contains the entire logging example
 
         private string _sampleInputString = string.Empty;
+
+        private int _progressTotal = 0;
         #endregion
 
         #region private variable(s), for the validation example(s)
@@ -132,6 +134,15 @@ namespace BYTES.NET.WPF.App.ViewModels
             {
                 _theAnswer = value;
                 OnPropertyChanged(true); //the 'true' parameter triggers the (re-evaluation)
+            }
+        }
+
+        public int ProgressTotal
+        {
+            get => _progressTotal; set
+            {
+                _progressTotal = value;
+                OnPropertyChanged();
             }
         }
 
@@ -277,17 +288,35 @@ namespace BYTES.NET.WPF.App.ViewModels
         }
 
         //shows a progress dialog
-        private void ShowProgressDialog()
+        private async void ShowProgressDialog()
         {
-            //create a new instance of the dialog view model
-            ProgressDialogViewModel dialog = new ProgressDialogViewModel("Show the Progress") { Message = "This is a sample progress dialog for demonstration" };
-            //ProgressDialogViewModel dialog = new ProgressDialogViewModel("Show the Progress");
+            var dialog = new ProgressDialogViewModel("Show the Progress")
+            {
+                Message = "This is a sample progress dialog for demonstration",
+                Total = this.ProgressTotal // Pass total seconds from VM property
+            };
 
-            //handle closing
             dialog.DialogClosed += HandleDialogClosed;
 
-            //open the dialog
+            // Show dialog (blocking or not based on ShowDialogBlocking)
             dialog.ShowDialog(ShowDialogBlocking);
+
+            // If total seconds is > 0, simulate progress
+            if (this.ProgressTotal > 0)
+            {
+                for (int i = 0; i <= this.ProgressTotal; i++)
+                {
+                    dialog.Current = i;
+                    dialog.Message = $"Loading... {i} / {this.ProgressTotal} seconds";
+
+                    await Task.Delay(1000); // wait 1 second
+
+                    if (i == this.ProgressTotal)
+                    {
+                        dialog.CloseDialog(); // close dialog on finish
+                    }
+                }
+            }
         }
 
         /// <summary>

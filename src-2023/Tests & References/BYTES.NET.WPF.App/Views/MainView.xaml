@@ -220,6 +220,11 @@
 
                         <Separator HorizontalAlignment="Stretch" Margin="0,5,0,5" />
 
+                        <!-- Inputs for Progress Dialog -->
+                        <DockPanel>
+                        <TextBlock Text="How many seconds to load:" VerticalAlignment="Center" Margin="0,5,0,5"/>
+                            <TextBox Width="50" Text="{Binding ProgressTotal, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="0,5,0,5"/>
+                        </DockPanel>
                         <!-- the control for opening the progress dialog -->
                         <Button Content="Show a Progress Dialog" Command="{Binding Path=Commands[ShowProgressDialogCmd]}"/>
 
