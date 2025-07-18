@@ -329,20 +329,22 @@ namespace BYTES.NET.WPF.App.ViewModels
             };
 
             dialog.ShowDialog(ShowDialogBlocking);
-
-            if (this.ProgressTotal > 0)
+            
+            for (int i = 0; i <= this.ProgressTotal; i++)
             {
-                for (int i = 0; i <= this.ProgressTotal; i++)
+                string progressMessage = $"Loading... {i} / {this.ProgressTotal} seconds";
+                dialog.Current = i;
+                dialog.Message = progressMessage;
+
+                // Log progress message
+                dialog.LogInfo(progressMessage);
+                
+
+                await Task.Delay(1000);
+
+                if (i == this.ProgressTotal)
                 {
-                    dialog.Current = i;
-                    dialog.Message = $"Loading... {i} / {this.ProgressTotal} seconds";
-
-                    await Task.Delay(1000);
-
-                    if (i == this.ProgressTotal)
-                    {
-                        dialog.CloseDialog();
-                    }
+                    dialog.CloseDialog();
                 }
             }
         }

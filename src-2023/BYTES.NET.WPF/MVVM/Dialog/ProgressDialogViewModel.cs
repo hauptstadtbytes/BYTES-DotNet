@@ -1,7 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Windows.Input;
+using System.Collections.ObjectModel;
+using System.Linq;
+using BYTES.NET.Logging;
+using BYTES.NET.Logging.Appenders;
 using BYTES.NET.WPF.MVVM;
+using Ookii.Dialogs.Wpf;
 
 namespace BYTES.NET.WPF.MVVM.Dialog
 {
@@ -11,11 +14,16 @@ namespace BYTES.NET.WPF.MVVM.Dialog
 
         private string _title = string.Empty;
         private string? _message = null;
-
         private double? _total = null;
         private double _current = 0;
-
         private bool _allowCancel = true;
+
+        private readonly Log _log = new Log();
+        private PlainTextAppender? _plainTextAppender = null;
+        private ObservableCollection<LogEntry> _logCollection = new ObservableCollection<LogEntry>();
+        private bool _hasLogEntries;
+        private string _logText = string.Empty;
+        private bool _isLogExpanded = false;
 
         #endregion
 
@@ -24,21 +32,13 @@ namespace BYTES.NET.WPF.MVVM.Dialog
         public string Title
         {
             get => _title;
-            set
-            {
-                _title = value;
-                OnPropertyChanged();
-            }
+            set { _title = value; OnPropertyChanged(); }
         }
 
         public string? Message
         {
             get => _message;
-            set
-            {
-                _message = value;
-                OnPropertyChanged();
-            }
+            set { _message = value; OnPropertyChanged(); }
         }
 
         public double? Total
@@ -65,22 +65,58 @@ namespace BYTES.NET.WPF.MVVM.Dialog
         }
 
         public bool IsIndeterminate => !_total.HasValue || _total == 0;
-
         public double ProgressValue => IsIndeterminate ? 0 : (_current / _total.Value) * 100;
 
         public bool AllowCancel
         {
             get => _allowCancel;
-            set
+            set { _allowCancel = value; OnPropertyChanged(); }
+        }
+
+        public ObservableCollection<LogEntry> LogCollection { get; private set; } = new ObservableCollection<LogEntry>();
+
+        public bool HasLogEntries
+        {
+            get => _hasLogEntries;
+            private set
             {
-                if (_allowCancel != value)
+                if (_hasLogEntries != value)
                 {
-                    _allowCancel = value;
-                    OnPropertyChanged();
+                    _hasLogEntries = value;
+                    OnPropertyChanged(nameof(HasLogEntries));
+                    OnPropertyChanged(nameof(HasLogsAndExpanded)); // notify combined property
                 }
             }
         }
 
+        public string LogText
+        {
+            get => _logText;
+            private set
+            {
+                if (_logText != value)
+                {
+                    _logText = value;
+                    OnPropertyChanged(nameof(LogText));
+                }
+            }
+        }
+
+        public bool IsLogExpanded
+        {
+            get => _isLogExpanded;
+            set
+            {
+                if (_isLogExpanded != value)
+                {
+                    _isLogExpanded = value;
+                    OnPropertyChanged(nameof(IsLogExpanded));
+                    OnPropertyChanged(nameof(HasLogsAndExpanded)); // notify combined property
+                }
+            }
+        }
+
+        public bool HasLogsAndExpanded => HasLogEntries && IsLogExpanded;
         #endregion
 
         #region events
@@ -95,19 +131,66 @@ namespace BYTES.NET.WPF.MVVM.Dialog
         {
             Title = title;
             Message = message;
-
             View = new ProgressDialogView();
 
-            // Add Cancel Command to Commands dictionary with shared relay command
-            Commands.Add("CancelCmd", new ViewModelRelayCommand(
-                _ => CancelRequested?.Invoke(),
-                _ => AllowCancel
-            ));
+            Commands.Add("CancelCmd", new ViewModelRelayCommand(_ => CancelRequested?.Invoke(), _ => AllowCancel));
+            Commands.Add("SelectFilePathCmd", new ViewModelRelayCommand(_ => SelectFilePath()));
+            Commands.Add("ToggleLogCmd", new ViewModelRelayCommand(_ => IsLogExpanded = !IsLogExpanded));
+
+            _log.Inform($"Progress Dialog '{Title}' initialized.");
+
+            LogCollection.CollectionChanged += (s, e) =>
+            {
+                HasLogEntries = LogCollection.Count > 0;
+                LogText = string.Join(Environment.NewLine, LogCollection.Select(l => l.Message));
+            };
         }
 
         #endregion
 
-        #region methods
+        #region public logging helpers
+
+        public void LogInfo(string message)
+        {
+            _log.Write(message, LogEntry.InformationLevel.Info);
+            LogCollection.Add(new LogEntry(Message = message, LogEntry.InformationLevel.Info));
+        }
+
+        public void LogWarning(string message)
+        {
+            _log.Write(message, LogEntry.InformationLevel.Warning);
+            LogCollection.Add(new LogEntry(Message = message, LogEntry.InformationLevel.Warning));
+        }
+
+        public void LogError(string message)
+        {
+            _log.Write(message, LogEntry.InformationLevel.Exception);
+            LogCollection.Add(new LogEntry(Message = message, LogEntry.InformationLevel.Exception));
+        }
+
+        #endregion
+
+        #region private methods
+
+        private void SelectFilePath()
+        {
+            var dialog = new VistaFolderBrowserDialog
+            {
+                Description = "Select log folder",
+                UseDescriptionForTitle = true,
+                ShowNewFolderButton = false
+            };
+
+            if (dialog.ShowDialog() == true && !string.IsNullOrWhiteSpace(dialog.SelectedPath))
+            {
+                _log.ClearAppenders();
+                _plainTextAppender = new PlainTextAppender(dialog.SelectedPath, "ProgressDialogLog");
+                _log.AddAppender(_plainTextAppender);
+
+                _log.Inform($"File logging enabled at '{_plainTextAppender.FullPath}'");
+                OnPropertyChanged(nameof(LogCollection));
+            }
+        }
 
         public void CloseDialog()
         {
