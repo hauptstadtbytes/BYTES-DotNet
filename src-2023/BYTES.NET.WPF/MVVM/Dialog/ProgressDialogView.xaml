@@ -7,8 +7,7 @@
         xmlns:converters="clr-namespace:BYTES.NET.WPF.Converters"
         xmlns:s="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="{Binding Title}" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
-        WindowStyle="SingleBorderWindow"
+        Title="{Binding Title}" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" WindowStyle="None"
         ResizeMode="NoResize">
 
     <Window.Resources>
@@ -41,19 +40,27 @@
             <!-- add the message block -->
             <TextBlock x:Name="MessageBlock" HorizontalAlignment="Stretch" Text="{Binding Message}" Margin="5" FontWeight="Bold"
                        Visibility="{Binding ElementName=MessageBlock, Path=Text, Converter={StaticResource NothingToVisibilityConverter},ConverterParameter={StaticResource False}}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <!-- 75% -->
+                    <ColumnDefinition Width="1*" />
+                    <!-- 25% -->
+                </Grid.ColumnDefinitions>
 
-            <!-- add the progress bar -->
-            <ProgressBar Height="20" HorizontalAlignment="Stretch"
-                         IsIndeterminate="{Binding IsIndeterminate}"
-                         Value="{Binding ProgressValue, Mode=OneWay}"
-                         Minimum="0" Maximum="100" />
+                <!-- Progress bar in first column -->
+                <ProgressBar Grid.Column="0"
+                 Height="20" HorizontalAlignment="Stretch"
+                 IsIndeterminate="{Binding IsIndeterminate}"
+                 Value="{Binding ProgressValue, Mode=OneWay}"
+                 Minimum="0" Maximum="100" />
 
+                <!-- Cancel button in second column -->
+                <Button Grid.Column="1" Content="Abbrechen" Margin="5" MinWidth="75"
+            Visibility="{Binding AllowCancel, Converter={StaticResource BooleanToVisibilityConverter}}"
+            Command="{Binding Path=Commands[CancelCmd]}" />
+            </Grid>
         </StackPanel>
-
-        <!-- Cancel button rechts unten -->
-        <Button Grid.Column="1" Grid.Row="2" Content="Abbrechen" Margin="5" MinWidth="75"
-        Visibility="{Binding AllowCancel, Converter={StaticResource BooleanToVisibilityConverter}}"
-        Command="{Binding Path=Commands[CancelCmd]}" />
 
     </Grid>
 </Window>
