@@ -189,7 +189,11 @@ namespace BYTES.NET.WPF.MVVM.Dialog
         /// <param name="e"></param>
         private void OnClosed(object sender, EventArgs e)
         {
-            DialogClosed(this);
+            if (DialogClosed != null)
+            {
+                DialogClosed(this);
+            }
+            
         }
 
         #endregion

@@ -1,67 +1,91 @@
-﻿//import .net (default) namespace(s)
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BYTES.NET.Logging;
+using BYTES.NET.Logging.Appenders;
+using BYTES.NET.WPF.MVVM;
+using Ookii.Dialogs.Wpf;
 
 namespace BYTES.NET.WPF.MVVM.Dialog
 {
-    public class ProgressDialogViewModel: DialogViewModel<ProgressDialogView>
+    public class ProgressDialogViewModel : DialogViewModel<ProgressDialogView>
     {
+        #region private fields
 
-        #region private variable(s)
-
-        private string _title = String.Empty;
         private string? _message = null;
+        private double? _total = null;
+        private double _current = 0;
+        private bool _allowCancel = true;
 
         #endregion
 
-        #region public properties(s)
+        #region public properties
 
-        public string Title
+        public string? Message
         {
-            get => _title; set
-            {
-                _title = value;
+            get => _message;
+            set { _message = value; OnPropertyChanged(); }
+        }
 
+        public double? Total
+        {
+            get => _total;
+            set
+            {
+                _total = value;
+                OnPropertyChanged();
+                OnPropertyChanged("IsIndeterminate");
+            }
+        }
+
+        public double Current
+        {
+            get => _current;
+            set
+            {
+                _current = value;
                 OnPropertyChanged();
             }
         }
 
-        public string Message
+        public bool IsIndeterminate { get => !_total.HasValue || _total == 0; }
+        
+        public bool AllowCancel
         {
-            get => _message; set
-            {
-                _message = value;
-
-                OnPropertyChanged();
-            }
+            get => _allowCancel;
+            set { _allowCancel = value; OnPropertyChanged(); }
         }
 
         #endregion
 
-        #region public new instance method(s)
+        #region events
 
-        /// <summary>
-        /// the default constructor
-        /// </summary>
-        public ProgressDialogViewModel(string title, string message = null)
+        public event Action? CancelRequested;
+
+        #endregion
+
+        #region constructor
+
+        public ProgressDialogViewModel(string? message = null)
         {
-            //set the properties
-            this.Title = title;
 
-            if (message != null)
-            {
-                this.Message = message;
-            }
+            Message = message;
+            View = new ProgressDialogView();
 
-            //create the view
-            this.View = new ProgressDialogView();
+            Commands.Add("CancelCmd", new ViewModelRelayCommand(_ => CancelRequested?.Invoke(), _ => AllowCancel));
 
         }
 
         #endregion
 
+        #region private methods
+
+        public void CloseDialog()
+        {
+            View?.Close();
+        }
+
+        #endregion
     }
 }
