@@ -40,6 +40,9 @@ namespace BYTES.NET.WPF.App.ViewModels
         private LoggingVM _loggingVM = new LoggingVM(); //contains the entire logging example
 
         private string _sampleInputString = string.Empty;
+
+        private int _progressTotal = 0;
+        private bool _allowCancel = true;
         #endregion
 
         #region private variable(s), for the validation example(s)
@@ -135,6 +138,7 @@ namespace BYTES.NET.WPF.App.ViewModels
             }
         }
 
+
         #endregion
 
         #region public properties for the dialog example(s)
@@ -155,6 +159,29 @@ namespace BYTES.NET.WPF.App.ViewModels
                 _dialogMessage = value;
                 OnPropertyChanged();
             } 
+        }
+
+        #endregion
+
+        #region public properties for the progress dialog example(s)
+
+
+        public int ProgressTotal
+        {
+            get => _progressTotal; set
+            {
+                _progressTotal = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool AllowCancel
+        {
+            get => _allowCancel; set
+            {
+                _allowCancel = value;
+                OnPropertyChanged();
+            }
         }
 
         #endregion
@@ -185,6 +212,9 @@ namespace BYTES.NET.WPF.App.ViewModels
             // add DialogueViewModel Command(s)
             this.Commands.Add("ShowDialogCmd", new ViewModelRelayCommand(ShowDialog));
             this.Commands.Add("ShowProgressDialogCmd", new ViewModelRelayCommand(ShowProgressDialog));
+
+            // add ProgressDialogViewModel Command(s)
+
 
         }
 
@@ -277,15 +307,44 @@ namespace BYTES.NET.WPF.App.ViewModels
         }
 
         //shows a progress dialog
-        private void ShowProgressDialog()
+        private async void ShowProgressDialog()
         {
-            //create a new instance of the dialog view model
-            ProgressDialogViewModel dialog = new ProgressDialogViewModel("Show the Progress") { Message = "This is a sample progress dialog for demonstration" };
-            //ProgressDialogViewModel dialog = new ProgressDialogViewModel("Show the Progress");
+            var dialog = new ProgressDialogViewModel()
+            {
+                Message = "This is a sample progress dialog for demonstration",
+                Total = this.ProgressTotal,
+                AllowCancel = this.AllowCancel
+            };
 
-            //open the dialog
+            //dialog.DialogClosed += HandleDialogClosed;
+
+            // Subscribe to CancelRequested event
+            dialog.CancelRequested += () =>
+            {
+                // Handle cancel action, e.g. close the dialog and do something else
+                dialog.CloseDialog();
+
+                // Optionally update some status or trigger cancellation logic here
+                DialogMessage = "Progress cancelled by user.";
+
+            };
+
             dialog.ShowDialog(ShowDialogBlocking);
+            
+            for (int i = 0; i <= this.ProgressTotal; i++)
+            {
+                dialog.Current = i;
+                dialog.Message = $"Loading... {i} / {this.ProgressTotal} seconds";
+                
+                await Task.Delay(1000);
+
+                if (i == this.ProgressTotal)
+                {
+                    dialog.CloseDialog();
+                }
+            }
         }
+
 
         /// <summary>
         /// handles the property changed event for the dialog
@@ -308,8 +367,14 @@ namespace BYTES.NET.WPF.App.ViewModels
         /// <param name="sender"></param>
         private void HandleDialogClosed(object? sender)
         {
-            DialogVM dialog = (DialogVM)sender;
-            this.DialogMessage = dialog.DialogMessage + " (On Closed)";
+            if (sender is DialogVM dialog)
+            {
+                this.DialogMessage = dialog.DialogMessage + " (On Closed)";
+            }
+            else if (sender is ProgressDialogViewModel progressDialog)
+            {
+                this.DialogMessage = progressDialog.Message + " (Progress Closed)";
+            }
         }
 
         #endregion
