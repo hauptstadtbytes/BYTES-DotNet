@@ -333,12 +333,8 @@ namespace BYTES.NET.WPF.App.ViewModels
             
             for (int i = 0; i <= this.ProgressTotal; i++)
             {
-                string progressMessage = $"Loading... {i} / {this.ProgressTotal} seconds";
                 dialog.Current = i;
-                dialog.Message = progressMessage;
-
-                // Log progress message
-                //dialog.Log.Inform("Step " +  i.ToString());
+                dialog.Message = $"Loading... {i} / {this.ProgressTotal} seconds";
                 
                 await Task.Delay(1000);
 

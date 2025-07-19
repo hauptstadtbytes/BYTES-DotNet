@@ -18,9 +18,6 @@ namespace BYTES.NET.WPF.MVVM.Dialog
         private double _current = 0;
         private bool _allowCancel = true;
 
-        private Log _log = new Log();
-        private bool _detailsExpanded = false;
-
         #endregion
 
         #region public properties
@@ -60,21 +57,6 @@ namespace BYTES.NET.WPF.MVVM.Dialog
             set { _allowCancel = value; OnPropertyChanged(); }
         }
 
-        public Log Log { get => _log; set {
-                _log = value;
-                _log.Logged += HandleLogLogged;
-                OnPropertyChanged();
-            } 
-        }
-
-        public List<LogEntry> LogCache { get => this.Log.Cache; }
-
-        public bool IsDetailsExpanded { get => _detailsExpanded; set
-            {
-                _detailsExpanded = value;
-                OnPropertyChanged();
-            } }
-
         #endregion
 
         #region events
@@ -91,8 +73,6 @@ namespace BYTES.NET.WPF.MVVM.Dialog
             Message = message;
             View = new ProgressDialogView();
 
-            this.Log = new Log();
-
             Commands.Add("CancelCmd", new ViewModelRelayCommand(_ => CancelRequested?.Invoke(), _ => AllowCancel));
 
         }
@@ -100,12 +80,6 @@ namespace BYTES.NET.WPF.MVVM.Dialog
         #endregion
 
         #region private methods
-
-        public void HandleLogLogged(ref LogEntry entry)
-        {
-            OnPropertyChanged("Log");
-            OnPropertyChanged("LogCache");
-        }
 
         public void CloseDialog()
         {
