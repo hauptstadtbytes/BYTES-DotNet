@@ -15,6 +15,22 @@ namespace BYTES.NET.Tests.IO
     [TestClass]
     public class TestStringExtensions
     {
+        [TestMethod]
+        public void TestFilesAndFoldersExist()
+        {
+            string path = "%BYTES.NET.DIR%\\..\\..\\..\\..\\SampleData";
+            Assert.AreEqual(false, path.DirectoryExists());
+
+            path = "%BYTES.NET.DIR%\\..\\..\\..\\..\\Sample Data";
+            Assert.AreEqual(true, path.DirectoryExists());
+
+            path = "%BYTES.NET.DIR%\\..\\..\\..\\..\\Sample Data\\DownloadedFile.pdf";
+            Assert.AreEqual(true, path.FileExists());
+
+            path = "%BYTES.NET.DIR%\\..\\..\\..\\..\\Sample Data\\NotExisting.pdf";
+            Assert.AreEqual(false, path.FileExists());
+
+        }
 
         [TestMethod]
         public void TestCheckForFilePath()

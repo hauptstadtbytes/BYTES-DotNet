@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 //import internal namespace(s) required
 using BYTES.NET.Primitives;
@@ -19,6 +20,35 @@ namespace BYTES.NET.IO
     public static class StringExtensions
     {
         #region public method(s)
+
+        /// <summary>
+        /// checks if a given file(-path) exists
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool FileExists(this string path)
+        {
+
+            string realPath = path.ExpandPath();
+
+            return File.Exists(realPath);
+
+        }
+
+        /// <summary>
+        /// checks if a given directory(-path) exists
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool DirectoryExists(this string path)
+        {
+
+            string realPath = path.ExpandPath();
+
+            return Directory.Exists(realPath);
+
+        }
+
 
         /// <summary>
         /// checks if a given string might be a file path (no matter if the file exists or not)
