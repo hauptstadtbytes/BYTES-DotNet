@@ -16,6 +16,7 @@ namespace BYTES.NET.WPF.MVVM.Menu
         protected string _caption = string.Empty;
 
         protected ViewModelRelayCommand ?_command = null;
+        protected object ?_commandParameters = null;
 
         protected ObservableCollection<MenuItemViewModel> _children = new ObservableCollection<MenuItemViewModel>();
 
@@ -39,6 +40,17 @@ namespace BYTES.NET.WPF.MVVM.Menu
                 OnPropertyChanged("IsEnabled");
 
             } }
+
+        public object? CommandParameters
+        {
+            get => _commandParameters; set
+            {
+                _commandParameters = value;
+                OnPropertyChanged();
+                OnPropertyChanged("IsEnabled");
+
+            }
+        }
 
         public ObservableCollection<MenuItemViewModel> Children
         {

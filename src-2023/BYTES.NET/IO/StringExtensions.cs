@@ -30,8 +30,9 @@ namespace BYTES.NET.IO
         {
 
             string realPath = path.ExpandPath();
+            FileInfo file = new FileInfo(realPath);
 
-            return File.Exists(realPath);
+            return file.Exists;
 
         }
 
@@ -44,8 +45,9 @@ namespace BYTES.NET.IO
         {
 
             string realPath = path.ExpandPath();
+            DirectoryInfo dir = new DirectoryInfo(realPath);
 
-            return Directory.Exists(realPath);
+            return dir.Exists;
 
         }
 

@@ -274,7 +274,7 @@ namespace BYTES.NET.WPF.App.ViewModels
             output.Add(new MenuItemViewModel() { Caption = "Menu" });
 
             ObservableCollection<MenuItemViewModel> toolsMenu = new ObservableCollection<MenuItemViewModel>();
-            toolsMenu.Add(new MenuItemViewModel() { Caption = "Show Dialog", Command = new ViewModelRelayCommand(PromptText) });
+            toolsMenu.Add(new MenuItemViewModel() { Caption = "Show Dialog", Command = new ViewModelRelayCommand(PromptText), CommandParameters = "Hello everyone!" });
 
             output.Add(new MenuItemViewModel() { Caption = "Action", Children = toolsMenu });
 

@@ -40,6 +40,7 @@
                 <Style TargetType="{x:Type MenuItem}">
                     <Setter Property="Command" Value="{Binding Command}" />
                     <Setter Property="IsEnabled" Value="{Binding IsEnabled}" />
+                    <Setter Property="CommandParameter" Value="{Binding CommandParameters}" />
                 </Style>
             </Menu.ItemContainerStyle>
             <Menu.ItemTemplate>

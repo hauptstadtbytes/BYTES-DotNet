@@ -18,7 +18,7 @@ namespace BYTES.NET.Tests.IO
         [TestMethod]
         public void TestFilesAndFoldersExist()
         {
-            string path = "%BYTES.NET.DIR%\\..\\..\\..\\..\\SampleData";
+            string path = "%BYTES.NET.DIR%\\..\\..\\..\\..\\NotExisting";
             Assert.AreEqual(false, path.DirectoryExists());
 
             path = "%BYTES.NET.DIR%\\..\\..\\..\\..\\Sample Data";
