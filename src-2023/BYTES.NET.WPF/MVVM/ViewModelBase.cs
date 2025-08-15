@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace BYTES.NET.WPF.MVVM
 {
@@ -45,6 +47,21 @@ namespace BYTES.NET.WPF.MVVM
             {
                 OnPropertyChanged(property);
             }
+        }
+
+        /// <summary>
+        /// notifies on all properties changed
+        /// </summary>
+        protected void OnAllPropertiesChanged()
+        {
+
+            //get the (public and static) properties
+            foreach(PropertyInfo propInfo in this.GetType().GetProperties()){
+
+                OnPropertyChanged(propInfo.Name);
+
+            }
+
         }
 
         #endregion
