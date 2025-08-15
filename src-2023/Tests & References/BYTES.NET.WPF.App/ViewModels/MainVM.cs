@@ -31,6 +31,7 @@ namespace BYTES.NET.WPF.App.ViewModels
         #region private variable(s)
 
         private string _title = "WPF Sample Application";
+        private string _nonBoundText = string.Empty;
 
         private AnimalVM[] _animals;
 
@@ -70,6 +71,8 @@ namespace BYTES.NET.WPF.App.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public string NonBoundText { get => _nonBoundText; }
 
         public AnimalVM[] Animals { get => GetAnimals(); set
             {
@@ -192,7 +195,7 @@ namespace BYTES.NET.WPF.App.ViewModels
 
         #endregion
 
-        #region public new instance method(s)
+        #region public constructor(s)
 
         /// <summary>
         /// default new instance method
@@ -205,6 +208,7 @@ namespace BYTES.NET.WPF.App.ViewModels
 
             //add command(s)
             this.Commands.Add("PromptTextCmd", new ViewModelRelayCommand(PromptText));
+            this.Commands.Add("UpdateAllProps", new ViewModelRelayCommand(UpdateUnboundText));
 
             //add validation rule(s)
             //this.ValidationRules.Add(new ViewModelValidationRule("TheAnswer",))
@@ -247,6 +251,16 @@ namespace BYTES.NET.WPF.App.ViewModels
         private void PromptText(object arg)
         {
             MessageBox.Show((string)arg);
+        }
+
+        /// <summary>
+        /// updates the 'unbound text' by raising 'OnAllPropertiesChanged'
+        /// </summary>
+        /// <param name="args"></param>
+        private void UpdateUnboundText(object args)
+        {
+            _nonBoundText = (string)args;
+            OnAllPropertiesChanged();
         }
 
         #endregion
