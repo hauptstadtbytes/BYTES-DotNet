@@ -55,6 +55,9 @@
   <ItemGroup>
     <Folder Include="IO\System\" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="11.0.0-preview.2.26159.112" />
+  </ItemGroup>
 
   <!-- define constants for framework differentiation; see also 'https://weblog.west-wind.com/posts/2017/jun/22/multitargeting-and-porting-a-net-library-to-net-core-20'-->	
   <PropertyGroup Condition=" '$(TargetFramework)' == 'net48'">
