@@ -212,7 +212,7 @@ namespace BYTES.NET.IO
                     searchPattern = searchPattern.Substring(0, searchPattern.Length - 1);
                 }
 
-                string pathExtension = System.String.Empty;
+                string pathExtension = global::System.String.Empty;
                 if (patternEnd != path.Length - 1)
                 {
                     pathExtension = path.Substring(patternEnd);
