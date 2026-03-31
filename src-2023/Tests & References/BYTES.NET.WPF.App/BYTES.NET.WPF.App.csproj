@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BYTES.NET (Core)\BYTES.NET\BYTES.NET.csproj" />
     <ProjectReference Include="..\..\BYTES.NET.WPF\BYTES.NET.WPF.csproj" />
-    <ProjectReference Include="..\..\BYTES.NET\BYTES.NET.csproj" />
   </ItemGroup>
 
 </Project>
