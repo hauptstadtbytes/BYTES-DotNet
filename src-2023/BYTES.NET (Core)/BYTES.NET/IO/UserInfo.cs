@@ -1,15 +1,4 @@
-﻿
-<<<<<<< TODO: Nicht zusammengeführte Änderung von Projekt „BYTES.NET (net48)“, Vor:
-using System;
-=======
-using BYTES;
-using BYTES.NET;
-using BYTES.NET.IO;
-using BYTES.NET.IO;
-using BYTES.NET.IO.System;
-using BYTES.NET.IO.System.User;
-using System;
->>>>>>> Nach
+﻿//import (default) DotNet namespaces
 using System;
 using System.Net;
 
@@ -29,6 +18,7 @@ namespace BYTES.NET.IO
         public string? Domain => _userDomain;
         public string? Password => _userPassword;
         #endregion
+
         #region public methods
         /// <summary>
         /// Initializes a new instance of the <see cref="UserInfo"/> class.
@@ -42,6 +32,7 @@ namespace BYTES.NET.IO
             _userPassword = password;
             _userDomain = domain;
         }
+
         /// <summary>
         /// Converts this user info to a <see cref="NetworkCredential"/> instance.
         /// </summary>
