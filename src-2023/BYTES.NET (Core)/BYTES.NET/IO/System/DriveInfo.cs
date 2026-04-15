@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using DotNet = global::System.IO;
 using System.Runtime.InteropServices;
 
 using BYTES.NET.IO.Formatter;
@@ -31,7 +31,7 @@ namespace BYTES.NET.IO.System
 
         #region Public Properties
 
-        public DriveType Type => _drive.DriveType;
+        public DotNet.DriveType Type => _drive.DriveType;
 
         public bool IsRemovable => _isRemovable;
 
@@ -68,7 +68,7 @@ namespace BYTES.NET.IO.System
         /// <summary>
         /// Create a Drive instance from a DriveInfo object.
         /// </summary>
-        public DriveInfo(DriveInfo drive)
+        public DriveInfo(DotNet.DriveInfo drive)
         {
             _drive = drive;
             _isRemovable = CheckIfRemovable(drive);
@@ -78,7 +78,7 @@ namespace BYTES.NET.IO.System
         /// <summary>
         /// Create a Drive instance using a drive letter (e.g., "C").
         /// </summary>
-        public DriveInfo(string letter) : this(new DriveInfo(letter))
+        public DriveInfo(string letter) : this(new DotNet.DriveInfo(letter))
         {
         }
 
@@ -86,9 +86,9 @@ namespace BYTES.NET.IO.System
 
         #region Private Methods
 
-        private bool CheckIfRemovable(DriveInfo drive)
+        private bool CheckIfRemovable(DotNet.DriveInfo drive)
         {
-            return drive.DriveType == DriveType.Removable || drive.DriveType == DriveType.CDRom;
+            return drive.DriveType == DotNet.DriveType.Removable || drive.DriveType == DotNet.DriveType.CDRom;
         }
 
         private (ulong free, ulong total) GetDriveSpace(string folderName)
