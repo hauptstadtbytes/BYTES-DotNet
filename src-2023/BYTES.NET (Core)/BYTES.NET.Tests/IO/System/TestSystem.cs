@@ -34,9 +34,9 @@ namespace BYTES.NET.Tests.IO.System
         [TestMethod]
         public void TestMemory()
         {
-            double memoryInGB = info.Memory();
-            Debug.WriteLine($"Memory (GB): {memoryInGB}");
-            Assert.IsTrue(memoryInGB > 0, "Memory should be greater than 0 GB.");
+            MemoryInfo memory = info.Memory();
+            Debug.WriteLine($"Memory: {memory.InBytes}, Memory (in GB): {memory.InGB}");
+            Assert.IsTrue(memory.InBytes > 0, "Memory should be greater than 0");
         }
 
         [TestMethod]
@@ -98,6 +98,21 @@ namespace BYTES.NET.Tests.IO.System
             var fixedDrives = info.GetDrives(DriveType.Fixed);
             Debug.WriteLine($"Fixed Drives Count: {fixedDrives.Length}");
             Assert.IsNotNull(fixedDrives);
+        }
+
+        [TestMethod]
+        public void TestFixedDriveSizes()
+        {
+            var fixedDrives = info.GetDrives(DriveType.Fixed);
+
+            Assert.IsNotNull(fixedDrives);
+
+            foreach (var drive in fixedDrives)
+            {
+                var totalGB = drive.TotalSpace().InGB;
+                Debug.WriteLine($"Fixed Drive: {drive.Path}, Size: {totalGB} GB");
+                Assert.IsTrue(totalGB > 0);
+            }
         }
     }
 }
