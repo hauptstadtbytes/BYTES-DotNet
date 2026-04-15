@@ -10,7 +10,7 @@ using BYTES.NET.IO.Formatter;
 
 namespace BYTES.NET.IO.System
 {
-    public class Info
+    public class SystemInfo
     {
         #region public properties
 
@@ -62,23 +62,31 @@ namespace BYTES.NET.IO.System
             Adapters.TryGetValue(adapterType, out var adapters) ? adapters.ToArray() : Array.Empty<AdapterInfo>();
 
 
-        public User.Info CurrentUser
+
+<<<<<<< TODO: Nicht zusammengeführte Änderung von Projekt „BYTES.NET (net48)“, Vor:
+        public User.UserInfo CurrentUser
+        {
+=======
+        public UserInfo CurrentUser
+        {
+>>>>>>> Nach
+        public IO.UserInfo CurrentUser
         {
             get
             {
                 string userName = Environment.UserName;
                 string userDomain = Environment.UserDomainName;
-                return new User.Info(userName, null, userDomain);
+                return new User.UserInfo(userName, null, userDomain);
             }
         }
 
-        public Dictionary<DriveType, List<Drive>> Drives
+        public Dictionary<DriveType, List<DriveInfo>> Drives
         {
             get { return GetClusteredDrives(); }
         }
 
-        public Drive[] GetDrives(DriveType driveType) =>
-            Drives.TryGetValue(driveType, out var drives) ? drives.ToArray() : Array.Empty<Drive>();
+        public DriveInfo[] GetDrives(DriveType driveType) =>
+            Drives.TryGetValue(driveType, out var drives) ? drives.ToArray() : Array.Empty<DriveInfo>();
 
         #endregion
 
@@ -121,17 +129,17 @@ namespace BYTES.NET.IO.System
             return output;
         }
 
-        private Dictionary<DriveType, List<Drive>> GetClusteredDrives()
+        private Dictionary<DriveType, List<DriveInfo>> GetClusteredDrives()
         {
-            var output = new Dictionary<DriveType, List<Drive>>();
-            foreach (var drive in DriveInfo.GetDrives())
+            var output = new Dictionary<DriveType, List<DriveInfo>>();
+            foreach (var drive in global::System.IO.DriveInfo.GetDrives())
             {
                 if (!output.TryGetValue(drive.DriveType, out var driveList))
                 {
-                    driveList = new List<Drive>();
+                    driveList = new List<DriveInfo>();
                     output[drive.DriveType] = driveList;
                 }
-                driveList.Add(new Drive(drive));
+                driveList.Add(new DriveInfo(drive));
             }
             return output;
         }

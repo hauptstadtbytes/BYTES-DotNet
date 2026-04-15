@@ -6,7 +6,7 @@ using BYTES.NET.IO.Formatter;
 
 namespace BYTES.NET.IO.System
 {
-    public class Drive
+    public class DriveInfo
     {
         #region WinAPI
 
@@ -68,7 +68,7 @@ namespace BYTES.NET.IO.System
         /// <summary>
         /// Create a Drive instance from a DriveInfo object.
         /// </summary>
-        public Drive(DriveInfo drive)
+        public DriveInfo(DriveInfo drive)
         {
             _drive = drive;
             _isRemovable = CheckIfRemovable(drive);
@@ -78,7 +78,7 @@ namespace BYTES.NET.IO.System
         /// <summary>
         /// Create a Drive instance using a drive letter (e.g., "C").
         /// </summary>
-        public Drive(string letter) : this(new DriveInfo(letter))
+        public DriveInfo(string letter) : this(new DriveInfo(letter))
         {
         }
 

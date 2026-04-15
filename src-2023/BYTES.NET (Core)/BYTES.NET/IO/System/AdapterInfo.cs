@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BYTES.NET.IO.System
 {
-    public class Adapter
+    public class AdapterInfo
     {
         #region private fields
         private readonly NetworkInterface _interface;
@@ -38,7 +38,7 @@ namespace BYTES.NET.IO.System
         #endregion
         #region public methods
 
-        public Adapter(NetworkInterface intrfce)
+        public AdapterInfo(NetworkInterface intrfce)
         {
             _interface = intrfce;
         }
