@@ -27,8 +27,8 @@ namespace BYTES.NET.IO.System
         #region Private Fields
         private readonly DotNet.DriveInfo _drive;
         private readonly bool _isRemovable;
-        private readonly ulong _totalSpace;
-        private readonly ulong _freeSpace;
+        private readonly MemoryInfo _totalSpace;
+        private readonly MemoryInfo _freeSpace;
         #endregion
 
         #region Public Properties
@@ -38,25 +38,25 @@ namespace BYTES.NET.IO.System
         public bool IsReady => _drive.IsReady;
 
         /// <summary>
-        /// Returns total disk space in specified unit (default: GB).
+        /// Returns total disk space
         /// </summary>
-        public double TotalSpace(string displayUnit = "GB", bool fullUnitsOnly = false)
+        public MemoryInfo TotalSpace()
         {
             if (!IsReady)
-                return 0;
+                return new MemoryInfo(0);
 
-            return Formatter.Formatter.FormatMemory(_totalSpace, displayUnit, fullUnitsOnly);
+            return _totalSpace;
         }
 
         /// <summary>
-        /// Returns free disk space in specified unit (default: GB).
+        /// Returns free disk space
         /// </summary>
-        public double FreeSpace(string displayUnit = "GB", bool fullUnitsOnly = false)
+        public MemoryInfo FreeSpace()
         {
             if (!IsReady)
-                return 0;
+                return new MemoryInfo(0);
 
-            return Formatter.Formatter.FormatMemory(_freeSpace, displayUnit, fullUnitsOnly);
+            return _freeSpace;
         }
         #endregion
 
@@ -83,18 +83,18 @@ namespace BYTES.NET.IO.System
         /// <summary>
         /// Gets the available space and total drive size
         /// </summary>
-        private (ulong free, ulong total) GetDriveSpace(string folderName)
+        private (MemoryInfo free, MemoryInfo total) GetDriveSpace(string folderName)
         {
             if (string.IsNullOrWhiteSpace(folderName))
-                return (0, 0);
+                return (new MemoryInfo(0), new MemoryInfo(0));
 
             if (!folderName.EndsWith("\\"))
                 folderName += "\\";
 
             if (GetDiskFreeSpaceEx(folderName, out ulong freeBytes, out ulong totalBytes, out _))
-                return (freeBytes, totalBytes);
+                return (new MemoryInfo(freeBytes), new MemoryInfo(totalBytes));
 
-            return (0, 0);
+            return (new MemoryInfo(0), new MemoryInfo(0)); ;
         }
 
         private bool CheckIfRemovable(DotNet.DriveInfo drive)
