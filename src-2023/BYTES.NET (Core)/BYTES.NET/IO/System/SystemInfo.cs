@@ -54,12 +54,12 @@ namespace BYTES.NET.IO.System
         }
 
 
-        public Dictionary<NetworkInterfaceType, List<Adapter>> Adapters
+        public Dictionary<NetworkInterfaceType, List<AdapterInfo>> Adapters
         {
             get { return GetClusteredAdapters(); }
         }
-        public Adapter[] GetAdapters(NetworkInterfaceType adapterType) =>
-            Adapters.TryGetValue(adapterType, out var adapters) ? adapters.ToArray() : Array.Empty<Adapter>();
+        public AdapterInfo[] GetAdapters(NetworkInterfaceType adapterType) =>
+            Adapters.TryGetValue(adapterType, out var adapters) ? adapters.ToArray() : Array.Empty<AdapterInfo>();
 
 
         public User.Info CurrentUser
@@ -84,9 +84,9 @@ namespace BYTES.NET.IO.System
 
         #region private methods
 
-        private Dictionary<NetworkInterfaceType, List<Adapter>> GetClusteredAdapters()
+        private Dictionary<NetworkInterfaceType, List<AdapterInfo>> GetClusteredAdapters()
         {
-            var output = new Dictionary<NetworkInterfaceType, List<Adapter>>();
+            var output = new Dictionary<NetworkInterfaceType, List<AdapterInfo>>();
             foreach (var adapter in NetworkInterface.GetAllNetworkInterfaces())
             {
                 var typeValue = adapter.NetworkInterfaceType;
@@ -104,19 +104,19 @@ namespace BYTES.NET.IO.System
                     const NetworkInterfaceType UnknownType = (NetworkInterfaceType)(-1); // your own "unknown" key
                     if (!output.TryGetValue(UnknownType, out var adapterList))
                     {
-                        adapterList = new List<Adapter>();
+                        adapterList = new List<AdapterInfo>();
                         output[UnknownType] = adapterList;
                     }
-                    adapterList.Add(new Adapter(adapter));
+                    adapterList.Add(new AdapterInfo(adapter));
                     continue;
                 }
 
                 if (!output.TryGetValue(typeValue, out var list))
                 {
-                    list = new List<Adapter>();
+                    list = new List<AdapterInfo>();
                     output[typeValue] = list;
                 }
-                list.Add(new Adapter(adapter));
+                list.Add(new AdapterInfo(adapter));
             }
             return output;
         }

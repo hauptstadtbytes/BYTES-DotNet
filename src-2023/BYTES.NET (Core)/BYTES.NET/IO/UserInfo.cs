@@ -1,9 +1,21 @@
-﻿using System;
+﻿
+<<<<<<< TODO: Nicht zusammengeführte Änderung von Projekt „BYTES.NET (net48)“, Vor:
+using System;
+=======
+using BYTES;
+using BYTES.NET;
+using BYTES.NET.IO;
+using BYTES.NET.IO;
+using BYTES.NET.IO.System;
+using BYTES.NET.IO.System.User;
+using System;
+>>>>>>> Nach
+using System;
 using System.Net;
 
-namespace BYTES.NET.IO.System.User
+namespace BYTES.NET.IO
 {
-    public class Info
+    public class UserInfo
     {
         #region private fields
         private readonly string _userName;
@@ -19,12 +31,12 @@ namespace BYTES.NET.IO.System.User
         #endregion
         #region public methods
         /// <summary>
-        /// Initializes a new instance of the <see cref="Info"/> class.
+        /// Initializes a new instance of the <see cref="UserInfo"/> class.
         /// </summary>
         /// <param name="user">Username (required).</param>
         /// <param name="password">Password (optional).</param>
         /// <param name="domain">Domain (optional).</param>
-        public Info(string user, string password = null, string domain = null)
+        public UserInfo(string user, string password = null, string domain = null)
         {
             _userName = user;
             _userPassword = password;

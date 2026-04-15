@@ -15,12 +15,12 @@ namespace BYTES.NET.Tests.IO.System
     [TestClass]
     public class TestInfo
     {
-        private Info info;
+        private SystemInfo info;
 
         [TestInitialize]
         public void Setup()
         {
-            info = new Info();
+            info = new SystemInfo();
         }
 
         [TestMethod]
