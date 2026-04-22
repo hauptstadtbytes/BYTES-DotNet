@@ -13,23 +13,35 @@ namespace BYTES.NET.IO.System
     /// </summary>
     public class AdapterInfo
     {
-        #region private fields
+        #region private properties
+
         private readonly NetworkInterface _interface;
+
         #endregion
+
 
         #region public properties
+
         public string Name { get => _interface.Name; }
+
         public string Description { get => _interface.Description; }
+
         public string Id { get => _interface.Id; }
+
         public string Address { get => _interface.GetPhysicalAddress().ToString(); }
+
         public NetworkInterfaceType Type { get => _interface.NetworkInterfaceType; }
+
         #endregion
 
+
         #region public methods
+
         public AdapterInfo(NetworkInterface intrfce)
         {
             _interface = intrfce;
         }
+
         #endregion
     }
 }

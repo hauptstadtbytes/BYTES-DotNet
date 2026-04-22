@@ -11,23 +11,32 @@ namespace BYTES.NET.IO.System
     /// </summary>
     public class MemoryInfo
     {
-        #region private fields
+        #region private properties
+
         private readonly ulong _bytes;
+
         #endregion
 
-        #region constructor
-        public MemoryInfo(ulong bytes)
-        {
-            _bytes = bytes;
-        }
-        #endregion
 
-        #region public fields
+        #region public properties
+
         public double InBytes => _bytes;
         public double InKB => _bytes / 1024.0;
         public double InMB => _bytes / 1024.0 / 1024.0;
         public double InGB => _bytes / 1024.0 / 1024.0 / 1024.0;
         public double InTB => _bytes / 1024.0 / 1024.0 / 1024.0 / 1024.0;
+
         #endregion
+
+
+        #region constructor
+
+        public MemoryInfo(ulong bytes)
+        {
+            _bytes = bytes;
+        }
+
+        #endregion
+
     }
 }
