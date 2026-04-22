@@ -1,40 +1,34 @@
 ﻿//import (default) DotNet namespaces
 using System;
-using DotNet = global::System.IO;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
+
 
 namespace BYTES.NET.IO.System
 {
     /// <summary>
     /// Class for collecting drive information
     /// </summary>
-    /// 
-    /// <remarks>
-    /// Based on the DotNet DriveInfo class
-    /// </remarks>
     public class DriveInfo
     {
-        #region WinAPI
-        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        private static extern bool GetDiskFreeSpaceEx(
-            string lpDirectoryName,
-            out ulong lpFreeBytesAvailable,
-            out ulong lpTotalNumberOfBytes,
-            out ulong lpTotalNumberOfFreeBytes
-        );
-        #endregion
+        #region private properties
 
-        #region Private Fields
-        private readonly DotNet.DriveInfo _drive;
+        private readonly global::System.IO.DriveInfo _drive;
         private readonly bool _isRemovable;
         private readonly MemoryInfo _totalSpace;
         private readonly MemoryInfo _freeSpace;
+
         #endregion
 
-        #region Public Properties
-        public DotNet.DriveType Type => _drive.DriveType;
+
+        #region public properties
+
+        public global::System.IO.DriveType Type => _drive.DriveType;
+
         public bool IsRemovable => _isRemovable;
+
         public string Path => _drive.Name;
+
         public bool IsReady => _drive.IsReady;
 
         /// <summary>
@@ -60,11 +54,13 @@ namespace BYTES.NET.IO.System
         }
         #endregion
 
-        #region Constructors
+
+        #region constructors
+
         /// <summary>
         /// Create a Drive instance from a DriveInfo object.
         /// </summary>
-        public DriveInfo(DotNet.DriveInfo drive)
+        public DriveInfo(global::System.IO.DriveInfo drive)
         {
             _drive = drive;
             _isRemovable = CheckIfRemovable(drive);
@@ -74,12 +70,15 @@ namespace BYTES.NET.IO.System
         /// <summary>
         /// Create a Drive instance using a drive letter (e.g., "C").
         /// </summary>
-        public DriveInfo(string letter) : this(new DotNet.DriveInfo(letter))
+        public DriveInfo(string letter) : this(new global::System.IO.DriveInfo(letter))
         {
         }
+
         #endregion
 
-        #region Private Methods
+
+        #region private methods
+
         /// <summary>
         /// Gets the available space and total drive size
         /// </summary>
@@ -91,16 +90,22 @@ namespace BYTES.NET.IO.System
             if (!folderName.EndsWith("\\"))
                 folderName += "\\";
 
-            if (GetDiskFreeSpaceEx(folderName, out ulong freeBytes, out ulong totalBytes, out _))
-                return (new MemoryInfo(freeBytes), new MemoryInfo(totalBytes));
+            ulong freeBytes = (ulong) _drive.AvailableFreeSpace;
+            ulong totalBytes = (ulong) _drive.TotalSize;
 
-            return (new MemoryInfo(0), new MemoryInfo(0)); ;
+            return (new MemoryInfo(freeBytes), new MemoryInfo(totalBytes));
         }
 
-        private bool CheckIfRemovable(DotNet.DriveInfo drive)
+        /// <summary>
+        /// Check if the Drive is removable
+        /// </summary>
+        /// <param name="drive"></param>
+        /// <returns></returns>
+        private bool CheckIfRemovable(global::System.IO.DriveInfo drive)
         {
-            return drive.DriveType == DotNet.DriveType.Removable || drive.DriveType == DotNet.DriveType.CDRom;
+            return drive.DriveType == global::System.IO.DriveType.Removable || drive.DriveType == global::System.IO.DriveType.CDRom;
         }
+
         #endregion
     }
 }

@@ -1,23 +1,40 @@
-﻿using System;
+﻿//import (default) DotNet namespaces
+using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net;
 using System.Net.NetworkInformation;
-using BYTES.NET.IO.Formatter;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
 
 namespace BYTES.NET.IO.System
 {
+    /// <summary>
+    /// Collects Information about the System 
+    /// (RAM, Hostname, IP, Processors, Drives, Adapters, User)
+    /// </summary>
     public class SystemInfo
     {
         #region public properties
 
-        public string Name
-        {
-            get { return Dns.GetHostName(); }
-        }
+        public string Name { get => Dns.GetHostName(); }
+
+        public int Processors { get => Environment.ProcessorCount; }
+
+        public Dictionary<NetworkInterfaceType, List<AdapterInfo>> Adapters { get => GetClusteredAdapters(); }
+        
+        public AdapterInfo[] GetAdapters(NetworkInterfaceType adapterType) =>
+            Adapters.TryGetValue(adapterType, out var adapters) ? adapters.ToArray() : Array.Empty<AdapterInfo>();
+
+        public Dictionary<DriveType, List<DriveInfo>> Drives { get => GetClusteredDrives(); }
+
+        public DriveInfo[] GetDrives(DriveType driveType) =>
+            Drives.TryGetValue(driveType, out var drives) ? drives.ToArray() : Array.Empty<DriveInfo>();
+
         public string Domain
         {
             get
@@ -27,68 +44,42 @@ namespace BYTES.NET.IO.System
             }
         }
 
-        public double Memory(string displayUnit = "GB", bool fullUnitsOnly = false)
+        public MemoryInfo Memory()
         {
-        #if NETFRAMEWORK || NET6_0_WINDOWS || NET7_0_WINDOWS || NET8_0_WINDOWS
-            ObjectQuery query = new ObjectQuery("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem");
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
-            ulong totalMemory = 0;
+            ulong totalRAM = 0;
 
-            foreach (ManagementObject mo in searcher.Get())
-            {
-                totalMemory = (ulong)mo["TotalPhysicalMemory"];
-            }
-            return Formatter.Formatter.FormatMemory(totalMemory, displayUnit, fullUnitsOnly);
-        #else
-            // Optional: provide fallback for non-Windows frameworks or throw exception
-            return 15.6; // or throw new PlatformNotSupportedException();
-        #endif
+            #if NETFULL
+                totalRAM = new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory; //returns bytes
+
+            #elif NETFRAMEWORK || NET6_0_WINDOWS || NET7_0_WINDOWS || NET8_0_WINDOWS
+                ObjectQuery query = new ObjectQuery("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem");
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
+
+                foreach (ManagementObject mo in searcher.Get())
+                {
+                    totalRAM = (ulong)mo["TotalPhysicalMemory"];
+                }
+
+            #else
+                //Fallback
+                totalRAM = (ulong) GC.GetGCMemoryInfo().TotalAvailableMemoryBytes; //returns bytes
+            #endif
+
+            return new MemoryInfo(totalRAM);
         }
 
-        public int Processors
-        {
-            get
-            {
-                return Environment.ProcessorCount;
-            }
-        }
-
-
-        public Dictionary<NetworkInterfaceType, List<AdapterInfo>> Adapters
-        {
-            get { return GetClusteredAdapters(); }
-        }
-        public AdapterInfo[] GetAdapters(NetworkInterfaceType adapterType) =>
-            Adapters.TryGetValue(adapterType, out var adapters) ? adapters.ToArray() : Array.Empty<AdapterInfo>();
-
-
-
-<<<<<<< TODO: Nicht zusammengeführte Änderung von Projekt „BYTES.NET (net48)“, Vor:
-        public User.UserInfo CurrentUser
-        {
-=======
-        public UserInfo CurrentUser
-        {
->>>>>>> Nach
         public IO.UserInfo CurrentUser
         {
             get
             {
                 string userName = Environment.UserName;
                 string userDomain = Environment.UserDomainName;
-                return new User.UserInfo(userName, null, userDomain);
+                return new UserInfo(userName, null, userDomain);
             }
         }
 
-        public Dictionary<DriveType, List<DriveInfo>> Drives
-        {
-            get { return GetClusteredDrives(); }
-        }
-
-        public DriveInfo[] GetDrives(DriveType driveType) =>
-            Drives.TryGetValue(driveType, out var drives) ? drives.ToArray() : Array.Empty<DriveInfo>();
-
         #endregion
+
 
         #region private methods
 
