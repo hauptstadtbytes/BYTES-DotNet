@@ -13,7 +13,7 @@ using BYTES.NET.IO.System;
 namespace BYTES.NET.Tests.IO.System
 {
     [TestClass]
-    public class TestInfo
+    public class TestSystemInfo
     {
         private SystemInfo info;
 
@@ -24,32 +24,24 @@ namespace BYTES.NET.Tests.IO.System
         }
 
         [TestMethod]
-        public void TestName()
+        public void TestProperties()
         {
+            // Test Name
             string machineName = Environment.MachineName;
             Debug.WriteLine($"System Name: {info.Name}");
             Assert.AreEqual(machineName, info.Name);
-        }
 
-        [TestMethod]
-        public void TestMemory()
-        {
+            //Test Memory (RAM)
             MemoryInfo memory = info.Memory();
-            Debug.WriteLine($"Memory: {memory.InBytes}, Memory (in GB): {memory.InGB}");
+            Debug.WriteLine($"Memory (in GB): {memory.InGB}");
             Assert.IsTrue(memory.InBytes > 0, "Memory should be greater than 0");
-        }
 
-        [TestMethod]
-        public void TestProcessors()
-        {
+            //Test Processors
             int processorCount = Environment.ProcessorCount;
             Debug.WriteLine($"Processors: {info.Processors}");
             Assert.AreEqual(processorCount, info.Processors);
-        }
 
-        [TestMethod]
-        public void TestAdapters()
-        {
+            //Test Adapters
             var adapters = info.Adapters;
             Debug.WriteLine($"Adapter Types Count: {adapters.Count}");
             Assert.IsTrue(adapters.Count > 0);
@@ -59,28 +51,14 @@ namespace BYTES.NET.Tests.IO.System
                 Debug.WriteLine($"Adapter Type: {kvp.Key}, Count: {kvp.Value.Count}");
                 Assert.IsNotNull(kvp.Value);
             }
-        }
 
-        [TestMethod]
-        public void TestGetAdaptersByType()
-        {
-            var ethernetAdapters = info.GetAdapters(NetworkInterfaceType.Ethernet);
-            Debug.WriteLine($"Ethernet Adapters Count: {ethernetAdapters.Length}");
-            Assert.IsNotNull(ethernetAdapters);
-        }
-
-        [TestMethod]
-        public void TestCurrentUser()
-        {
-            var user = info.CurrentUser;
+            //Test User and domain
+            var user = info.User;
             Debug.WriteLine($"Current User: {user.Name}, Domain: {user.Domain}");
             Assert.AreEqual(Environment.UserName, user.Name);
             Assert.AreEqual(Environment.UserDomainName, user.Domain);
-        }
 
-        [TestMethod]
-        public void TestDrives()
-        {
+            //Test Drives
             var drives = info.Drives;
             Debug.WriteLine($"Drive Types Count: {drives.Count}");
             Assert.IsTrue(drives.Count > 0);
@@ -90,10 +68,19 @@ namespace BYTES.NET.Tests.IO.System
                 Debug.WriteLine($"Drive Type: {kvp.Key}, Count: {kvp.Value.Count}");
                 Assert.IsNotNull(kvp.Value);
             }
+
         }
 
         [TestMethod]
-        public void TestGetDrivesByType()
+        public void TestGetAdapters()
+        {
+            var ethernetAdapters = info.GetAdapters(NetworkInterfaceType.Ethernet);
+            Debug.WriteLine($"Ethernet Adapters Count: {ethernetAdapters.Length}");
+            Assert.IsNotNull(ethernetAdapters);
+        }
+
+        [TestMethod]
+        public void TestGetDrives()
         {
             var fixedDrives = info.GetDrives(DriveType.Fixed);
             Debug.WriteLine($"Fixed Drives Count: {fixedDrives.Length}");
