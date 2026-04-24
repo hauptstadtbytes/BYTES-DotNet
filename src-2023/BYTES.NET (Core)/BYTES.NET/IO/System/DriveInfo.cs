@@ -14,8 +14,11 @@ namespace BYTES.NET.IO.System
         #region private properties
 
         private readonly global::System.IO.DriveInfo _drive;
+
         private readonly bool _isRemovable;
+
         private readonly MemoryInfo _totalSpace;
+
         private readonly MemoryInfo _freeSpace;
 
         #endregion

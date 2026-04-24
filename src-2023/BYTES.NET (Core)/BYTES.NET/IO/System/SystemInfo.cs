@@ -27,29 +27,26 @@ namespace BYTES.NET.IO.System
 
         public Dictionary<NetworkInterfaceType, List<AdapterInfo>> Adapters { get => GetClusteredAdapters(); }
         
-        public AdapterInfo[] GetAdapters(NetworkInterfaceType adapterType) =>
-            Adapters.TryGetValue(adapterType, out var adapters) ? adapters.ToArray() : Array.Empty<AdapterInfo>();
-
         public Dictionary<DriveType, List<DriveInfo>> Drives { get => GetClusteredDrives(); }
-
-        public DriveInfo[] GetDrives(DriveType driveType) =>
-            Drives.TryGetValue(driveType, out var drives) ? drives.ToArray() : Array.Empty<DriveInfo>();
 
         public string Domain
         {
             get
             {
                 var localIPProperties = IPGlobalProperties.GetIPGlobalProperties();
+
                 return localIPProperties.DomainName;
             }
         }
 
-        public IO.UserInfo CurrentUser
+        public IO.UserInfo User
         {
             get
             {
                 string userName = Environment.UserName;
+
                 string userDomain = Environment.UserDomainName;
+
                 return new UserInfo(userName, null, userDomain);
             }
         }
@@ -59,6 +56,34 @@ namespace BYTES.NET.IO.System
         #region public methods
 
         /// <summary>
+        /// Overwrite standard method to get adapters
+        /// </summary>
+        public AdapterInfo[] GetAdapters(NetworkInterfaceType adapterType)
+        {
+            if (Adapters.TryGetValue(adapterType, out var adapters))
+            {
+                return adapters.ToArray();
+            } else {
+                return Array.Empty<AdapterInfo>();
+            }
+        }
+
+        /// <summary>
+        /// Overwrite standard method to get drives
+        /// </summary>
+        public DriveInfo[] GetDrives(DriveType driveType)
+        {
+            if (Drives.TryGetValue(driveType, out var drives))
+            {
+                return drives.ToArray();
+            }
+            else
+            {
+                return Array.Empty<DriveInfo>();
+            }
+        }
+
+        /// <summary>
         /// Returns total physical RAM of the system
         /// </summary>
         public MemoryInfo Memory()
@@ -66,9 +91,9 @@ namespace BYTES.NET.IO.System
             ulong totalRAM = 0;
 
             #if NETFULL
-                totalRAM = new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory; //returns bytes
+                totalRAM = new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory;
 
-            #elif NETFRAMEWORK || NET6_0_WINDOWS || NET7_0_WINDOWS || NET8_0_WINDOWS
+            #elif NET6_0_WINDOWS || NET7_0_WINDOWS || NET8_0_WINDOWS || NET10_0_WINDOWS
                 ObjectQuery query = new ObjectQuery("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem");
                 ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
 
@@ -79,7 +104,7 @@ namespace BYTES.NET.IO.System
 
             #else
                 //Fallback using total amount of available bytes used by the garbage collector
-                totalRAM = (ulong) GC.GetGCMemoryInfo().TotalAvailableMemoryBytes; //returns bytes
+                totalRAM = (ulong) GC.GetGCMemoryInfo().TotalAvailableMemoryBytes;
             #endif
 
             return new MemoryInfo(totalRAM);
@@ -102,14 +127,7 @@ namespace BYTES.NET.IO.System
 
                 if (!Enum.IsDefined(typeof(NetworkInterfaceType), typeValue))
                 {
-                    // Handle unknown or invalid enum values here:
-                    // For example, skip or group under a special 'Unknown' key
-
-                    // Option 1: Skip this adapter
-                    continue;
-
-                    // Option 2: Use a fallback key — you might create a special enum value for unknown or cast int to enum
-                    // but since enum is fixed, better to use a separate dictionary key
+                    // Create a UnknownType in case an adapter has an unknown Enum
                     const NetworkInterfaceType UnknownType = (NetworkInterfaceType)(-1); // your own "unknown" key
                     if (!output.TryGetValue(UnknownType, out var adapterList))
                     {
