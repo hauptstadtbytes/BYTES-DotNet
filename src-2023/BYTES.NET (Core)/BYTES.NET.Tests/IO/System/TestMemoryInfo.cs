@@ -12,17 +12,27 @@ using BYTES.NET.IO.System;
 
 namespace BYTES.NET.Tests.IO.System
 {
+
     [TestClass]
-    internal class TestMemoryInfo
+    public class TestMemoryInfo
     {
+        private MemoryInfo memory;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            memory = new MemoryInfo((ulong)1024);
+        }
+
+
         [TestMethod]
         public void TestMemoryCalculation()
         {
-            MemoryInfo memory = new MemoryInfo((ulong)1024);
+            Debug.WriteLine($"Memory in Bytes: {memory.InBytes}");
 
-            Debug.WriteLine($"Memory in Bytes: {memory.InBytes}\n");
-            Debug.WriteLine($"Memory in GB: {memory.InGB}");
-            Assert.IsTrue(memory.InGB == 1);
+            Debug.WriteLine($"Memory in MB: {memory.InKB}");
+
+            Assert.IsTrue(memory.InKB == 1);
         }
     }
 }
