@@ -44,6 +44,23 @@ namespace BYTES.NET.IO.System
             }
         }
 
+        public IO.UserInfo CurrentUser
+        {
+            get
+            {
+                string userName = Environment.UserName;
+                string userDomain = Environment.UserDomainName;
+                return new UserInfo(userName, null, userDomain);
+            }
+        }
+
+        #endregion
+
+        #region public methods
+
+        /// <summary>
+        /// Returns total physical RAM of the system
+        /// </summary>
         public MemoryInfo Memory()
         {
             ulong totalRAM = 0;
@@ -61,21 +78,11 @@ namespace BYTES.NET.IO.System
                 }
 
             #else
-                //Fallback
+                //Fallback using total amount of available bytes used by the garbage collector
                 totalRAM = (ulong) GC.GetGCMemoryInfo().TotalAvailableMemoryBytes; //returns bytes
             #endif
 
             return new MemoryInfo(totalRAM);
-        }
-
-        public IO.UserInfo CurrentUser
-        {
-            get
-            {
-                string userName = Environment.UserName;
-                string userDomain = Environment.UserDomainName;
-                return new UserInfo(userName, null, userDomain);
-            }
         }
 
         #endregion
@@ -83,6 +90,9 @@ namespace BYTES.NET.IO.System
 
         #region private methods
 
+        /// <summary>
+        /// Returns adapters grouped by type
+        /// </summary>
         private Dictionary<NetworkInterfaceType, List<AdapterInfo>> GetClusteredAdapters()
         {
             var output = new Dictionary<NetworkInterfaceType, List<AdapterInfo>>();
@@ -120,6 +130,9 @@ namespace BYTES.NET.IO.System
             return output;
         }
 
+        /// <summary>
+        /// Returns drives grouped by type
+        /// </summary>
         private Dictionary<DriveType, List<DriveInfo>> GetClusteredDrives()
         {
             var output = new Dictionary<DriveType, List<DriveInfo>>();

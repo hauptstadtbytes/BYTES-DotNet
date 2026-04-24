@@ -35,7 +35,7 @@ namespace BYTES.NET.IO.System
         #endregion
 
 
-        #region public methods
+        #region constructor
 
         public AdapterInfo(NetworkInterface intrfce)
         {

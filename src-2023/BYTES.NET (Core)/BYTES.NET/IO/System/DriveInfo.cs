@@ -58,7 +58,7 @@ namespace BYTES.NET.IO.System
         #region constructors
 
         /// <summary>
-        /// Create a Drive instance from a DriveInfo object.
+        /// Creates a Drive instance from a DriveInfo object.
         /// </summary>
         public DriveInfo(global::System.IO.DriveInfo drive)
         {
@@ -68,7 +68,7 @@ namespace BYTES.NET.IO.System
         }
 
         /// <summary>
-        /// Create a Drive instance using a drive letter (e.g., "C").
+        /// Creates a Drive instance using a drive letter (e.g., "C").
         /// </summary>
         public DriveInfo(string letter) : this(new global::System.IO.DriveInfo(letter))
         {
@@ -99,8 +99,6 @@ namespace BYTES.NET.IO.System
         /// <summary>
         /// Check if the Drive is removable
         /// </summary>
-        /// <param name="drive"></param>
-        /// <returns></returns>
         private bool CheckIfRemovable(global::System.IO.DriveInfo drive)
         {
             return drive.DriveType == global::System.IO.DriveType.Removable || drive.DriveType == global::System.IO.DriveType.CDRom;

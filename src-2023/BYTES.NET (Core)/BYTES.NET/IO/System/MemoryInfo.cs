@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace BYTES.NET.IO.System
 {
     /// <summary>
-    /// Class to format Memory 
+    /// Class to save memory information
+    /// Stores different units
     /// </summary>
     public class MemoryInfo
     {
@@ -21,9 +22,13 @@ namespace BYTES.NET.IO.System
         #region public properties
 
         public double InBytes => _bytes;
+
         public double InKB => _bytes / 1024.0;
+
         public double InMB => _bytes / 1024.0 / 1024.0;
+
         public double InGB => _bytes / 1024.0 / 1024.0 / 1024.0;
+
         public double InTB => _bytes / 1024.0 / 1024.0 / 1024.0 / 1024.0;
 
         #endregion
