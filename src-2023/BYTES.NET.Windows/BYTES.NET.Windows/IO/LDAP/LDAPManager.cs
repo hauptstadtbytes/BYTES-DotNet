@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BYTES.NET.Windows.IO
+namespace BYTES.NET.Windows.IO.LDAP
 {
     /// <summary>
     /// the LDAP manager
@@ -17,7 +17,7 @@ namespace BYTES.NET.Windows.IO
     {
         #region private properties
         
-        private string _domainPath;
+        private string? _domainPath;
 
         #endregion
 
@@ -27,11 +27,19 @@ namespace BYTES.NET.Windows.IO
         /// <summary>
         /// create a new Manager Instance
         /// </summary>
-        public LDAPManager(string domainPath)
+        public LDAPManager(string? domainPath)
         {
             if (String.IsNullOrEmpty(domainPath))
             {
-                _domainPath = GetCurrentDomain(true);
+                try
+                {
+                    _domainPath = GetCurrentDomain(true);
+                }
+                catch
+                {
+                    _domainPath = null;
+                }
+                
             }
             else
             {
@@ -103,9 +111,16 @@ namespace BYTES.NET.Windows.IO
         /// method returning the current domain properties
         /// </summary>
         /// <returns></returns>
-        public static Domain GetCurrentDomain()
+        public static Domain? GetCurrentDomain()
         {
-            return Domain.GetCurrentDomain();
+            try
+            {
+                return Domain.GetCurrentDomain();
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         /// <summary>

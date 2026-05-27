@@ -53,11 +53,12 @@
 		<DefineConstants>WINDOWS;NET100;NETCORE</DefineConstants>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Content Include="..\..\Resources\Icon.png" Pack="true" PackagePath="\meta\"  />
+	  <Content Include="..\..\Resources\License.txt" Pack="true" PackagePath="\meta\" />
+	</ItemGroup>
+
   <!-- add external resources/ files (for the NuGet package); see also 'https://docs.microsoft.com/de-de/nuget/reference/msbuild-targets') -->
-  <ItemGroup>
-	  <None Include="..\Resources\License.txt" Pack="true" PackagePath="\meta\" />
-	  <None Include="..\Resources\Icon.png" Pack="true" PackagePath="\meta\" />
-  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.DirectoryServices" Version="10.0.7" />
     <PackageReference Include="System.DirectoryServices.Protocols" Version="10.0.7" />
