@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BYTES.NET.Windows", "BYTES.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BYTES.NET.Windows.Tests", "BYTES.NET.Windows\BYTES.NET.Windows.Tests\BYTES.NET.Windows.Tests.csproj", "{A8461C50-CAB3-7907-326D-A6CA86866C34}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NovellTestCLI", "NovellTestCLI\NovellTestCLI.csproj", "{3C9B0D66-DD4E-4E9D-9A31-ADBFD42681AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{A8461C50-CAB3-7907-326D-A6CA86866C34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8461C50-CAB3-7907-326D-A6CA86866C34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8461C50-CAB3-7907-326D-A6CA86866C34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C9B0D66-DD4E-4E9D-9A31-ADBFD42681AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C9B0D66-DD4E-4E9D-9A31-ADBFD42681AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C9B0D66-DD4E-4E9D-9A31-ADBFD42681AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C9B0D66-DD4E-4E9D-9A31-ADBFD42681AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
