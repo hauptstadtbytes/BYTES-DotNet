@@ -22,6 +22,8 @@ internal class NovellExampleCLI
         using var conn = await ConnectAsync(host);
 
         bool authenticated = await AuthenticateAsync(conn, username, password);
+        if (!authenticated)
+            return;
 
         string? baseDn = await GetBaseDnAsync(conn);
         Console.WriteLine(baseDn);
@@ -35,7 +37,7 @@ internal class NovellExampleCLI
     static async Task<LdapConnection> ConnectAsync(string host)
     {
         var conn = new LdapConnection();
-        await conn.ConnectAsync(host, 636);
+        await conn.ConnectAsync(host, 389);
 
         return conn;
     }
@@ -47,14 +49,13 @@ internal class NovellExampleCLI
         try
         {
             await conn.BindAsync(username, password);
-
             Console.WriteLine($"Login successful for {username}");
 
             return true;
         }
-        catch (LdapException ex) when (ex.ResultCode == LdapException.InvalidCredentials)
+        catch (LdapException ex)
         {
-            Console.WriteLine("Invalid credentials");
+            Console.WriteLine($"Login failed. {ex.Message}");
             return false;
         }
     }
@@ -63,24 +64,16 @@ internal class NovellExampleCLI
     {
         Console.WriteLine("---Domain---\n");
 
-        LdapEntry root = await conn.ReadAsync("",
-            new[]
-            {
-                "namingContexts",
-                "defaultNamingContext",
-                "*",
-                "+"
-            });
+        LdapEntry root = await conn.ReadAsync("", new[]{"defaultNamingContext", "namingContexts", "rootDomainNamingContext"});
 
         if (root.GetAttributeSet().ContainsKey("defaultNamingContext"))
-        {
             return root.Get("defaultNamingContext").StringValue;
-        }
+
+        if (root.GetAttributeSet().ContainsKey("rootDomainNamingContext"))
+            return root.Get("rootDomainNamingContext").StringValue;
 
         if (root.GetAttributeSet().ContainsKey("namingContexts"))
-        {
             return root.Get("namingContexts").StringValue;
-        }
 
         return null;
     }
@@ -94,7 +87,7 @@ internal class NovellExampleCLI
         Console.WriteLine("---Search with filter (objectClass=person)---");
 
         ILdapSearchResults results =
-            await conn.SearchAsync(baseDn, LdapConnection.ScopeSub, "(objectClass=person)", new[] { "mail" }, false);
+            await conn.SearchAsync(baseDn, LdapConnection.ScopeSub, "(&(objectCategory=person)(objectClass=user))", new[] { "mail" }, false);
 
         await foreach (LdapEntry entry in results)
         {
