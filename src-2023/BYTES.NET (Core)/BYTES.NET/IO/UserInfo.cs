@@ -19,16 +19,9 @@ namespace BYTES.NET.IO
         public string Name => _userName;
         public string Domain => _userDomain;
         public string Password => _userPassword;
-        public string FullName
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_userDomain))
-                    return _userName;
 
-                return $"{_userDomain}\\{_userName}";
-            }
-        }
+        public string FullName => GetFullName();
+
         #endregion
 
 
@@ -61,6 +54,20 @@ namespace BYTES.NET.IO
             }
 
             return new NetworkCredential(_userName, _userPassword, _userDomain);
+        }
+        #endregion
+
+
+        #region private methods
+
+        private string GetFullName()
+        {
+            if (string.IsNullOrEmpty(_userDomain))
+            {
+                return _userName;
+            }
+
+            return $"{_userDomain}\\{_userName}";
         }
         #endregion
     }
