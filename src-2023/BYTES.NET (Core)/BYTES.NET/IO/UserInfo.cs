@@ -4,6 +4,9 @@ using System.Net;
 
 namespace BYTES.NET.IO
 {
+    /// <summary>
+    /// Class for storing user information
+    /// </summary>
     public class UserInfo
     {
         #region private fields
@@ -14,10 +17,20 @@ namespace BYTES.NET.IO
 
         #region public properties
         public string Name => _userName;
-        public string FullName => string.IsNullOrEmpty(_userDomain) ? _userName : $"{_userDomain}\\{_userName}";
-        public string? Domain => _userDomain;
-        public string? Password => _userPassword;
+        public string Domain => _userDomain;
+        public string Password => _userPassword;
+        public string FullName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_userDomain))
+                    return _userName;
+
+                return $"{_userDomain}\\{_userName}";
+            }
+        }
         #endregion
+
 
         #region public methods
         /// <summary>
@@ -26,9 +39,9 @@ namespace BYTES.NET.IO
         /// <param name="user">Username (required).</param>
         /// <param name="password">Password (optional).</param>
         /// <param name="domain">Domain (optional).</param>
-        public UserInfo(string user, string password = null, string domain = null)
+        public UserInfo(string username, string password = null, string domain = null)
         {
-            _userName = user;
+            _userName = username;
             _userPassword = password;
             _userDomain = domain;
         }
@@ -41,8 +54,12 @@ namespace BYTES.NET.IO
         {
             if (string.IsNullOrEmpty(_userDomain))
             {
-                return new NetworkCredential(_userName, _userPassword ?? string.Empty);
+                if(_userPassword == string.Empty)
+                    return new NetworkCredential(_userName, string.Empty);
+
+                return new NetworkCredential(_userName, _userPassword);
             }
+
             return new NetworkCredential(_userName, _userPassword, _userDomain);
         }
         #endregion
