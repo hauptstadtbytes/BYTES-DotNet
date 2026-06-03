@@ -49,12 +49,12 @@ internal class NovellExampleCLI
         conn.Constraints = cons;
 
         Console.WriteLine("---Get all users with email and name---\n");
-        SearchWithFilter(conn, baseDn);
+        SearchWithFilter(conn, host, baseDn);
 
         Console.WriteLine("---List all entries---\n");
         PrintAllProperties(conn, baseDn);
 
-        Console.WriteLine("---OUTPUT END---");
+        Console.WriteLine("\n---OUTPUT END---\n\n");
     }
 
     #endregion
@@ -120,13 +120,17 @@ internal class NovellExampleCLI
     }
 
     //Search with filter
-    static async void SearchWithFilter(LdapConnection conn, string? baseDn)
+    static async void SearchWithFilter(LdapConnection conn, string host, string? baseDn)
     {
         if (string.IsNullOrWhiteSpace(baseDn))
             return;
 
-        ILdapSearchResults results =
-            await conn.SearchAsync(baseDn, LdapConnection.ScopeSub, "(&(objectCategory=person)(objectClass=user))", new[] { "displayName", "mail" }, false);
+        ILdapSearchResults results = null;
+
+        if (host == "localhost")
+            results = await conn.SearchAsync(baseDn, LdapConnection.ScopeSub, "(objectCategory=inetOrgPerson)", new[] { "uid", "mail" }, false);
+        else
+            results = await conn.SearchAsync(baseDn, LdapConnection.ScopeSub, "(&(objectCategory=person)(objectClass=user))", new[] { "displayName", "mail" }, false);
 
         await foreach (LdapEntry entry in results)
         {

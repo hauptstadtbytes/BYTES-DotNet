@@ -54,4 +54,8 @@ mail: max@test.local
 userPassword: test123
 ```
 Hier wird beispielsweise eine Organisation, sowie ein User angelegt. Wenn man nun in dem Ordner, wo die Datei gespeichert ist, ein Terminal öffnet, kann man per Befehl 
-`docker cp "Path\to\users.ldif" openldap:/tmp/test.ldif` die Datei in den Speicher des Servers kopieren. Danach kann man per `SearchAsync` die Daten abfragen.
+`docker cp "Path\to\users.ldif" openldap:/tmp/users.ldif` die Datei in den Speicher des Servers kopieren. 
+Mit ausführen von `docker exec -it openldap ldapadd -x -D "cn=admin,dc=test,dc=local" -w admin -f /tmp/users.ldif` fügt der Server die Daten hinzu.
+Danach kann man per `SearchAsync` die Daten abfragen.
+
+**DAS FUNKTIONIERT NOCH NICHT GANZ. AKTUELL FUNKTIONIERT DAS HINZUFÜGEN VON DATEN NOCH NICHT.**
