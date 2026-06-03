@@ -67,7 +67,7 @@ namespace BYTES.NET.IO
                 return _userName;
             }
 
-            return $"{_userDomain}\\{_userName}";
+            return $"{_userName}@{_userDomain}";
         }
         #endregion
     }

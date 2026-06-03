@@ -23,19 +23,20 @@ internal class NovellExampleCLI
         Console.Write("Username: ");
         string username = Console.ReadLine()!;
 
-        Console.Write("Password: \n");
+        Console.Write("Password: ");
         string password = GetPasswordInput();
 
 
         using var conn = await ConnectAsync(host);
 
+        Console.WriteLine("\n---Domain---\n");
 
         string? baseDn = await GetBaseDnAsync(conn);
         Console.WriteLine(baseDn + "\n");
         string domain = formatDomain(baseDn);
         Console.WriteLine(domain + "\n");
 
-
+        Console.WriteLine("---Authenticate---\n");
         UserInfo user = new UserInfo(username, password, domain);
 
         bool authenticated = await AuthenticateAsync(conn, host, user);
@@ -47,7 +48,10 @@ internal class NovellExampleCLI
         cons.ReferralFollowing = true;
         conn.Constraints = cons;
 
+        Console.WriteLine("---Get all users with email and name---\n");
         SearchWithFilter(conn, baseDn);
+
+        Console.WriteLine("---List all entries---\n");
         PrintAllProperties(conn, baseDn);
 
         Console.WriteLine("---OUTPUT END---");
@@ -69,14 +73,12 @@ internal class NovellExampleCLI
     //authenticate user
     static async Task<bool> AuthenticateAsync(LdapConnection conn, string host, UserInfo user)
     {
-        Console.WriteLine("---Authenticate---\n");
-
         try
         {
             if (host == "localhost")
                 await conn.BindAsync(user.Name, user.Password);
             else
-                await conn.BindAsync(user.FullName , user.Password);
+                await conn.BindAsync(user.FullName, user.Password);
             
             Console.WriteLine($"Login successful for {user.Name}\n");
 
@@ -91,8 +93,6 @@ internal class NovellExampleCLI
 
     static async Task<string?> GetBaseDnAsync(LdapConnection conn)
     {
-        Console.WriteLine("---Domain---\n");
-
         LdapEntry root = await conn.ReadAsync("", new[]{"defaultNamingContext", "namingContexts", "rootDomainNamingContext"});
 
         string domain = null;
@@ -125,8 +125,6 @@ internal class NovellExampleCLI
         if (string.IsNullOrWhiteSpace(baseDn))
             return;
 
-        Console.WriteLine("---Get all users with email and name---\n");
-
         ILdapSearchResults results =
             await conn.SearchAsync(baseDn, LdapConnection.ScopeSub, "(&(objectCategory=person)(objectClass=user))", new[] { "displayName", "mail" }, false);
 
@@ -145,8 +143,6 @@ internal class NovellExampleCLI
     {
         if (string.IsNullOrWhiteSpace(baseDn))
             return;
-
-        Console.WriteLine("---List all entries---\n");
 
         ILdapSearchResults results = await conn.SearchAsync(baseDn, LdapConnection.ScopeBase, "(objectClass=*)", null, false);
 
@@ -181,6 +177,7 @@ internal class NovellExampleCLI
         while (true)
         {
             var b = Console.ReadKey(true);
+            Console.Write("*");
             if (b.Key == ConsoleKey.Enter)
                 break;
             if (b.Key == ConsoleKey.Backspace && input.Length > 0)
