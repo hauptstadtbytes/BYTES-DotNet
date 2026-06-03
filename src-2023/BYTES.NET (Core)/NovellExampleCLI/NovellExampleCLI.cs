@@ -1,13 +1,20 @@
-﻿using Novell.Directory.Ldap;
+﻿//Use standard .Net amespaces
 using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
 
+//Use Dependencies
+using BYTES.NET.IO;
+using Novell.Directory.Ldap;
+
 internal class NovellExampleCLI
 {
+    #region Main Program
+
     static async Task Main()
     {
         Console.Write("Host: ");
@@ -16,46 +23,68 @@ internal class NovellExampleCLI
         Console.Write("Username: ");
         string username = Console.ReadLine()!;
 
-        Console.Write("Password: ");
-        string password = Console.ReadLine()!;
+        Console.Write("Password: \n");
+        string password = GetPasswordInput();
+
 
         using var conn = await ConnectAsync(host);
 
-        bool authenticated = await AuthenticateAsync(conn, username, password);
-        if (!authenticated)
-            return;
 
         string? baseDn = await GetBaseDnAsync(conn);
         Console.WriteLine(baseDn + "\n");
+        string domain = formatDomain(baseDn);
+        Console.WriteLine(domain + "\n");
 
-        await SearchWithFilter(conn, baseDn);
 
-        await PrintAllProperties(conn, baseDn);
+        UserInfo user = new UserInfo(username, password, domain);
+
+        bool authenticated = await AuthenticateAsync(conn, host, user);
+        if (!authenticated)
+            return;
+
+        // turn Referral Following on to prevent errors during search of AD
+        LdapSearchConstraints cons = conn.SearchConstraints;
+        cons.ReferralFollowing = true;
+        conn.Constraints = cons;
+
+        SearchWithFilter(conn, baseDn);
+        PrintAllProperties(conn, baseDn);
+
+        Console.WriteLine("---OUTPUT END---");
     }
 
+    #endregion
+
+
+    #region Methods
     //connect to service
     static async Task<LdapConnection> ConnectAsync(string host)
     {
         var conn = new LdapConnection();
-        await conn.ConnectAsync(host, 389);
+        await conn.ConnectAsync(host, LdapConnection.DefaultPort);
 
         return conn;
     }
 
     //authenticate user
-    static async Task<bool> AuthenticateAsync(LdapConnection conn, string username, string password)
+    static async Task<bool> AuthenticateAsync(LdapConnection conn, string host, UserInfo user)
     {
         Console.WriteLine("---Authenticate---\n");
+
         try
         {
-            await conn.BindAsync(username, password);
-            Console.WriteLine($"Login successful for {username}\n");
+            if (host == "localhost")
+                await conn.BindAsync(user.Name, user.Password);
+            else
+                await conn.BindAsync(user.FullName , user.Password);
+            
+            Console.WriteLine($"Login successful for {user.Name}\n");
 
             return true;
         }
         catch (LdapException ex)
         {
-            Console.WriteLine($"Login failed. {ex.Message}\n");
+            Console.WriteLine($"Login failed for {user.Name}. {ex.Message}\n");
             return false;
         }
     }
@@ -66,43 +95,58 @@ internal class NovellExampleCLI
 
         LdapEntry root = await conn.ReadAsync("", new[]{"defaultNamingContext", "namingContexts", "rootDomainNamingContext"});
 
+        string domain = null;
+
         if (root.GetAttributeSet().ContainsKey("defaultNamingContext"))
-            return root.Get("defaultNamingContext").StringValue;
+            domain = root.Get("defaultNamingContext").StringValue;
 
         if (root.GetAttributeSet().ContainsKey("rootDomainNamingContext"))
-            return root.Get("rootDomainNamingContext").StringValue;
+            domain = root.Get("rootDomainNamingContext").StringValue;
 
         if (root.GetAttributeSet().ContainsKey("namingContexts"))
-            return root.Get("namingContexts").StringValue;
+            domain = root.Get("namingContexts").StringValue;
 
-        return null;
+        return domain;
+    }
+
+    static string formatDomain(string domain)
+    {
+        string formattedDomain = string.Join(".",
+            domain.Split(",")
+            .Where(x => x.StartsWith("DC=", StringComparison.OrdinalIgnoreCase))
+            .Select(x => x.Substring(3)));
+
+        return formattedDomain;
     }
 
     //Search with filter
-    static async Task SearchWithFilter(LdapConnection conn, string? baseDn)
+    static async void SearchWithFilter(LdapConnection conn, string? baseDn)
     {
         if (string.IsNullOrWhiteSpace(baseDn))
             return;
 
-        Console.WriteLine("---Search with filter (objectClass=person)---\n");
+        Console.WriteLine("---Get all users with email and name---\n");
 
         ILdapSearchResults results =
-            await conn.SearchAsync(baseDn, LdapConnection.ScopeSub, "(&(objectCategory=person)(objectClass=user))", new[] { "mail" }, false);
+            await conn.SearchAsync(baseDn, LdapConnection.ScopeSub, "(&(objectCategory=person)(objectClass=user))", new[] { "displayName", "mail" }, false);
 
         await foreach (LdapEntry entry in results)
         {
-            Console.WriteLine(entry.Dn);
-            Console.WriteLine("mail: " + entry.GetAttributeSet().GetAttribute("mail")?.StringValue);
+            if (entry.GetAttributeSet().ContainsKey("mail"))
+            {
+                Console.WriteLine(entry.Dn.Split(",")[0].Split("=")[1]);
+                Console.WriteLine("mail: " + entry.GetAttributeSet().GetAttribute("mail")?.StringValue + "\n");
+            }
         }
     }
 
     //get and print all properties for entry
-    static async Task PrintAllProperties(LdapConnection conn, string? baseDn)
+    static async void PrintAllProperties(LdapConnection conn, string? baseDn)
     {
         if (string.IsNullOrWhiteSpace(baseDn))
             return;
 
-        Console.WriteLine("---List all properties---\n");
+        Console.WriteLine("---List all entries---\n");
 
         ILdapSearchResults results = await conn.SearchAsync(baseDn, LdapConnection.ScopeBase, "(objectClass=*)", null, false);
 
@@ -112,6 +156,11 @@ internal class NovellExampleCLI
             break;
         }
     }
+
+    #endregion
+
+
+    #region Helper methods
 
     //helper class to print properties
     static void PrintProperties(LdapEntry e)
@@ -124,4 +173,22 @@ internal class NovellExampleCLI
             }
         }
     }
+
+    // helper class to hide password input
+    static string GetPasswordInput()
+    {
+        StringBuilder input = new StringBuilder();
+        while (true)
+        {
+            var b = Console.ReadKey(true);
+            if (b.Key == ConsoleKey.Enter)
+                break;
+            if (b.Key == ConsoleKey.Backspace && input.Length > 0)
+                input.Remove(input.Length - 1, 1);
+            else if (b.Key != ConsoleKey.Backspace)
+                input.Append(b.KeyChar);
+        }
+        return input.ToString();
+    }
+    #endregion
 }
