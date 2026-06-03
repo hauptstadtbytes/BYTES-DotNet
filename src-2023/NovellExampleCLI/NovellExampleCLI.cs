@@ -26,7 +26,7 @@ internal class NovellExampleCLI
             return;
 
         string? baseDn = await GetBaseDnAsync(conn);
-        Console.WriteLine(baseDn);
+        Console.WriteLine(baseDn + "\n");
 
         await SearchWithFilter(conn, baseDn);
 
@@ -49,13 +49,13 @@ internal class NovellExampleCLI
         try
         {
             await conn.BindAsync(username, password);
-            Console.WriteLine($"Login successful for {username}");
+            Console.WriteLine($"Login successful for {username}\n");
 
             return true;
         }
         catch (LdapException ex)
         {
-            Console.WriteLine($"Login failed. {ex.Message}");
+            Console.WriteLine($"Login failed. {ex.Message}\n");
             return false;
         }
     }
@@ -84,7 +84,7 @@ internal class NovellExampleCLI
         if (string.IsNullOrWhiteSpace(baseDn))
             return;
 
-        Console.WriteLine("---Search with filter (objectClass=person)---");
+        Console.WriteLine("---Search with filter (objectClass=person)---\n");
 
         ILdapSearchResults results =
             await conn.SearchAsync(baseDn, LdapConnection.ScopeSub, "(&(objectCategory=person)(objectClass=user))", new[] { "mail" }, false);
@@ -102,7 +102,7 @@ internal class NovellExampleCLI
         if (string.IsNullOrWhiteSpace(baseDn))
             return;
 
-        Console.WriteLine("---List all properties---");
+        Console.WriteLine("---List all properties---\n");
 
         ILdapSearchResults results = await conn.SearchAsync(baseDn, LdapConnection.ScopeBase, "(objectClass=*)", null, false);
 
