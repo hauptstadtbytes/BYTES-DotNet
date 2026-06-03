@@ -23,10 +23,6 @@
 		<PackageVersion>2.0.1-beta.3</PackageVersion>
 		<PackageTags>Prototyping,Application Framework</PackageTags>
 
-		<!--<PackageLicenseFile>meta\License.txt</PackageLicenseFile>-->
-		<PackageLicenseUrl>https://bytes-dotnet.readme.io/docs/public-license</PackageLicenseUrl>
-		<PackageIcon>meta\Icon.png</PackageIcon>
-
 		<!-- trigger package creation -->
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
