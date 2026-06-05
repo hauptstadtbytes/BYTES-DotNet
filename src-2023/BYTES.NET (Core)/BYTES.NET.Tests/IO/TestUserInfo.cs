@@ -27,7 +27,7 @@ namespace BYTES.NET.Tests.IO
             Assert.IsNotNull(user.Name);
             Assert.IsNotNull(user.Password);
             Assert.IsNotNull(user.Domain);
-            Assert.AreEqual(user.FullName, "test.domain\\test");
+            Assert.AreEqual(user.FullName, user.Name + "@" + user.Domain);
         }
 
         [TestMethod]
