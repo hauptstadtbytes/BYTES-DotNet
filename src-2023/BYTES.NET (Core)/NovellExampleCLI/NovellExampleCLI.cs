@@ -25,20 +25,13 @@ internal class NovellExampleCLI
 
         Console.Write("Username: ");
         string username = Console.ReadLine()!;
-
-        Console.Write("Password: ");
         string password = GetPasswordInput();
 
 
         using var conn = await ConnectAsync(host);
 
-        Console.WriteLine("\n---Domain---\n");
-
         string? baseDn = await GetBaseDnAsync(conn);
-        Console.WriteLine(baseDn + "\n");
-
         string domain = formatDomain(baseDn);
-        Console.WriteLine(domain + "\n");
 
         Console.WriteLine("---Authenticate---\n");
         UserInfo user = new UserInfo(username, password, domain);
@@ -95,7 +88,7 @@ internal class NovellExampleCLI
             else
                 await conn.BindAsync(user.FullName, user.Password);
             
-            Console.WriteLine($"Login successful for {user.Name}\n");
+            Console.WriteLine($"Login successful for {user.Name} for domain {user.Domain}\n");
 
             return true;
         }
@@ -215,10 +208,11 @@ internal class NovellExampleCLI
     static string GetPasswordInput()
     {
         StringBuilder input = new StringBuilder();
+        Console.Write("Enter password....");
         while (true)
         {
             var b = Console.ReadKey(true);
-            Console.Write("*");
+
             if (b.Key == ConsoleKey.Enter)
                 break;
             if (b.Key == ConsoleKey.Backspace && input.Length > 0)
@@ -228,5 +222,6 @@ internal class NovellExampleCLI
         }
         return input.ToString();
     }
+
     #endregion
 }
