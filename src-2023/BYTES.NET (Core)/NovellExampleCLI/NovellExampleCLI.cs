@@ -15,6 +15,9 @@ internal class NovellExampleCLI
 {
     #region Main Program
 
+    /// <summary>
+    /// CLI to showcase how to use Novell with our UserInfo class
+    /// </summary>
     static async Task Main()
     {
         Console.Write("Host: ");
@@ -63,7 +66,11 @@ internal class NovellExampleCLI
 
     #region Methods
 
-    //connect to service
+    /// <summary>
+    /// Connect to service
+    /// </summary>
+    /// <param name="host"></param>
+    /// <returns></returns>
     static async Task<LdapConnection> ConnectAsync(string host)
     {
         var conn = new LdapConnection();
@@ -72,7 +79,13 @@ internal class NovellExampleCLI
         return conn;
     }
 
-    //authenticate user
+    /// <summary>
+    /// authenticate the user with username and password
+    /// </summary>
+    /// <param name="conn"></param>
+    /// <param name="host"></param>
+    /// <param name="user"></param>
+    /// <returns></returns>
     static async Task<bool> AuthenticateAsync(LdapConnection conn, string host, UserInfo user)
     {
         try
@@ -93,6 +106,11 @@ internal class NovellExampleCLI
         }
     }
 
+    /// <summary>
+    /// Get the name of the domain
+    /// </summary>
+    /// <param name="conn"></param>
+    /// <returns></returns>
     static async Task<string?> GetBaseDnAsync(LdapConnection conn)
     {
         LdapEntry root = await conn.ReadAsync("", new[]{"defaultNamingContext", "namingContexts", "rootDomainNamingContext"});
@@ -111,6 +129,11 @@ internal class NovellExampleCLI
         return domain;
     }
 
+    /// <summary>
+    /// format the domain to be easier readable
+    /// </summary>
+    /// <param name="domain"></param>
+    /// <returns></returns>
     static string formatDomain(string domain)
     {
         string formattedDomain = string.Join(".",
@@ -121,7 +144,12 @@ internal class NovellExampleCLI
         return formattedDomain;
     }
 
-    //Search with filter
+    /// <summary>
+    /// Search the service for all users
+    /// </summary>
+    /// <param name="conn"></param>
+    /// <param name="host"></param>
+    /// <param name="baseDn"></param>
     static async void SearchWithFilter(LdapConnection conn, string host, string? baseDn)
     {
         if (string.IsNullOrWhiteSpace(baseDn))
@@ -141,7 +169,11 @@ internal class NovellExampleCLI
         }
     }
 
-    //get and print all properties for entry
+    /// <summary>
+    /// Return all properties
+    /// </summary>
+    /// <param name="conn"></param>
+    /// <param name="baseDn"></param>
     static async void GetAllProperties(LdapConnection conn, string? baseDn)
     {
         if (string.IsNullOrWhiteSpace(baseDn))
@@ -161,7 +193,10 @@ internal class NovellExampleCLI
 
     #region Helper methods
 
-    //helper class to print properties
+    /// <summary>
+    /// Print properties in a more readable format
+    /// </summary>
+    /// <param name="e"></param>
     static void PrintProperties(LdapEntry e)
     {
         foreach (LdapAttribute a in e.GetAttributeSet())
@@ -173,7 +208,10 @@ internal class NovellExampleCLI
         }
     }
 
-    // helper class to hide password input
+    /// <summary>
+    /// hide password input in terminal
+    /// </summary>
+    /// <returns></returns>
     static string GetPasswordInput()
     {
         StringBuilder input = new StringBuilder();
