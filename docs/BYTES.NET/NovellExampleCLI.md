@@ -16,6 +16,9 @@ Bei der Benennung der Usernamen ist jedoch zu beachten, dass der Name nicht übe
 
 Danach kann man Anfragen an den Service stellen (unter Benutzung der `SearchAsync`-Funktion).
 
+## Unterschied Benutzernamenkonvention
+OpenLDAP ist beim aktzeptieren der Benutzernamen strenger als AD. Um sich bei OpenLDAP zu authentifizieren benötigt man den Distiguished Name in Form von `cn=admin,dc=test,dc=local`. Bei AD kann man sich hingegen mit `<domain>@<username>`oder `<username>\<domain>` authentifizieren.
+
 # OpenLDAP, Docker und Novell
 
 Man kann OpenLDAP mit Docker lokal hosten. Dazu erstellt man eine `docker-compose.yml`-Datei:

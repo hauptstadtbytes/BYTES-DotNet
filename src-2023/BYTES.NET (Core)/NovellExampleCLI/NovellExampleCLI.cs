@@ -208,7 +208,7 @@ internal class NovellExampleCLI
     static string GetPasswordInput()
     {
         StringBuilder input = new StringBuilder();
-        Console.Write("Enter password....");
+        Console.Write("Enter password....\n");
         while (true)
         {
             var b = Console.ReadKey(true);
