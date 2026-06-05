@@ -46,7 +46,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="IO\" />
+    <Compile Remove="IO\**" />
+    <EmbeddedResource Remove="IO\**" />
+    <None Remove="IO\**" />
   </ItemGroup>
 
   <!-- add external resources/ files (for the NuGet package); see also 'https://docs.microsoft.com/de-de/nuget/reference/msbuild-targets') -->
