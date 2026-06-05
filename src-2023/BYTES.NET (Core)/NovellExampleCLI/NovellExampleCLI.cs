@@ -1,4 +1,4 @@
-﻿//Use standard .Net amespaces
+﻿// Use standard .Net amespaces
 using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
 
-//Use Dependencies
+// Use Dependencies
 using BYTES.NET.IO;
 using Novell.Directory.Ldap;
 
@@ -33,6 +33,7 @@ internal class NovellExampleCLI
 
         string? baseDn = await GetBaseDnAsync(conn);
         Console.WriteLine(baseDn + "\n");
+
         string domain = formatDomain(baseDn);
         Console.WriteLine(domain + "\n");
 
@@ -52,7 +53,7 @@ internal class NovellExampleCLI
         SearchWithFilter(conn, host, baseDn);
 
         Console.WriteLine("---List all entries---\n");
-        PrintAllProperties(conn, baseDn);
+        GetAllProperties(conn, baseDn);
 
         Console.WriteLine("\n---OUTPUT END---\n\n");
     }
@@ -61,6 +62,7 @@ internal class NovellExampleCLI
 
 
     #region Methods
+
     //connect to service
     static async Task<LdapConnection> ConnectAsync(string host)
     {
@@ -127,10 +129,7 @@ internal class NovellExampleCLI
 
         ILdapSearchResults results = null;
 
-        if (host == "localhost")
-            results = await conn.SearchAsync(baseDn, LdapConnection.ScopeSub, "(objectCategory=inetOrgPerson)", new[] { "uid", "mail" }, false);
-        else
-            results = await conn.SearchAsync(baseDn, LdapConnection.ScopeSub, "(&(objectCategory=person)(objectClass=user))", new[] { "displayName", "mail" }, false);
+        results = await conn.SearchAsync(baseDn, LdapConnection.ScopeSub, "(&(objectCategory=person)(objectClass=user))", new[] { "displayName", "mail" }, false);
 
         await foreach (LdapEntry entry in results)
         {
@@ -143,7 +142,7 @@ internal class NovellExampleCLI
     }
 
     //get and print all properties for entry
-    static async void PrintAllProperties(LdapConnection conn, string? baseDn)
+    static async void GetAllProperties(LdapConnection conn, string? baseDn)
     {
         if (string.IsNullOrWhiteSpace(baseDn))
             return;
