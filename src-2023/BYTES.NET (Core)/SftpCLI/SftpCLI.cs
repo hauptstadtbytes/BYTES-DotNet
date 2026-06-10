@@ -22,23 +22,20 @@ public class SftpCLI
         Console.Write("Host: ");
         string host = Console.ReadLine()!;
 
-        Console.Write("Port (optional): ");
-        string port = Console.ReadLine();
-
         Console.Write("Username: ");
         string username = Console.ReadLine()!;
 
-        Console.Write("Keyfile path: ");
+        Console.Write("Keyfile path (optional): ");
         string keyFilePath = Console.ReadLine()!;
 
-        Console.Write("Keyfile password: ");
+        Console.Write("Keyfile passphrase or user password: ");
         string pass = GetPasswordInput();
 
         UserInfo user = new UserInfo(username, pass);
 
         Console.WriteLine("\nConnecting...\n");
 
-        SFTP(host, port, user, keyFilePath);
+        SFTP(host, user, keyFilePath);
     }
 
 
@@ -47,19 +44,20 @@ public class SftpCLI
     /// <summary>
     /// builds and SFTP connection and returns all files
     /// </summary>
-    private static void SFTP(string host, string port, UserInfo user, string keyFilePath)
+    private static void SFTP(string host, UserInfo user, string? keyFilePath = null)
     {
-        PrivateKeyFile keyFile = new PrivateKeyFile(keyFilePath, user.Password);
         SftpClient client;
 
-        if (port == "")
+        if (string.IsNullOrEmpty(keyFilePath))
         {
-            client = new SftpClient(new PrivateKeyConnectionInfo(host, 22, user.Name, keyFile));
+            client = new SftpClient(host, 2222, user.Name, user.Password);
         }
         else
         {
-            client = new SftpClient(new PrivateKeyConnectionInfo(host, int.Parse(port), user.Name, keyFile));
+            PrivateKeyFile keyFile = new PrivateKeyFile(keyFilePath.Trim('"'), user.Password);
+            client = new SftpClient(new PrivateKeyConnectionInfo(host, 2222, user.Name, keyFile));
         }
+            
         
         client.Connect();
 

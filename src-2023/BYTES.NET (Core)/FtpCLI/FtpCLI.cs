@@ -41,7 +41,7 @@ public class FtpCLI
     {
         FtpClient client;
 
-        if (port == "")
+        if (string.IsNullOrEmpty(port))
         {
             client = new FtpClient(host, user.Name, user.Password, 2121);
         }
