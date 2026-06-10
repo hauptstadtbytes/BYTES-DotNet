@@ -35,11 +35,25 @@ public class FtpCLI
 
         Console.WriteLine("\nConnecting...\n");
 
-        var client = new FtpClient(host, user, pass, 2121);
-
+        FtpClient client = new FtpClient(host, user, pass, 2121);
         client.Connect();
 
-        var items = client.GetListing("/");
+        Console.WriteLine("Connected.");
+
+        Console.WriteLine("Input directory to search (none = root): ");
+        string dir = Console.ReadLine();
+
+
+        FtpListItem[] items;
+        if (dir == null)
+        {
+           items = client.GetListing("/");
+        }
+        else
+        {
+           items = client.GetListing(dir);
+        }
+           
 
         Console.WriteLine("Files:");
 
