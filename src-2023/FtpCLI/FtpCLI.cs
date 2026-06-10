@@ -35,11 +35,11 @@ public class FtpCLI
 
         Console.WriteLine("\nConnecting...\n");
 
-        var client = new AsyncFtpClient(host, user, pass, 2121);
+        var client = new FtpClient(host, user, pass, 2121);
 
-        client.Connect().GetAwaiter().GetResult();
+        client.Connect();
 
-        var items = client.GetListing("/").GetAwaiter().GetResult();
+        var items = client.GetListing("/");
 
         Console.WriteLine("Files:");
 
@@ -48,7 +48,7 @@ public class FtpCLI
             Console.WriteLine($"{item.Name} ({item.Size} bytes), Last modified: {item.Modified}");
         }
 
-        client.Disconnect().GetAwaiter().GetResult();
+        client.Disconnect();
     }
 
     #endregion
