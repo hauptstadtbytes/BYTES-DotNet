@@ -59,7 +59,6 @@ public class FtpCLI
     /// <summary>
     /// hide password input in terminal
     /// </summary>
-    /// <returns></returns>
     static string GetPasswordInput()
     {
         StringBuilder input = new StringBuilder();

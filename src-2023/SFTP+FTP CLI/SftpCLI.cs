@@ -63,11 +63,11 @@ public class SftpCLI
     /// <summary>
     /// hide password input in terminal
     /// </summary>
-    /// <returns></returns>
     static string GetPasswordInput()
     {
         StringBuilder input = new StringBuilder();
         Console.Write("Enter password....\n");
+
         while (true)
         {
             var b = Console.ReadKey(true);
@@ -79,6 +79,7 @@ public class SftpCLI
             else if (b.Key != ConsoleKey.Backspace)
                 input.Append(b.KeyChar);
         }
+
         return input.ToString();
     }
 
