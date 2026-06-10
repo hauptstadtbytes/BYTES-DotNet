@@ -45,7 +45,7 @@ public class FtpCLI
 
         foreach (FtpListItem item in items)
         {
-            Console.WriteLine($"{item.Name} ({item.Type}, {item.Size} bytes), Last modified: {item.Modified}");
+            Console.WriteLine($"{item.Name} ({item.Size} bytes), Last modified: {item.Modified}");
         }
 
         client.Disconnect().GetAwaiter().GetResult();
