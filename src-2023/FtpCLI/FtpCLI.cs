@@ -14,7 +14,22 @@ public class FtpCLI
 {
     public static void Main()
     {
-        FTP();
+        Console.Write("Host: ");
+        string host = Console.ReadLine()!;
+
+        Console.WriteLine("Port (optional): ");
+        string port = Console.ReadLine();
+
+        Console.Write("Username: ");
+        string username = Console.ReadLine()!;
+
+        Console.Write("Password: ");
+        string pass = GetPasswordInput();
+
+        Console.WriteLine("\nConnecting...\n");
+
+        UserInfo user = new UserInfo(username, pass);
+        FTP(host, port, user);
     }
 
     #region methods
@@ -22,27 +37,21 @@ public class FtpCLI
     /// <summary>
     /// Builds and FTP connection and returns all files
     /// </summary>
-    public static void FTP()
+    public static void FTP(string host, string port, UserInfo user)
     {
-        Console.Write("Host: ");
-        string host = Console.ReadLine()!;
+        FtpClient client;
 
-        Console.Write("Username: ");
-        string user = Console.ReadLine()!;
+        if (port == null)
+        {
+            client = new FtpClient(host, user.Name, user.Password, 2121);
+        }
+        client = new FtpClient(host, user.Name, user.Password, int.Parse(port));
 
-        Console.Write("Password: ");
-        string pass = GetPasswordInput();
-
-        Console.WriteLine("\nConnecting...\n");
-
-        FtpClient client = new FtpClient(host, user, pass, 2121);
         client.Connect();
-
         Console.WriteLine("Connected.");
 
         Console.WriteLine("Input directory to search (none = root): ");
         string dir = Console.ReadLine();
-
 
         FtpListItem[] items;
         if (dir == null)

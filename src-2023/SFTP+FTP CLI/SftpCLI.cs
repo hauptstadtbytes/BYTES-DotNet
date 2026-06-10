@@ -8,6 +8,7 @@ using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -20,6 +21,9 @@ public class SftpCLI
     {
         Console.Write("Host: ");
         string host = Console.ReadLine()!;
+
+        Console.Write("Port (optional): ");
+        string port = Console.ReadLine();
 
         Console.Write("Username: ");
         string username = Console.ReadLine()!;
@@ -34,7 +38,7 @@ public class SftpCLI
 
         Console.WriteLine("\nConnecting...\n");
 
-        SFTP(host, user, keyFilePath);
+        SFTP(host, port, user, keyFilePath);
     }
 
 
@@ -43,10 +47,17 @@ public class SftpCLI
     /// <summary>
     /// builds and SFTP connection and returns all files
     /// </summary>
-    private static void SFTP(string host, UserInfo user, string keyFilePath)
+    private static void SFTP(string host, string port, UserInfo user, string keyFilePath)
     {
         PrivateKeyFile keyFile = new PrivateKeyFile(keyFilePath, user.Password);
-        using SftpClient client = new SftpClient(new PrivateKeyConnectionInfo(host, 2222, user.Name, keyFile));
+        SftpClient client;
+
+        if (port == null)
+        {
+            client = new SftpClient(new PrivateKeyConnectionInfo(host, 22, user.Name, keyFile));
+        }  
+        client = new SftpClient(new PrivateKeyConnectionInfo(host, int.Parse(port), user.Name, keyFile));
+
         client.Connect();
 
         Console.WriteLine("Connected.");
