@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
+		<OutputType>Exe</OutputType>
 		<!-- enable multi-targetting; see also 'https://www.cafe-encounter.net/p2312/multi-targetting-net-framework-and-net-core-in-a-single-project' -->
 		<TargetFrameworks>net6.0;net6.0-windows;net8.0;net8.0-windows;net10.0;net10.0-windows</TargetFrameworks>
 		<!-- set language version; see also 'https://stackoverflow.com/questions/61434436/how-to-change-c-sharp-language-version-for-all-of-the-projects-in-my-solution-in' -->
@@ -22,12 +23,17 @@
 		<PackageVersion>2.0.1-beta.3</PackageVersion>
 		<PackageTags>Prototyping,Application Framework</PackageTags>
 
+		<!--<PackageLicenseFile>meta\License.txt</PackageLicenseFile>-->
+		<PackageLicenseUrl>https://bytes-dotnet.readme.io/docs/public-license</PackageLicenseUrl>
+		<PackageIcon>meta\Icon.png</PackageIcon>
+
 		<!-- trigger package creation -->
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
 
 		<!-- generate a XML documentation automatically -->
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+
 	</PropertyGroup>
 
   <ItemGroup>
@@ -38,6 +44,12 @@
     <ProjectReference Include="..\BYTES.NET\BYTES.NET.csproj" />
   </ItemGroup>
 
+	<!-- add external resources/ files (for the NuGet package); see also 'https://docs.microsoft.com/de-de/nuget/reference/msbuild-targets') -->
+	<ItemGroup>
+		<None Include="..\..\Resources\License.txt" Pack="true" PackagePath="\meta\" />
+		<None Include="..\..\Resources\Icon.png" Pack="true" PackagePath="\meta\" />
+	</ItemGroup>
+	
 	<!-- define constants for framework differentiation; see also 'https://weblog.west-wind.com/posts/2017/jun/22/multitargeting-and-porting-a-net-library-to-net-core-20'-->
 	<PropertyGroup Condition=" '$(TargetFramework)' == 'net48'">
 		<DefineConstants>NET48;NETFULL</DefineConstants>
