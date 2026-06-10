@@ -28,7 +28,7 @@ public class SftpCLI
         Console.Write("Username: ");
         string username = Console.ReadLine()!;
 
-        Console.WriteLine("Keyfile path: ");
+        Console.Write("Keyfile path: ");
         string keyFilePath = Console.ReadLine()!;
 
         Console.Write("Keyfile password: ");
@@ -52,12 +52,15 @@ public class SftpCLI
         PrivateKeyFile keyFile = new PrivateKeyFile(keyFilePath, user.Password);
         SftpClient client;
 
-        if (port == null)
+        if (port == "")
         {
             client = new SftpClient(new PrivateKeyConnectionInfo(host, 22, user.Name, keyFile));
-        }  
-        client = new SftpClient(new PrivateKeyConnectionInfo(host, int.Parse(port), user.Name, keyFile));
-
+        }
+        else
+        {
+            client = new SftpClient(new PrivateKeyConnectionInfo(host, int.Parse(port), user.Name, keyFile));
+        }
+        
         client.Connect();
 
         Console.WriteLine("Connected.");

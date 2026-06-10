@@ -17,7 +17,7 @@ public class FtpCLI
         Console.Write("Host: ");
         string host = Console.ReadLine()!;
 
-        Console.WriteLine("Port (optional): ");
+        Console.Write("Port (optional): ");
         string port = Console.ReadLine();
 
         Console.Write("Username: ");
@@ -41,11 +41,15 @@ public class FtpCLI
     {
         FtpClient client;
 
-        if (port == null)
+        if (port == "")
         {
             client = new FtpClient(host, user.Name, user.Password, 2121);
         }
-        client = new FtpClient(host, user.Name, user.Password, int.Parse(port));
+        else
+        {
+            client = new FtpClient(host, user.Name, user.Password, int.Parse(port));
+        }
+        
 
         client.Connect();
         Console.WriteLine("Connected.");
@@ -64,7 +68,7 @@ public class FtpCLI
         }
            
 
-        Console.WriteLine("Files:");
+        Console.WriteLine("Files: ");
 
         foreach (FtpListItem item in items)
         {
