@@ -96,6 +96,7 @@ public class SftpCLI
     /// EXAMPLE
     /// Uploads a file to the SFTP server. Does not check for duplicates
     /// </summary>
+    /*
     private string? UploadDocument(string host, UserInfo user, string keyFilePath, string filepath, string filename, string rootdir)
     {
         // Create new PrivateKeyFile to auth with, create client
@@ -116,7 +117,7 @@ public class SftpCLI
 
         return rootdir + remoteFileName;
     }
-
+    */
 
     #endregion
 

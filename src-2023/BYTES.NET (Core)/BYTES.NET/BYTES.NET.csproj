@@ -33,6 +33,7 @@
 	  
 	 <!-- generate a XML documentation automatically -->
 	 <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  
   </PropertyGroup>
 
   <!-- add external resources/ files (for the NuGet package); see also 'https://docs.microsoft.com/de-de/nuget/reference/msbuild-targets') -->
