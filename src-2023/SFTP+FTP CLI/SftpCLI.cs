@@ -1,21 +1,40 @@
 ﻿// Use standard .Net amespaces
+// Use Dependencies
+using BYTES.NET.IO;
+using Org.BouncyCastle.Bcpg.OpenPgp;
+using Renci.SshNet;
+using Renci.SshNet.Sftp;
 using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
-// Use Dependencies
-using BYTES.NET.IO;
-using Renci.SshNet;
-using Renci.SshNet.Sftp;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 public class SftpCLI
 {
     public static void Main()
     {
-        SFTP();
+        Console.Write("Host: ");
+        string host = Console.ReadLine()!;
+
+        Console.Write("Username: ");
+        string username = Console.ReadLine()!;
+
+        Console.WriteLine("Keyfile path: ");
+        string keyFilePath = Console.ReadLine()!;
+
+        Console.Write("Keyfile password: ");
+        string pass = GetPasswordInput();
+
+        UserInfo user = new UserInfo(username, pass);
+
+        Console.WriteLine("\nConnecting...\n");
+
+        SFTP(host, user, keyFilePath);
     }
 
 
@@ -24,23 +43,27 @@ public class SftpCLI
     /// <summary>
     /// builds and SFTP connection and returns all files
     /// </summary>
-    private static void SFTP()
+    private static void SFTP(string host, UserInfo user, string keyFilePath)
     {
-        Console.Write("Host: ");
-        string host = Console.ReadLine()!;
-
-        Console.Write("Username: ");
-        string user = Console.ReadLine()!;
-
-        Console.Write("Password: ");
-        string pass = GetPasswordInput();
-
-        Console.WriteLine("\nConnecting...\n");
-
-        using SftpClient client = new SftpClient(host, 2222, user, pass);
+        PrivateKeyFile keyFile = new PrivateKeyFile(keyFilePath, user.Password);
+        using SftpClient client = new SftpClient(new PrivateKeyConnectionInfo(host, 2222, user.Name, keyFile));
         client.Connect();
 
-        var files = client.ListDirectory("/");
+        Console.WriteLine("Connected.");
+
+        Console.WriteLine("Input directory to search (none = root): ");
+        string dir = Console.ReadLine();
+
+
+        IEnumerable<ISftpFile> files;
+        if (dir == null)
+        {
+            files = client.ListDirectory("/");
+        }
+        else
+        {
+            files = client.ListDirectory(dir);
+        }
 
         Console.WriteLine("Files:");
 
@@ -54,6 +77,32 @@ public class SftpCLI
 
         client.Disconnect();
     }
+
+    /// <summary>
+    /// EXAMPLE
+    /// Uploads a file to the SFTP server. Does not check for duplicates
+    /// </summary>
+    private string? UploadDocument(string host, UserInfo user, string keyFilePath, string filepath, string filename, string rootdir)
+    {
+        // Create new PrivateKeyFile to auth with, create client
+        PrivateKeyFile keyFile = new PrivateKeyFile(keyFilePath, user.Password);
+        using SftpClient client = new SftpClient(new PrivateKeyConnectionInfo(host, 2222, user.Name, keyFile));
+
+        string remoteFileName = filename;
+
+        client.Connect();
+
+        //upload the file
+        using (FileStream fs = new FileStream(filepath, FileMode.Open))
+        {
+            client.UploadFile(fs, rootdir + remoteFileName);
+        }
+
+        client.Disconnect();
+
+        return rootdir + remoteFileName;
+    }
+
 
     #endregion
 
