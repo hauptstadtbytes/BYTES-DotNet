@@ -33,14 +33,11 @@ services:
       - ./ftp-data:/home/testuser
 ```
 
-2. Hinzufügen von Dateien in den `ftp-data`-Ordner.
-3. Nun kann man die CLI ausführen. Die Daten sind dabei:
+2. Hinzufügen von Dateien in den `ftp-data`-Ordner (und den ftp-data Ordner selber)
+3. Nun kann man die CLI ausführen. Die Anmeldedaten sind dabei:
    host: localhost
    username: testuser
    password: testpass
-
-## SFTP ohne Zertifikat
-
 
 ## SFTP mit Zertifikat
 1. Keypaar erstellen
@@ -48,25 +45,17 @@ services:
 2. Docker Container erstellen
 ```
 services:
-
-  sftp:
-
-    image: atmoz/sftp
-
-    container_name: sftp-server
-
-    ports:
-
-      - "2222:22"
-
-    command: testuser:testpass:1001
-
-    volumes:
-
-      - ./sftp-data:/home/testuser
-
-      - ./keys/testuser.pub:/home/testuser/.ssh/keys/testuser.pub:ro
+  sftp:
+    image: atmoz/sftp
+    container_name: sftp-server
+    ports:
+      - "2222:22"
+    command: testuser:testpass:1001
+    volumes:
+      - ./sftp-data:/home/testuser
+      - ./keys/:/home/testuser/.ssh/keys/
 ```
+
 Der public key wird in das .ssh-Verzeichnis des Containers kopiert. 
 Nun kann man sich mit 
 	host: localhost
@@ -75,6 +64,7 @@ Nun kann man sich mit
 	passphrase: (passphrase)
 anmelden.
 
+Aktuell ist der Container so konfiguriert, dass man sich mit oder ohne Zertifikat anmelden kann.
 Bei dem selben Server kann man sich ebenfalls gleichzeitig mit 
    host: localhost
    username: testuser
