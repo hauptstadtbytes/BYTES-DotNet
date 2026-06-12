@@ -35,9 +35,9 @@ services:
 
 2. Hinzufügen von Dateien in den `ftp-data`-Ordner (und den ftp-data Ordner selber)
 3. Nun kann man die CLI ausführen. Die Anmeldedaten sind dabei:
-   host: localhost
-   username: testuser
-   password: testpass
+- host: localhost
+- username: testuser
+- password: testpass
 
 ## SFTP mit Zertifikat
 1. Keypaar erstellen
@@ -58,15 +58,15 @@ services:
 
 Der public key wird in das .ssh-Verzeichnis des Containers kopiert. 
 Nun kann man sich mit 
-	host: localhost
-	username: testuser
-	keyfile path: (path to file)
-	passphrase: (passphrase)
+- host: localhost
+- username: testuser
+- keyfile path: (path to file)
+- passphrase: (passphrase)
 anmelden.
 
 Aktuell ist der Container so konfiguriert, dass man sich mit oder ohne Zertifikat anmelden kann.
 Bei dem selben Server kann man sich ebenfalls gleichzeitig mit 
-   host: localhost
-   username: testuser
-   password: testpass
+- host: localhost
+- username: testuser
+- password: testpass
 anmelden.
