@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 //import internal namespace(s) required
 using BYTES.NET.Primitives;
@@ -13,11 +14,24 @@ namespace BYTES.NET.IO.Web
 {
     public class HTTPClient
     {
+       
         #region protected variable(s)
 
         protected WebHeaderCollection _headers = new WebHeaderCollection();
 
         #endregion
+
+        #region constructor
+
+        public HTTPClient(WebProxy p)
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.Proxy = p;
+            HttpClient client = new HttpClient(handler);
+        }
+
+        #endregion
+
 
         #region public method(s)
 
@@ -28,12 +42,9 @@ namespace BYTES.NET.IO.Web
         /// <returns></returns>
         public virtual string GET(string url)
         {
-            using (WebClient wc = new WebClient())
-            {
-                wc.Headers = _headers;
+            wc.Headers = _headers;
 
-                return wc.DownloadString(new Uri(url));
-            }
+            return wc.DownloadString(new Uri(url));
         }
 
         /// <summary>
