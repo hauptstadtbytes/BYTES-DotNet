@@ -102,3 +102,5 @@ src-2023/BYTES.NET.Extensibility/BYTES.NET.Extensibility/bin/Debug/net8.0-window
 src-2023/BYTES.NET.Extensibility/BYTES.NET.Extensibility/bin/Debug/net8.0-windows/BYTES.NET.Extensibility.xml
 src-2023/BYTES.NET.Extensibility/BYTES.NET.Extensibility/bin/Debug/net8.0-windows/BYTES.NET.pdb
 src-2023/BYTES.NET.Extensibility/BYTES.NET.Extensibility/bin/Debug/net8.0-windows/BYTES.NET.xml
+src-2023/HTTPClientCLI/bin/
+src-2023/HTTPClientCLI/obj/

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using BYTES.NET.IO;
 using Novell.Directory.Ldap;
 
-internal class NovellExampleCLI
+internal class LDAPCLI
 {
     #region Main Program
 
