@@ -19,6 +19,8 @@ using System.Threading.Tasks;
 
 public class HTTPClientCLI
 {
+    #region main method
+
     public static async Task Main()
     {
         HttpClient client = CreateHttpClient();
@@ -39,10 +41,18 @@ public class HTTPClientCLI
         await PatchRequest(client);
     }
 
+    #endregion
+
+    #region constructor 
+
     static HttpClient CreateHttpClient()
     {
         return new HttpClient();
     }
+
+    #endregion
+
+    #region request methods
 
     static async Task GetRequest(HttpClient client)
     {
@@ -65,14 +75,6 @@ public class HTTPClientCLI
         Console.WriteLine(response);
     }
 
-    /*
-    static async Task PatchRequest(HttpClient client)
-    {
-        HttpResponseMessage response = await client.PatchAsync("https://hub-mockup.bytescloud.de/v1/sessions", null);
-        Console.WriteLine(response);
-    }
-    */
-
     static async Task PatchRequest(HttpClient client)
     {
         CancellationToken cancellationToken = default;
@@ -86,4 +88,6 @@ public class HTTPClientCLI
         HttpResponseMessage response = await client.SendAsync(request, cancellationToken);
         Console.WriteLine(response);
     }
+
+    #endregion
 }
