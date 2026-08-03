@@ -20,6 +20,7 @@ namespace BYTES.NET.IO.FTP
 
         #endregion
 
+
         #region constructor
 
         /// <summary>

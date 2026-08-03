@@ -13,7 +13,7 @@ using Novell.Directory.Ldap;
 
 internal class LDAPCLI
 {
-    #region Main Program
+    #region main method
 
     /// <summary>
     /// CLI to showcase how to use Novell with our UserInfo class
@@ -57,7 +57,7 @@ internal class LDAPCLI
     #endregion
 
 
-    #region Methods
+    #region static methods
 
     /// <summary>
     /// Connect to service
@@ -184,7 +184,7 @@ internal class LDAPCLI
     #endregion
 
 
-    #region Helper methods
+    #region helper methods
 
     /// <summary>
     /// Print properties in a more readable format

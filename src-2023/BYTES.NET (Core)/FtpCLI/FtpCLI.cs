@@ -12,8 +12,11 @@ using FluentFTP;
 
 public class FtpCLI
 {
+    #region main method
+
     public static void Main()
     {
+        // Get user input
         Console.Write("Host: ");
         string host = Console.ReadLine()!;
 
@@ -32,12 +35,15 @@ public class FtpCLI
         FTP(host, port, user);
     }
 
-    #region methods
+    #endregion
+
+
+    #region static methods
 
     /// <summary>
     /// Builds and FTP connection and returns all files
     /// </summary>
-    public static void FTP(string host, string port, UserInfo user)
+    static void FTP(string host, string port, UserInfo user)
     {
         FtpClient client;
 
@@ -77,11 +83,6 @@ public class FtpCLI
 
         client.Disconnect();
     }
-
-    #endregion
-
-
-    #region helper methods
 
     /// <summary>
     /// hide password input in terminal

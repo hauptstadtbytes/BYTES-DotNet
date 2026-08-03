@@ -53,6 +53,7 @@ namespace BYTES.NET.IO.System
 
         #endregion
 
+
         #region public methods
 
         /// <summary>
@@ -165,6 +166,7 @@ namespace BYTES.NET.IO.System
             }
             return output;
         }
+
         #endregion
     }
 }

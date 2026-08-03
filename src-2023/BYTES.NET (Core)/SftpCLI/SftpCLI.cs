@@ -1,7 +1,4 @@
-﻿// Use standard .Net amespaces
-// Use Dependencies
-using BYTES.NET.IO;
-using Org.BouncyCastle.Bcpg.OpenPgp;
+﻿// Use standard .Net Namespaces
 using Renci.SshNet;
 using Renci.SshNet.Sftp;
 using System;
@@ -12,7 +9,9 @@ using System.Net.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static Org.BouncyCastle.Math.EC.ECCurve;
+
+// Use Dependencies
+using BYTES.NET.IO;
 
 public class SftpCLI
 {
@@ -91,7 +90,7 @@ public class SftpCLI
 
     /// <summary>
     /// EXAMPLE
-    /// Uploads a file to the SFTP server. Does not check for duplicates
+    /// Uploads a file to the SFTP server. Does not check for duplicates. Commented out on purpose
     /// </summary>
     /*
     private string? UploadDocument(string host, UserInfo user, string keyFilePath, string filepath, string filename, string rootdir)
