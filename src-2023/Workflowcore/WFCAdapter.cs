@@ -6,16 +6,16 @@ using WorkflowCore.Interface;
 
 namespace WorkflowcoreLib
 {
-    public static class WorkflowCoreAdapter
+    public static class WFCAdapter
     {
         // Nimmt den fertigen, sortierten Graphen (aus WorkflowGraph.GraphBuilder.Build)
         // und hängt für jeden Node einen DynamicNodeStep an den Builder.
         public static void Configure(
-            IWorkflowBuilder<FlowWorkflowData> builder,
+            IWorkflowBuilder<WFCData> builder,
             WorkflowGraph graph,
             ActionRegistry registry)
         {
-            IStepBuilder<FlowWorkflowData, DynamicNodeStep>? step = null;
+            IStepBuilder<WFCData, DynamicNodeStep>? step = null;
 
             foreach (ExecutionNode node in graph.SortedNodes)
             {

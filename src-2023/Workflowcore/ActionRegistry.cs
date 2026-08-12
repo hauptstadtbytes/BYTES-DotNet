@@ -4,7 +4,9 @@ using System.Reflection;
 
 namespace WorkflowcoreLib
 {
-    // Übersetzt (ActionClass, ActionMethod) in eine aufrufbare Methode.
+    /// <summary>
+    /// Translate the JSON methodnames to callable methods
+    /// </summary>
     public class ActionRegistry
     {
         private readonly Dictionary<string, (object Instance, MethodInfo Method)> actions

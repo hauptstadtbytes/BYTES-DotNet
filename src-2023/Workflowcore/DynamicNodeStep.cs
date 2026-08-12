@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text.Json;
+using WorkflowCore;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 using Graph;
@@ -20,7 +21,7 @@ namespace WorkflowcoreLib
 
         public override ExecutionResult Run(IStepExecutionContext context)
         {
-            FlowWorkflowData data = (FlowWorkflowData)context.Workflow.Data;
+            WFCData data = (WFCData)context.Workflow.Data;
 
             if (!EvaluateGate(data))
             {
@@ -56,7 +57,7 @@ namespace WorkflowcoreLib
             return ExecutionResult.Next();
         }
 
-        private bool EvaluateGate(FlowWorkflowData data)
+        private bool EvaluateGate(WFCData data)
         {
             if (IncomingEdges.Count == 0)
             {

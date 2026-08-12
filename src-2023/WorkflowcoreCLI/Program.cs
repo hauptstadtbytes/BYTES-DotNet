@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using WorkflowCoreAdapter;
+using WorkflowcoreLib;
 
 namespace WorkflowcoreCli
 {
@@ -16,9 +16,9 @@ namespace WorkflowcoreCli
                 Console.WriteLine($"Datei nicht gefunden: {filePath}");
                 return;
             }
-
+            Console.WriteLine($"Arbeitsverzeichnis: {Directory.GetCurrentDirectory()}");
             string jsonText = File.ReadAllText(filePath);
-            await WorkflowRunner.RunAsync(jsonText);
+            await WFCRunner.RunAsync(jsonText);
         }
     }
 }
