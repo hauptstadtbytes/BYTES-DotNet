@@ -1,0 +1,134 @@
+{
+  "id": "1781700000001",
+  "name": "Datei-Workflow",
+  "savedAt": "2026-07-17T09:00:00.000Z",
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "custom",
+      "position": { "x": 400, "y": 40 },
+      "data": { "label": "Start" },
+      "measured": { "width": 100, "height": 40 },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "n2",
+      "type": "custom",
+      "position": { "x": 400, "y": 140 },
+      "data": { 
+        "label": "Datei existiert?",
+        "action": "FileHelper::fileExists",
+        "arguments": { "filepath": "./data/seal.txt"}
+      },
+      "measured": { "width": 140, "height": 40 },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "n3",
+      "type": "custom",
+      "position": { "x": 400, "y": 140 },
+      "data": {
+        "label": "Datei erstellen",
+        "action": "FileHelper::createFile",
+        "arguments": { 
+          "filepath": "./data/seal.txt"
+        }
+      },
+      "measured": { "width": 140, "height": 40 },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "n4",
+      "type": "custom",
+      "position": { "x": 400, "y": 380 },
+      "data": { 
+        "label": "Datei beschreiben",
+        "action": "FileHelper::modifyFile",
+        "arguments": { 
+          "filepath": "./data/seal.txt",
+          "input": "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⣀⣀⣀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣴⡶⠿⠟⠛⠛⠛⠉⠉⠉⠛⠛⠛⠻⠿⠶⣶⣤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣶⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠛⠿⣶⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n⠀⠀⠀⠀⠀⠀⠀⣠⣾⠟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⢿⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n⠀⠀⠀⠀⠀⢀⣴⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n⠀⠀⠀⠀⢀⣾⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n⠀⠀⠀⠀⣾⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n⠀⠀⠀⣸⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⣦⣄⣀⣤⣶⡿⠟⠻⠿⣶⡄\n⠀⠀⠀⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠀⠀⠀⠀⠀⣼⡇\n⠀⢠⣾⠟⣠⣤⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⠏⠀\n⢠⣿⠃⢸⣿⣿⣿⡷⢀⡠⠀⠀⠀⠐⠤⡀⠀⠀⢀⣴⣿⣿⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⠟⠁⠀⠀\n⣾⡇⡴⠒⠙⢟⠛⢱⠋⠀⢀⣀⠀⠀⠀⠈⢆⠀⠘⣿⣿⣿⡿⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣷⣄⠀⠀\n⢿⣇⣆⠀⠀⡜⠹⣅⣀⣀⣸⢿⡁⠀⠀⠀⠘⣤⠀⠈⢩⠉⠀⠀⢱⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣷⣄\n⠈⢻⣮⡉⠉⠀⠀⠘⢍⣉⠓⠖⠛⠒⠲⠖⡞⠁⠀⠀⠈⢆⣀⣀⠜⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿\n⠀⠀⠙⠻⣶⣦⣤⣤⣤⣄⣉⣉⣀⣀⣀⣀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠈⢷⣄⣤⣤⣤⣶⡶⠶⠶⠶⠶⣶⣶⣶⣶⠾⠟⠁\n⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠉⠉⠉⠙⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠻⠿⠿⠿⠿⠿⠿⠿⣷⣤⣀⠀⠀⠀⠀⣀⣼⡿⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠻⠿⠿⠟⠛⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
+        }
+      },
+      "measured": { "width": 140, "height": 40 },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "n5",
+      "type": "custom",
+      "position": { "x": 400, "y": 480 },
+      "data": { 
+        "label": "Datei lesen",
+        "action": "FileHelper::readFile",
+        "arguments": { 
+          "filepath": "./data/seal.txt"
+        }
+      },
+      "measured": { "width": 120, "height": 40 },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "n6",
+      "type": "custom",
+      "position": { "x": 400, "y": 580 },
+      "data": { "label": "Ende" },
+      "measured": { "width": 100, "height": 40 },
+      "selected": false,
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "type": "conditional",
+      "data": { "condition": "" },
+      "markerEnd": { "type": "arrowclosed" },
+      "source": "n1",
+      "target": "n2",
+      "id": "xy-edge__n1-n2"
+    },
+    {
+      "type": "conditional",
+      "data": { "condition": "Nein" },
+      "markerEnd": { "type": "arrowclosed" },
+      "source": "n2",
+      "target": "n3",
+      "id": "xy-edge__n2-n3"
+    },
+    {
+      "type": "conditional",
+      "data": { "condition": "Ja" },
+      "markerEnd": { "type": "arrowclosed" },
+      "source": "n2",
+      "target": "n4",
+      "id": "xy-edge__n2-n4"
+    },
+    {
+      "type": "conditional",
+      "data": { "condition": "" },
+      "markerEnd": { "type": "arrowclosed" },
+      "source": "n3",
+      "target": "n4",
+      "id": "xy-edge__n3-n4"
+    },
+    {
+      "type": "conditional",
+      "data": { "condition": "" },
+      "markerEnd": { "type": "arrowclosed" },
+      "source": "n4",
+      "target": "n5",
+      "id": "xy-edge__n4-n5"
+    },
+    {
+      "type": "conditional",
+      "data": { "condition": "" },
+      "markerEnd": { "type": "arrowclosed" },
+      "source": "n5",
+      "target": "n6",
+      "id": "xy-edge__n5-n6"
+    }
+  ]
+}
