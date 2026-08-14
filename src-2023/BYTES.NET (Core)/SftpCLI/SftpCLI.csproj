@@ -47,7 +47,7 @@
 		<None Include="..\..\Resources\Icon.png" Pack="true" PackagePath="\meta\" />
 	</ItemGroup>
 	<ItemGroup>
-	  <PackageReference Include="SSH.NET" Version="2025.1.0" />
+	  <PackageReference Include="SSH.NET" Version="2026.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
