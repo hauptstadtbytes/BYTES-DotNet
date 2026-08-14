@@ -9,14 +9,8 @@ namespace WorkflowcoreCli
     {
         public static async Task Main(string[] args)
         {
-            string filePath = args.Length > 0 ? args[0] : "f2.json";
-
-            if (!File.Exists(filePath))
-            {
-                Console.WriteLine($"Datei nicht gefunden: {filePath}");
-                return;
-            }
-            string jsonText = File.ReadAllText(filePath);
+            // load the workflow json and create workflow
+            string jsonText = File.ReadAllText("f2.json");
             await WFCRunner.RunAsync(jsonText);
         }
     }

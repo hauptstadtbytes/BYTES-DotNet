@@ -5,7 +5,9 @@ using System.Text;
 namespace Graph
 {
     /// <summary>
-    /// Data about the workflow
+    /// Data about the workflow:
+    ///     results of the individual nodes
+    ///     which nodes have been skipped during execution
     /// </summary>
     public class WorkflowData
     {

@@ -12,14 +12,17 @@ namespace Graph
         /// </summary>
         public static WorkflowGraph Build(FlowGraphJson json)
         {
+            // fill the data structure for the graph
             Dictionary<string, FlowNode> nodes = json.Nodes.ToDictionary(n => n.Id);
             Dictionary<string, List<string>> adjacency = nodes.Keys.ToDictionary(id => id, _ => new List<string>());
             Dictionary<string, int> inDegree = nodes.Keys.ToDictionary(id => id, _ => 0);
             Dictionary<string, List<IncomingEdge>> incoming = new Dictionary<string, List<IncomingEdge>>();
 
+            // iterate over edges and fill rest of data structures
             foreach (FlowEdge e in json.Edges)
             {
-                string condition = e.Data?.Condition ?? "";     // set condition or ""
+                string condition = e.Data?.Condition ?? "";     // set condition
+
                 //get list for node or create new one
                 if (!incoming.TryGetValue(e.Target, out List<IncomingEdge>? list))
                 {
@@ -28,7 +31,7 @@ namespace Graph
                     
                 list.Add(new IncomingEdge(e.Source, condition));
 
-                // save connection
+                // save child node
                 adjacency[e.Source].Add(e.Target);
                 inDegree[e.Target]++;
             }
@@ -51,18 +54,18 @@ namespace Graph
                 throw new InvalidOperationException("Zyklus im Graph erkannt");
 
             // put sorted nodes into list
+            // also create the WFC ExecutionNode out of the node data  
             List<ExecutionNode> result = sortedIds.Select(id =>
-            {
-                FlowNode node = nodes[id];
-                List<IncomingEdge> edgesIn = incoming.TryGetValue(id, out List<IncomingEdge> e)
-                    ? e
-                    : new List<IncomingEdge>();
+                {
+                    FlowNode node = nodes[id];
+                    List<IncomingEdge> edgesIn = incoming.TryGetValue(id, out List<IncomingEdge> e)
+                        ? e
+                        : new List<IncomingEdge>();
 
-                // split the method call into class and method
-                string? actionMethod = node.Data.Action;
+                    string? actionMethod = node.Data.Action;
 
-                return new ExecutionNode(id, node.Data.Label, actionMethod, node.Data.Arguments, edgesIn);
-            }).ToList();
+                    return new ExecutionNode(id, node.Data.Label, actionMethod, node.Data.Arguments, edgesIn);
+                }).ToList();
 
             return new WorkflowGraph { SortedNodes = result };
         }

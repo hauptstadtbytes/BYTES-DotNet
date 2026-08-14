@@ -1,6 +1,7 @@
 ﻿namespace Graph
 {
-    // data types for the graph
+    // define datastructures for the graph
+
     public record FlowGraphJson(List<FlowNode> Nodes, List<FlowEdge> Edges);    // input json
     public record FlowNode(string Id, FlowNodeData Data);                       
     public record FlowNodeData(string Label, string? Action, Dictionary<string, object>? Arguments);
@@ -9,10 +10,9 @@
 
     public record IncomingEdge(string Source, string Condition);
 
-    // node for execution with all needed infos
-    public record ExecutionNode(
-        string Id,
-        string Label,
+    // define the node with all important info for execution
+    public record ExecutionNode(string Id, 
+        string Label, 
         string? ActionMethod,
         Dictionary<string, object>? Arguments,
         List<IncomingEdge> IncomingEdges);
