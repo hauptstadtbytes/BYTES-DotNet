@@ -17,34 +17,49 @@ namespace WorkflowcoreLib
                 PropertyNameCaseInsensitive = true
             };
 
-            FlowGraphJson flowGraphJson = JsonSerializer.Deserialize<FlowGraphJson>(jsonText, options)!;
-            WorkflowGraph executionGraph = GraphBuilder.Build(flowGraphJson);
+            FlowGraphJson flowGraphJson =
+                JsonSerializer.Deserialize<FlowGraphJson>(jsonText, options)!;
 
-            ActionRegistry registry = new ActionRegistry();
-            registry.Register(new FileHelper());
+            WorkflowGraph executionGraph =
+                GraphBuilder.Build(flowGraphJson);
+
+            FileHelper fileHelper = new FileHelper();
 
             ServiceCollection services = new ServiceCollection();
             services.AddLogging();
             services.AddWorkflow();
+
             ServiceProvider provider = services.BuildServiceProvider();
 
-            IWorkflowHost workflowHost = provider.GetRequiredService<IWorkflowHost>();
+            IWorkflowHost workflowHost =
+                provider.GetRequiredService<IWorkflowHost>();
+
             workflowHost.Start();
 
-            // Kein "Workflow<WFCData>" mehr - stattdessen Builder befüllen
-            // und daraus eine WorkflowDefinition erzeugen lassen.
-            IWorkflowBuilder<WFCData> stepBuilder = provider
+            IWorkflowBuilder<WorkflowData> stepBuilder = provider
                 .GetRequiredService<IWorkflowBuilder>()
-                .UseData<WFCData>();
+                .UseData<WorkflowData>();
 
-            WFCAdapter.Configure(stepBuilder, executionGraph, registry);
+            WFCAdapter.Configure(
+                stepBuilder,
+                executionGraph,
+                fileHelper);
 
             string workflowId = "json-flow";
             int version = 1;
-            WorkflowDefinition definition = stepBuilder.Build(workflowId, version);
 
-            provider.GetRequiredService<IWorkflowRegistry>().RegisterWorkflow(definition);
-            string runId = await workflowHost.StartWorkflow(workflowId, version, new WFCData());
+            WorkflowDefinition definition =
+                stepBuilder.Build(workflowId, version);
+
+            provider
+                .GetRequiredService<IWorkflowRegistry>()
+                .RegisterWorkflow(definition);
+
+            string runId =
+                await workflowHost.StartWorkflow(
+                    workflowId,
+                    version,
+                    new WorkflowData());
 
             Console.WriteLine($"\nWorkflow gestartet, Id: {runId}");
             Console.WriteLine("Drücke Enter zum Beenden...");

@@ -8,12 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenTelemetry.Api" Version="1.17.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Workflowcore\WorkflowcoreLib.csproj" />
-    <ProjectReference Include="..\WorkflowGraph\Graph.csproj" />
+    <ProjectReference Include="..\ElsaLib\ElsaLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

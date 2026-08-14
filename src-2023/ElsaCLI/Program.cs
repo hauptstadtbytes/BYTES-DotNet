@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using WorkflowcoreLib;
+using ElsaLib;
 
-namespace WorkflowcoreCli
+namespace ElsaCli
 {
     public static class Program
     {
@@ -16,8 +16,9 @@ namespace WorkflowcoreCli
                 Console.WriteLine($"Datei nicht gefunden: {filePath}");
                 return;
             }
+
             string jsonText = File.ReadAllText(filePath);
-            await WFCRunner.RunAsync(jsonText);
+            await ElsaRunner.RunAsync(jsonText);
         }
     }
 }

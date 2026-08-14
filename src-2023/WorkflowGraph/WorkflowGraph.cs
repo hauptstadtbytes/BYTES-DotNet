@@ -13,7 +13,6 @@
     public record ExecutionNode(
         string Id,
         string Label,
-        string? ActionClass,
         string? ActionMethod,
         Dictionary<string, object>? Arguments,
         List<IncomingEdge> IncomingEdges);

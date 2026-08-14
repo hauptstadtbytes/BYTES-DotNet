@@ -9,19 +9,22 @@ using Graph;
 
 namespace WorkflowcoreLib
 {
+    /// <summary>
+    /// Create WorkflowCore-native Steps for the workflow
+    /// </summary>
     public class DynamicNodeStep : StepBody
     {
         public string NodeId { get; set; } = "";
         public string Label { get; set; } = "";
-        public string? ActionClass { get; set; }
         public string? ActionMethod { get; set; }
         public Dictionary<string, object>? Arguments { get; set; }
-        public List<IncomingEdge> IncomingEdges { get; set; } = new List<IncomingEdge>();
-        public ActionRegistry Registry { get; set; } = null!;
+        public List<IncomingEdge> IncomingEdges { get; set; } = new();
+
+        public FileHelper FileHelper { get; set; } = null!;
 
         public override ExecutionResult Run(IStepExecutionContext context)
         {
-            WFCData data = (WFCData)context.Workflow.Data;
+            WorkflowData data = (WorkflowData)context.Workflow.Data;
 
             if (!EvaluateGate(data))
             {
@@ -30,34 +33,79 @@ namespace WorkflowcoreLib
                 return ExecutionResult.Next();
             }
 
-            if (ActionClass is null || ActionMethod is null)
+            if (string.IsNullOrEmpty(ActionMethod))
             {
                 Console.WriteLine($"[BUILD] {NodeId} ({Label}) - Durchlauf-Node");
                 return ExecutionResult.Next();
             }
 
-            (object instance, MethodInfo method) = Registry.Resolve(ActionClass, ActionMethod);
-            ParameterInfo[] parameters = method.GetParameters();
-            object?[] args = new object?[parameters.Length];
+            object? result = ExecuteAction();
 
-            for (int i = 0; i < parameters.Length; i++)
-            {
-                string paramName = parameters[i].Name!;
-                if (Arguments != null && Arguments.TryGetValue(paramName, out object? raw))
-                {
-                    args[i] = ConvertArgument(raw, parameters[i].ParameterType);
-                }
-            }
-
-            Console.WriteLine($"[RUN] {NodeId} ({Label}) -> {ActionClass}::{ActionMethod}({string.Join(", ", args)})");
-            object? result = method.Invoke(instance, args);
             data.NodeResults[NodeId] = result;
+
+            Console.WriteLine(
+                $"[RUN] {NodeId} ({Label}) -> {ActionMethod}");
+
             Console.WriteLine($"      Result: {result}");
 
             return ExecutionResult.Next();
         }
 
-        private bool EvaluateGate(WFCData data)
+        private object? ExecuteAction()
+        {
+            MethodInfo? method = typeof(FileHelper).GetMethod(
+                ActionMethod!,
+                BindingFlags.Public | BindingFlags.Instance);
+
+            if (method == null)
+            {
+                throw new InvalidOperationException(
+                    $"FileHelper enthält keine Methode '{ActionMethod}'.");
+            }
+
+            ParameterInfo[] parameters = method.GetParameters();
+            object?[] args = new object?[parameters.Length];
+
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                string parameterName = parameters[i].Name!;
+
+                if (Arguments == null ||
+                    !Arguments.TryGetValue(parameterName, out object? raw))
+                {
+                    throw new InvalidOperationException(
+                        $"Argument '{parameterName}' für '{ActionMethod}' fehlt.");
+                }
+
+                args[i] = ConvertArgument(
+                    raw,
+                    parameters[i].ParameterType);
+            }
+
+            return method.Invoke(FileHelper, args);
+        }
+
+        private static object? ConvertArgument(object? raw, Type targetType)
+        {
+            if (raw is JsonElement element)
+            {
+                return element.Deserialize(targetType);
+            }
+
+            if (raw == null)
+            {
+                return null;
+            }
+
+            if (targetType.IsInstanceOfType(raw))
+            {
+                return raw;
+            }
+
+            return Convert.ChangeType(raw, targetType);
+        }
+
+        private bool EvaluateGate(WorkflowData data)
         {
             if (IncomingEdges.Count == 0)
             {
@@ -66,7 +114,8 @@ namespace WorkflowcoreLib
 
             foreach (IncomingEdge edge in IncomingEdges)
             {
-                if (data.Skipped.TryGetValue(edge.Source, out bool wasSkipped) && wasSkipped)
+                if (data.Skipped.TryGetValue(edge.Source, out bool wasSkipped)
+                    && wasSkipped)
                 {
                     continue;
                 }
@@ -79,7 +128,11 @@ namespace WorkflowcoreLib
                 if (data.NodeResults.TryGetValue(edge.Source, out object? value))
                 {
                     bool boolValue = Convert.ToBoolean(value);
-                    bool expected = edge.Condition == "Ja" || edge.Condition == "Yes";
+
+                    bool expected =
+                        edge.Condition == "Ja" ||
+                        edge.Condition == "Yes";
+
                     if (boolValue == expected)
                     {
                         return true;
@@ -89,19 +142,5 @@ namespace WorkflowcoreLib
 
             return false;
         }
-
-        private static object? ConvertArgument(object? raw, Type targetType)
-        {
-            if (raw is JsonElement el)
-            {
-                if (targetType == typeof(string)) return el.GetString();
-                if (targetType == typeof(bool)) return el.GetBoolean();
-                if (targetType == typeof(int)) return el.GetInt32();
-                if (targetType == typeof(double)) return el.GetDouble();
-                return el.GetRawText();
-            }
-            return raw;
-        }
     }
-   
 }

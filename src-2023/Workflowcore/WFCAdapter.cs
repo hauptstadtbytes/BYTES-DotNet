@@ -8,14 +8,15 @@ namespace WorkflowcoreLib
 {
     public static class WFCAdapter
     {
-        // Nimmt den fertigen, sortierten Graphen (aus WorkflowGraph.GraphBuilder.Build)
-        // und hängt für jeden Node einen DynamicNodeStep an den Builder.
+        /// <summary>
+        /// Recieve graph, create DynamicNodeStep for each node
+        /// </summary>
         public static void Configure(
-            IWorkflowBuilder<WFCData> builder,
+            IWorkflowBuilder<WorkflowData> builder,
             WorkflowGraph graph,
-            ActionRegistry registry)
+            FileHelper fileHelper)
         {
-            IStepBuilder<WFCData, DynamicNodeStep>? step = null;
+            IStepBuilder<WorkflowData, DynamicNodeStep>? step = null;
 
             foreach (ExecutionNode node in graph.SortedNodes)
             {
@@ -25,11 +26,10 @@ namespace WorkflowcoreLib
 
                 step.Input(s => s.NodeId, _ => node.Id)
                     .Input(s => s.Label, _ => node.Label)
-                    .Input(s => s.ActionClass, _ => node.ActionClass)
                     .Input(s => s.ActionMethod, _ => node.ActionMethod)
                     .Input(s => s.Arguments, _ => node.Arguments)
                     .Input(s => s.IncomingEdges, _ => node.IncomingEdges)
-                    .Input(s => s.Registry, _ => registry);
+                    .Input(s => s.FileHelper, _ => fileHelper);
             }
         }
     }

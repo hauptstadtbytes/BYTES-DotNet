@@ -59,17 +59,9 @@ namespace Graph
                     : new List<IncomingEdge>();
 
                 // split the method call into class and method
-                string? actionClass = null;
-                string? actionMethod = null;
+                string? actionMethod = node.Data.Action;
 
-                if (!string.IsNullOrEmpty(node.Data.Action))
-                {
-                    string[] parts = node.Data.Action.Split("::");
-                    actionClass = parts[0];
-                    actionMethod = parts[1];
-                }
-
-                return new ExecutionNode(id, node.Data.Label, actionClass, actionMethod, node.Data.Arguments, edgesIn);
+                return new ExecutionNode(id, node.Data.Label, actionMethod, node.Data.Arguments, edgesIn);
             }).ToList();
 
             return new WorkflowGraph { SortedNodes = result };

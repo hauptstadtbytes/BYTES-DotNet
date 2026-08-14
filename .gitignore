@@ -113,3 +113,7 @@ src-2023/WorkflowGraph/bin/Debug/
 src-2023/Workflowcore/obj/
 src-2023/Workflowcore/bin/Debug/
 >>>>>>> Stashed changes
+src-2023/ElsaLib/obj/
+src-2023/ElsaCLI/obj/
+src-2023/ElsaCLI/bin/
+src-2023/ElsaLib/bin/

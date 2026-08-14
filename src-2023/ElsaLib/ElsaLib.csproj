@@ -1,25 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenTelemetry.Api" Version="1.17.0" />
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
+    <PackageReference Include="Elsa" Version="3.8.0-preview1" />
+    <PackageReference Include="Elsa.Workflows.Core" Version="3.8.0-preview1" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="11.0.0-preview.7.26381.103" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Workflowcore\WorkflowcoreLib.csproj" />
     <ProjectReference Include="..\WorkflowGraph\Graph.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="f2.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
