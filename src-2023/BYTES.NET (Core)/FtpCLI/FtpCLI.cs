@@ -21,7 +21,7 @@ public class FtpCLI
         string host = Console.ReadLine()!;
 
         Console.Write("Port (optional): ");
-        string port = Console.ReadLine();
+        string? port = Console.ReadLine();
 
         Console.Write("Username: ");
         string username = Console.ReadLine()!;
@@ -43,7 +43,7 @@ public class FtpCLI
     /// <summary>
     /// Builds and FTP connection and returns all files
     /// </summary>
-    static void FTP(string host, string port, UserInfo user)
+    static void FTP(string host, string? port, UserInfo user)
     {
         FtpClient client;
 
@@ -61,7 +61,7 @@ public class FtpCLI
         Console.WriteLine("Connected.");
 
         Console.WriteLine("Input directory to search (none = root): ");
-        string dir = Console.ReadLine();
+        string? dir = Console.ReadLine();
 
         FtpListItem[] items;
         if (dir == null)
