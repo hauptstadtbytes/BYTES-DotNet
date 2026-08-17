@@ -27,7 +27,6 @@ internal class LDAPCLI
         string username = Console.ReadLine()!;
         string password = GetPasswordInput();
 
-
         using var conn = await ConnectAsync(host);
 
         string? baseDn = await GetBaseDnAsync(conn);
@@ -38,7 +37,9 @@ internal class LDAPCLI
 
         bool authenticated = await AuthenticateAsync(conn, host, user);
         if (!authenticated)
+        {
             return;
+        }
 
         // turn Referral Following on to prevent errors during search of AD
         LdapSearchConstraints cons = conn.SearchConstraints;
@@ -62,8 +63,6 @@ internal class LDAPCLI
     /// <summary>
     /// Connect to service
     /// </summary>
-    /// <param name="host"></param>
-    /// <returns></returns>
     static async Task<LdapConnection> ConnectAsync(string host)
     {
         var conn = new LdapConnection();
@@ -75,19 +74,19 @@ internal class LDAPCLI
     /// <summary>
     /// authenticate the user with username and password
     /// </summary>
-    /// <param name="conn"></param>
-    /// <param name="host"></param>
-    /// <param name="user"></param>
-    /// <returns></returns>
     static async Task<bool> AuthenticateAsync(LdapConnection conn, string host, UserInfo user)
     {
         try
         {
             if (host == "localhost")
+            {
                 await conn.BindAsync(user.Name, user.Password);
+            }
             else
+            {
                 await conn.BindAsync(user.FullName, user.Password);
-            
+            }
+
             Console.WriteLine($"Login successful for {user.Name} for domain {user.Domain}\n");
 
             return true;
@@ -102,31 +101,33 @@ internal class LDAPCLI
     /// <summary>
     /// Get the name of the domain
     /// </summary>
-    /// <param name="conn"></param>
-    /// <returns></returns>
     static async Task<string?> GetBaseDnAsync(LdapConnection conn)
     {
         LdapEntry root = await conn.ReadAsync("", new[]{"defaultNamingContext", "namingContexts", "rootDomainNamingContext"});
 
-        string domain = null;
+        string? domain = null;
 
         if (root.GetAttributeSet().ContainsKey("defaultNamingContext"))
+        {
             domain = root.Get("defaultNamingContext").StringValue;
+        }
 
         if (root.GetAttributeSet().ContainsKey("rootDomainNamingContext"))
+        {
             domain = root.Get("rootDomainNamingContext").StringValue;
+        }
 
         if (root.GetAttributeSet().ContainsKey("namingContexts"))
+        {
             domain = root.Get("namingContexts").StringValue;
-
+        }
+            
         return domain;
     }
 
     /// <summary>
     /// format the domain to be easier readable
     /// </summary>
-    /// <param name="domain"></param>
-    /// <returns></returns>
     static string formatDomain(string domain)
     {
         string formattedDomain = string.Join(".",
@@ -140,13 +141,12 @@ internal class LDAPCLI
     /// <summary>
     /// Search the service for all users
     /// </summary>
-    /// <param name="conn"></param>
-    /// <param name="host"></param>
-    /// <param name="baseDn"></param>
     static async void SearchWithFilter(LdapConnection conn, string host, string? baseDn)
     {
         if (string.IsNullOrWhiteSpace(baseDn))
+        {
             return;
+        }
 
         ILdapSearchResults results = null;
 
@@ -165,12 +165,12 @@ internal class LDAPCLI
     /// <summary>
     /// Return all properties
     /// </summary>
-    /// <param name="conn"></param>
-    /// <param name="baseDn"></param>
     static async void GetAllProperties(LdapConnection conn, string? baseDn)
     {
         if (string.IsNullOrWhiteSpace(baseDn))
+        {
             return;
+        }
 
         ILdapSearchResults results = await conn.SearchAsync(baseDn, LdapConnection.ScopeBase, "(objectClass=*)", null, false);
 
@@ -189,7 +189,6 @@ internal class LDAPCLI
     /// <summary>
     /// Print properties in a more readable format
     /// </summary>
-    /// <param name="e"></param>
     static void PrintProperties(LdapEntry e)
     {
         foreach (LdapAttribute a in e.GetAttributeSet())
@@ -204,7 +203,6 @@ internal class LDAPCLI
     /// <summary>
     /// hide password input in terminal
     /// </summary>
-    /// <returns></returns>
     static string GetPasswordInput()
     {
         StringBuilder input = new StringBuilder();

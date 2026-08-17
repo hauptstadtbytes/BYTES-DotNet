@@ -40,8 +40,10 @@ namespace BYTES.NET.IO.System
         public MemoryInfo TotalSpace()
         {
             if (!IsReady)
+            {
                 return new MemoryInfo(0);
-
+            }
+                
             return _totalSpace;
         }
 
@@ -51,8 +53,10 @@ namespace BYTES.NET.IO.System
         public MemoryInfo FreeSpace()
         {
             if (!IsReady)
+            {
                 return new MemoryInfo(0);
-
+            }
+                
             return _freeSpace;
         }
         #endregion
@@ -88,11 +92,15 @@ namespace BYTES.NET.IO.System
         private (MemoryInfo free, MemoryInfo total) GetDriveSpace(string folderName)
         {
             if (string.IsNullOrWhiteSpace(folderName))
+            {
                 return (new MemoryInfo(0), new MemoryInfo(0));
-
+            }
+               
             if (!folderName.EndsWith("\\"))
+            {
                 folderName += "\\";
-
+            }
+                
             ulong freeBytes = (ulong) _drive.AvailableFreeSpace;
             ulong totalBytes = (ulong) _drive.TotalSize;
 
