@@ -51,6 +51,33 @@ namespace BYTES.NET.IO.System
             }
         }
 
+        /// <summary>
+        /// Returns total physical RAM of the system
+        /// </summary>
+        public MemoryInfo Memory()
+        {
+            ulong totalRAM = 0;
+
+            #if NETFULL
+                            totalRAM = new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory;
+
+            #elif NET6_0_WINDOWS || NET7_0_WINDOWS || NET8_0_WINDOWS || NET10_0_WINDOWS
+                            ObjectQuery query = new ObjectQuery("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem");
+                            ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
+
+                            foreach (ManagementObject mo in searcher.Get())
+                            {
+                                totalRAM = (ulong)mo["TotalPhysicalMemory"];
+                            }
+
+            #else
+                        //Fallback using total amount of available bytes used by the garbage collector
+                        totalRAM = (ulong)GC.GetGCMemoryInfo().TotalAvailableMemoryBytes;
+            #endif
+
+            return new MemoryInfo(totalRAM);
+        }
+
         #endregion
 
 
@@ -82,33 +109,6 @@ namespace BYTES.NET.IO.System
             {
                 return Array.Empty<DriveInfo>();
             }
-        }
-
-        /// <summary>
-        /// Returns total physical RAM of the system
-        /// </summary>
-        public MemoryInfo Memory()
-        {
-            ulong totalRAM = 0;
-
-            #if NETFULL
-                totalRAM = new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory;
-
-            #elif NET6_0_WINDOWS || NET7_0_WINDOWS || NET8_0_WINDOWS || NET10_0_WINDOWS
-                ObjectQuery query = new ObjectQuery("SELECT TotalPhysicalMemory FROM Win32_ComputerSystem");
-                ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
-
-                foreach (ManagementObject mo in searcher.Get())
-                {
-                    totalRAM = (ulong)mo["TotalPhysicalMemory"];
-                }
-
-            #else
-                //Fallback using total amount of available bytes used by the garbage collector
-                totalRAM = (ulong) GC.GetGCMemoryInfo().TotalAvailableMemoryBytes;
-            #endif
-
-            return new MemoryInfo(totalRAM);
         }
 
         #endregion

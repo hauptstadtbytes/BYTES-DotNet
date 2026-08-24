@@ -3,7 +3,6 @@ using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -131,7 +130,7 @@ internal class LDAPCLI
     static string formatDomain(string domain)
     {
         string formattedDomain = string.Join(".",
-            domain.Split(",")
+            domain.Split(',')
             .Where(x => x.StartsWith("DC=", StringComparison.OrdinalIgnoreCase))
             .Select(x => x.Substring(3)));
 
@@ -156,7 +155,7 @@ internal class LDAPCLI
         {
             if (entry.GetAttributeSet().ContainsKey("mail"))
             {
-                Console.WriteLine(entry.Dn.Split(",")[0].Split("=")[1]);
+                Console.WriteLine(entry.Dn.Split(',')[0].Split('=')[1]);
                 Console.WriteLine("mail: " + entry.GetAttributeSet().GetAttribute("mail")?.StringValue + "\n");
             }
         }
