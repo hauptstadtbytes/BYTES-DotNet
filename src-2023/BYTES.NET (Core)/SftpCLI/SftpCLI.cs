@@ -1,5 +1,4 @@
-﻿// Use standard .Net Namespaces
-using Renci.SshNet;
+﻿using Renci.SshNet;
 using Renci.SshNet.Sftp;
 using System;
 using System.Buffers.Text;
@@ -10,7 +9,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-// Use Dependencies
 using BYTES.NET.IO;
 
 /// <summary>
@@ -20,6 +18,11 @@ using BYTES.NET.IO;
 /// </summary>
 public class SftpCLI
 {
+    #region main method
+
+    /// <summary>
+    /// Recieve login information, connect to SFTP server
+    /// </summary>
     public static void Main()
     {
         Console.Write("Host: ");
@@ -41,11 +44,13 @@ public class SftpCLI
         SFTP(host, user, keyFilePath);
     }
 
+    #endregion
+
 
     #region private methods
 
     /// <summary>
-    /// builds and SFTP connection and returns all files
+    /// Builds and SFTP connection and returns all files
     /// </summary>
     private static void SFTP(string host, UserInfo user, string? keyFilePath = null)
     {

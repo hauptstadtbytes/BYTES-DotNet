@@ -25,6 +25,10 @@ public class HTTPClientCLI
 {
     #region main method
 
+    /// <summary>
+    /// Connect to Server and send requests
+    /// </summary>
+    /// <returns></returns>
     public static async Task Main()
     {
         HttpClient client = CreateHttpClient();
@@ -47,6 +51,7 @@ public class HTTPClientCLI
 
     #endregion
 
+
     #region constructor 
 
     static HttpClient CreateHttpClient()
@@ -56,14 +61,25 @@ public class HTTPClientCLI
 
     #endregion
 
-    #region request methods
 
+    #region static methods
+
+    /// <summary>
+    /// Send a GET request to the website
+    /// </summary>
+    /// <param name="client"></param>
+    /// <returns></returns>
     static async Task GetRequest(HttpClient client)
     {
         HttpResponseMessage response = await client.GetAsync("https://hub-mockup.bytescloud.de/v1/users");
         Console.WriteLine(response);
     }
 
+    /// <summary>
+    /// Create a simple json and send a POST request to the website
+    /// </summary>
+    /// <param name="client"></param>
+    /// <returns></returns>
     static async Task PostRequest(HttpClient client)
     {
         string json = JsonSerializer.Serialize(new { token = "ABC123" });
@@ -73,12 +89,22 @@ public class HTTPClientCLI
         Console.WriteLine(response);
     }
 
+    /// <summary>
+    /// Send a DELETE request to the website
+    /// </summary>
+    /// <param name="client"></param>
+    /// <returns></returns>
     static async Task DeleteRequest(HttpClient client)
     {
         HttpResponseMessage response = await client.DeleteAsync("https://hub-mockup.bytescloud.de/v1/sessions");
         Console.WriteLine(response);
     }
 
+    /// <summary>
+    /// Send a simple PATCH request to the website
+    /// </summary>
+    /// <param name="client"></param>
+    /// <returns></returns>
     static async Task PatchRequest(HttpClient client)
     {
         CancellationToken cancellationToken = default;

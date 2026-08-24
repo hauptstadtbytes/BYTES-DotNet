@@ -20,7 +20,8 @@ internal class LDAPCLI
     #region main method
 
     /// <summary>
-    /// CLI to showcase how to use Novell with our UserInfo class
+    /// CLI to showcase how to use Novell
+    /// Uses BYTES.NET UserInfo class to save user information
     /// </summary>
     static async Task Main()
     {
@@ -45,7 +46,6 @@ internal class LDAPCLI
             return;
         }
 
-        // turn Referral Following on to prevent errors during search of AD
         LdapSearchConstraints cons = conn.SearchConstraints;
         cons.ReferralFollowing = true;
         conn.Constraints = cons;
@@ -76,7 +76,7 @@ internal class LDAPCLI
     }
 
     /// <summary>
-    /// authenticate the user with username and password
+    /// Authenticate the user with username and password
     /// </summary>
     static async Task<bool> AuthenticateAsync(LdapConnection conn, string host, UserInfo user)
     {
@@ -130,7 +130,8 @@ internal class LDAPCLI
     }
 
     /// <summary>
-    /// format the domain to be easier readable
+    /// Convenience function
+    /// Format the domain to be more readable
     /// </summary>
     static string formatDomain(string domain)
     {
@@ -205,7 +206,7 @@ internal class LDAPCLI
     }
 
     /// <summary>
-    /// hide password input in terminal
+    /// Hide password input in terminal
     /// </summary>
     static string GetPasswordInput()
     {

@@ -20,7 +20,6 @@ namespace BYTES.NET.Tests.IO
             user = new UserInfo("test", "admin", "test.domain");
         }
 
-        //Test that the constructor correctly build the instance
         [TestMethod]
         public void TestConstructor()
         {
@@ -30,7 +29,6 @@ namespace BYTES.NET.Tests.IO
             Assert.AreEqual(user.FullName, user.Name + "@" + user.Domain);
         }
 
-        //Test that the conversion to NetworkCredential works
         [TestMethod]
         public void TestToNetworkCredentials()
         {

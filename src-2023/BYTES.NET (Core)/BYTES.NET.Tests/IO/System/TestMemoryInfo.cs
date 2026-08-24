@@ -24,8 +24,6 @@ namespace BYTES.NET.Tests.IO.System
             memory = new MemoryInfo((ulong)1024);
         }
 
-
-        //Test if the memory is converted correctly
         [TestMethod]
         public void TestMemoryCalculation()
         {

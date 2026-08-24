@@ -1,12 +1,10 @@
-﻿// Use standard .Net amespaces
-using System;
+﻿using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// Use Dependencies
 using BYTES.NET.IO;
 using FluentFTP;
 
@@ -18,9 +16,11 @@ public class FtpCLI
 {
     #region main method
 
+    /// <summary>
+    /// Get user input, call function to connect to FTP server
+    /// </summary>
     public static void Main()
     {
-        // Get user input
         Console.Write("Host: ");
         string host = Console.ReadLine()!;
 
@@ -89,7 +89,7 @@ public class FtpCLI
     }
 
     /// <summary>
-    /// hide password input in terminal
+    /// Hide password input in terminal
     /// </summary>
     static string GetPasswordInput()
     {

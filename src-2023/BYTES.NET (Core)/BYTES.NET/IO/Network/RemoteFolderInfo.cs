@@ -10,6 +10,9 @@ using System.Windows.Navigation;
 
 namespace BYTES.NET.IO.Network
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class RemoteFolderInfo
     {
         #region private properties
@@ -29,7 +32,11 @@ namespace BYTES.NET.IO.Network
 
         #region public methods
 
-        //why set user = null? What do if user not given?
+        /// <summary>
+        /// contrucor method
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="user"></param>
         public RemoteFolderInfo(string path, UserInfo user = null)
         {
             if (!path.EndsWith(@"\"))
@@ -45,6 +52,12 @@ namespace BYTES.NET.IO.Network
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public FileInfo GetFileInfo(string path)
         {
             path = _path + ParsePath(path);
@@ -69,6 +82,12 @@ namespace BYTES.NET.IO.Network
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public DirectoryInfo GetFolderInfo(string path = null)
         {
             if(path != null)
@@ -100,6 +119,11 @@ namespace BYTES.NET.IO.Network
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public DirectoryInfo[] GetFolders(string path = null)
         {
             if (path != null)
@@ -110,6 +134,12 @@ namespace BYTES.NET.IO.Network
             return this.GetFolderInfo(path).GetDirectories();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="searchPattern"></param>
+        /// <returns></returns>
         public FileInfo[] GetFiles(string path = null, string searchPattern = null)
         {
             if (path != null)
@@ -127,6 +157,10 @@ namespace BYTES.NET.IO.Network
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public bool IsReadable()
         {
             try
@@ -150,6 +184,11 @@ namespace BYTES.NET.IO.Network
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public bool FileExists(string path)
         {
             path = _path + ParsePath(path);
@@ -166,6 +205,11 @@ namespace BYTES.NET.IO.Network
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public bool FolderExists(string path = null)
         {
             if (path != null)
@@ -190,6 +234,12 @@ namespace BYTES.NET.IO.Network
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public Byte[] ReadBytes(string path)
         {
             path = _path + ParsePath(path);
@@ -214,6 +264,12 @@ namespace BYTES.NET.IO.Network
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        /// <exception cref="Exception"></exception>
         public void CopyFileTo(string source, string destination)
         {
 
@@ -240,6 +296,11 @@ namespace BYTES.NET.IO.Network
 
         #region private methods
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         private string ParsePath(string path)
         {
             if (path.StartsWith(_path))

@@ -28,22 +28,18 @@ namespace BYTES.NET.Tests.IO.System
         [TestMethod]
         public void TestProperties()
         {
-            //Test Name
             Console.WriteLine($"Adapter Name: {adapter.Name}");
 
             Assert.IsNotNull(adapter.Name);
 
-            //Test Description
             Console.WriteLine($"Adapter Description: {adapter.Description}");
 
             Assert.IsNotNull(adapter.Description);
 
-            //Test ID
             Console.WriteLine($"Adapter ID: {adapter.Id}");
 
             Assert.IsNotNull(adapter.Id);
 
-            //Test address
             Console.WriteLine($"Adapter Address: {adapter.Address}");
 
             Assert.IsNotNull(adapter.Address);

@@ -26,22 +26,18 @@ namespace BYTES.NET.Tests.IO.System
         [TestMethod]
         public void TestProperties()
         {
-            // Test Name
             string machineName = Environment.MachineName;
             Debug.WriteLine($"System Name: {info.Name}");
             Assert.AreEqual(machineName, info.Name);
 
-            //Test Memory (RAM)
             MemoryInfo memory = info.Memory();
             Debug.WriteLine($"Memory (in GB): {memory.InGB}");
             Assert.IsTrue(memory.InBytes > 0, "Memory should be greater than 0");
 
-            //Test Processors
             int processorCount = Environment.ProcessorCount;
             Debug.WriteLine($"Processors: {info.Processors}");
             Assert.AreEqual(processorCount, info.Processors);
 
-            //Test Adapters
             var adapters = info.Adapters;
             Debug.WriteLine($"Adapter Types Count: {adapters.Count}");
             Assert.IsTrue(adapters.Count > 0);
@@ -52,13 +48,11 @@ namespace BYTES.NET.Tests.IO.System
                 Assert.IsNotNull(kvp.Value);
             }
 
-            //Test User and domain
             var user = info.User;
             Debug.WriteLine($"Current User: {user.Name}, Domain: {user.Domain}");
             Assert.AreEqual(Environment.UserName, user.Name);
             Assert.AreEqual(Environment.UserDomainName, user.Domain);
 
-            //Test Drives
             var drives = info.Drives;
             Debug.WriteLine($"Drive Types Count: {drives.Count}");
             Assert.IsTrue(drives.Count > 0);
