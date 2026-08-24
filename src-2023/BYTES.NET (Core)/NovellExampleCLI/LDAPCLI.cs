@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 using BYTES.NET.IO;
 using Novell.Directory.Ldap;
 
+
+/// <summary>
+/// Connect user to AD, return all users with email and name 
+/// Uses Novell
+/// </summary>
 internal class LDAPCLI
 {
     #region main method

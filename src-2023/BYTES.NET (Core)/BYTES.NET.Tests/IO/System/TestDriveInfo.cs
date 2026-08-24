@@ -20,7 +20,7 @@ namespace BYTES.NET.Tests.IO.System
         [TestInitialize]
         public void TestSetup()
         {
-            //test drive C
+            //Test drive C
             drive = new NET.IO.System.DriveInfo("C");
         }
 

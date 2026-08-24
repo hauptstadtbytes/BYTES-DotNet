@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 using BYTES.NET.IO;
 using FluentFTP;
 
+/// <summary>
+/// Connect to a FTP server with username and password, return the files in a given directory
+/// Uses FluentFTP
+/// </summary>
 public class FtpCLI
 {
     #region main method

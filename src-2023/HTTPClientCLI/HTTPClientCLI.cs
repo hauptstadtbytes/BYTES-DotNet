@@ -17,6 +17,10 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Example of how to use the HTTPClient class
+/// Connect to https://hub-mockup.bytescloud.de/v1/users and send GET, POST, DELETE, PATCH requests
+/// </summary>
 public class HTTPClientCLI
 {
     #region main method

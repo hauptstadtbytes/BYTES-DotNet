@@ -13,6 +13,11 @@ using System.Threading.Tasks;
 // Use Dependencies
 using BYTES.NET.IO;
 
+/// <summary>
+/// Connect to SFTP server with username and password, or username and keyfile
+/// Return all fileinformation for specific directory
+/// Uses Ssh.Net
+/// </summary>
 public class SftpCLI
 {
     public static void Main()
@@ -91,6 +96,7 @@ public class SftpCLI
     /// <summary>
     /// EXAMPLE
     /// Uploads a file to the SFTP server. Does not check for duplicates. Commented out on purpose
+    /// Since in testing, our server didnt accept our upload
     /// </summary>
     /*
     private string? UploadDocument(string host, UserInfo user, string keyFilePath, string filepath, string filename, string rootdir)

@@ -25,6 +25,7 @@ namespace BYTES.NET.Tests.IO.System
         }
 
 
+        //Test if the memory is converted correctly
         [TestMethod]
         public void TestMemoryCalculation()
         {
