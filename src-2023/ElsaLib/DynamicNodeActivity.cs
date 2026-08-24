@@ -51,6 +51,8 @@ namespace ElsaLib
                 if (Data.NodeResults.TryGetValue(edge.Source, out object? value))
                 {
                     bool boolValue = Convert.ToBoolean(value);
+
+                    // node should be expected to run when the condition is YES
                     bool expected = edge.Condition == "Ja" || edge.Condition == "Yes";
                     if (boolValue == expected)
                     {
@@ -71,9 +73,10 @@ namespace ElsaLib
             // if node has no method, run-through
             if (ActionMethod is null)
             {
-                Console.WriteLine($"[BUILD] {NodeId} ({Label}) - Durchlauf-Node");
+                Console.WriteLine($"[BUILD] {NodeId} ({Label}) - Runthrough");
                 return;
             }
+            // run node
 
             // get filepath argument from node
             string filepath = GetString("filepath");
@@ -86,7 +89,7 @@ namespace ElsaLib
                 "createFile" => Execute(() => fileHelper.createFile(filepath)),
                 "modifyFile" => Execute(() => fileHelper.modifyFile(filepath, GetString("input"))),
                 "readFile" => fileHelper.readFile(filepath),
-                _ => throw new InvalidOperationException($"Unbekannte Action: {ActionMethod}")
+                _ => throw new InvalidOperationException($"Unknown Action: {ActionMethod}")
             };
 
             Data.NodeResults[NodeId] = result;

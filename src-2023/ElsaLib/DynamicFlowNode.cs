@@ -8,10 +8,11 @@ using Graph;
 
 namespace ElsaLib
 {
-    // [FlowNode] deklariert, welche Outcomes diese Activity innerhalb
-    // eines Flowcharts überhaupt haben darf - "Done" für unbedingte Kanten,
-    // "Ja"/"Nein" für unsere bool-Ergebnis-Verzweigungen.
-    [FlowNode("Ja", "Nein", "Done")]
+    /// <summary>
+    /// Node for Activity (like Step in Workflowcore)
+    /// Used for The Flowchart
+    /// Dont need to parse node/ edges from json
+    /// </summary>
     public class DynamicFlowNode : Activity
     {
         public required string NodeId { get; init; }
@@ -21,43 +22,41 @@ namespace ElsaLib
 
         private readonly FileHelper fileHelper = new FileHelper();
 
-
-        /// <summary>
-        /// 
-        /// </summary>
+        // Build step + execute
+        // dont need to parse the full json
         protected override async ValueTask ExecuteAsync(ActivityExecutionContext context)
         {
+            // runthrough node
             if (ActionMethod is null)
             {
-                Console.WriteLine($"[BUILD] {NodeId} ({Label}) - Durchlauf-Node");
+                Console.WriteLine($"[BUILD] {NodeId} ({Label})");
                 await context.CompleteActivityWithOutcomesAsync("Done");
                 return;
             }
 
+            // get argument if defined -> helper method
             string filepath = GetString("filepath");
             Console.WriteLine($"[RUN] {NodeId} ({Label}) -> {ActionMethod}");
 
+            // run the methods for the node
             object? result = ActionMethod switch
             {
                 "fileExists" => fileHelper.fileExists(filepath),
                 "createFile" => Void(() => fileHelper.createFile(filepath)),
                 "modifyFile" => Void(() => fileHelper.modifyFile(filepath, GetString("input"))),
-                "readFile" => fileHelper.readFile(filepath),
-                _ => throw new InvalidOperationException($"Unbekannte Action: {ActionMethod}")
+                "readFile" => fileHelper.readFile(filepath)
             };
 
-            Console.WriteLine($"      Result: {result}");
+            Console.WriteLine($"Result: {result}");
 
-            // Bool-Ergebnis -> "Ja"/"Nein"-Outcome (steuert die Verzweigung),
-            // alles andere -> "Done" (unbedingter Weiterlauf).
+            // outcome/ result of node -> for now (this example) only bool or done for runthrough nodes
             string outcome = result is bool b ? (b ? "Ja" : "Nein") : "Done";
             await context.CompleteActivityWithOutcomesAsync(outcome);
         }
 
         /// <summary>
         /// Executes an action that does not return a value.
-        /// The Action is wrapped in a delegate so that it can be
-        /// passed to this helper method.
+        /// Need to wrap it, cause otherwise we get an error because of no return type/ void
         /// </summary>
         private static object? Void(Action action)
         {
@@ -65,10 +64,8 @@ namespace ElsaLib
             return null;
         }
 
-
         /// <summary>
-        /// Gets a string argument from the Arguments dictionary.
-        /// The argument is expected to be stored as a JsonElement.
+        /// Get argument string from json
         /// </summary>
         private string GetString(string key)
         {

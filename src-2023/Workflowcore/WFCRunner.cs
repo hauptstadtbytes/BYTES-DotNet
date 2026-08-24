@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Graph;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Graph;
-using Microsoft.Extensions.DependencyInjection;
+using System.Xml.Linq;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -70,29 +71,29 @@ namespace WorkflowcoreLib
         }
 
         /// <summary>
-        /// Recieve graph, create DynamicNodeStep for each node
+        /// Recieve graph, create StepNode for each node
         /// </summary>
         private static void Configure(IWorkflowBuilder<WorkflowData> builder, WorkflowGraph graph, FileHelper fileHelper)
         {
             // memorize last node
-            IStepBuilder<WorkflowData, DynamicNodeStep>? step = null;
+            IStepBuilder<WorkflowData, StepNode>? step = null;
 
             // create the step for the workflow
             foreach (ExecutionNode node in graph.SortedNodes)
             {
                 // check if we are at the start node
                 step = step is null
-                    ? builder.StartWith<DynamicNodeStep>()
-                    : step.Then<DynamicNodeStep>();
+                    ? builder.StartWith<StepNode>()
+                    : step.Then<StepNode>();
 
                 // fill the properties for each step
                 // lambda
-                step.Input(s => s.NodeId, _ => node.Id)
-                    .Input(s => s.Label, _ => node.Label)
-                    .Input(s => s.ActionMethod, _ => node.ActionMethod)
-                    .Input(s => s.Arguments, _ => node.Arguments)
-                    .Input(s => s.IncomingEdges, _ => node.IncomingEdges)
-                    .Input(s => s.FileHelper, _ => fileHelper);
+                step.Input(s => s.NodeId, _ => node.Id);
+                step.Input(s => s.Label, _ => node.Label);
+                step.Input(s => s.ActionMethod, _ => node.ActionMethod);
+                step.Input(s => s.Arguments, _ => node.Arguments);
+                step.Input(s => s.IncomingEdges, _ => node.IncomingEdges);
+                step.Input(s => s.FileHelper, _ => fileHelper);
             }
         }
     }

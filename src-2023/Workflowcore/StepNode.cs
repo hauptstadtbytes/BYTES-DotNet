@@ -13,7 +13,7 @@ namespace WorkflowcoreLib
     /// Create WorkflowCore-native Steps for the workflow
     /// WFC uses StepBody for the parts of a workflow
     /// </summary>
-    public class DynamicNodeStep : StepBody
+    public class StepNode : StepBody
     {
         // define data fields
         public string NodeId { get; set; } = "";

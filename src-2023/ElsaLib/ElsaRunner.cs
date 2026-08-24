@@ -40,7 +40,7 @@ namespace ElsaLib
             IWorkflowRunner runner = provider.GetRequiredService<IWorkflowRunner>();
             var result = await runner.RunAsync(workflow);
 
-            Console.WriteLine($"\nWorkflow-Status: {result.WorkflowState.Status}");
+            Console.WriteLine($"\nWorkflow-Status: {result.WorkflowState.Status}, {result.WorkflowState.Output}");
         }
 
         /// <summary>

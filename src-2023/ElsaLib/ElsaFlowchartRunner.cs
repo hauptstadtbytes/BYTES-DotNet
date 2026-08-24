@@ -21,8 +21,8 @@ namespace ElsaLib
     {
         public static async Task RunAsync(string jsonText)
         {
+            // load json
             JsonSerializerOptions options = new JsonSerializerOptions{ PropertyNameCaseInsensitive = true };
-
             FlowGraphJson flowGraphJson = JsonSerializer.Deserialize<FlowGraphJson>(jsonText, options)!;
             
             // create graph
