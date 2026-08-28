@@ -24,7 +24,7 @@ namespace BYTES.NET.IO.Network
         #region dll imports
 
         [DllImport("mpr.dll", CharSet = CharSet.Unicode)]
-        private static extern int WNetAddConnection2(RemoteRessource netResource,
+        private static extern int WNetAddConnection2(RemoteResource netResource,
             string password, string username, int flags);
 
         [DllImport("mpr.dll", CharSet = CharSet.Unicode)]
@@ -54,7 +54,7 @@ namespace BYTES.NET.IO.Network
             _path = path;
             _user = user;
 
-            RemoteRessource netResource = new RemoteRessource()
+            RemoteResource netResource = new RemoteResource()
             {
                 Scope = scope,
                 ResourceType = resourceType,
