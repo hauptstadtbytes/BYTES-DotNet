@@ -11,7 +11,7 @@ using System.Windows.Navigation;
 namespace BYTES.NET.IO.Network
 {
     /// <summary>
-    /// 
+    /// Return information about folders and files of the network share
     /// </summary>
     public class RemoteFolderInfo
     {
@@ -30,10 +30,10 @@ namespace BYTES.NET.IO.Network
         #endregion
 
 
-        #region public methods
+        #region constructor
 
         /// <summary>
-        /// contrucor method
+        /// Contrucor
         /// </summary>
         /// <param name="path"></param>
         /// <param name="user"></param>
@@ -46,14 +46,19 @@ namespace BYTES.NET.IO.Network
 
             _path = path;
 
-            if(user != null)
+            if (user != null)
             {
                 _conn = new RemoteConnection(_path, user);
             }
         }
 
+        #endregion
+
+
+        #region public methods
+
         /// <summary>
-        /// 
+        /// Returns FileInfo for specified file
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -83,7 +88,7 @@ namespace BYTES.NET.IO.Network
         }
 
         /// <summary>
-        /// 
+        /// Return DirectoryInfo for specified folder
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -120,7 +125,7 @@ namespace BYTES.NET.IO.Network
         }
 
         /// <summary>
-        /// 
+        /// Return all subfolders in path
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -135,7 +140,7 @@ namespace BYTES.NET.IO.Network
         }
 
         /// <summary>
-        /// 
+        /// Return all files in path, with optional search pattern
         /// </summary>
         /// <param name="path"></param>
         /// <param name="searchPattern"></param>
@@ -158,7 +163,7 @@ namespace BYTES.NET.IO.Network
         }
 
         /// <summary>
-        /// 
+        /// Checks if the whole FileShare is readable
         /// </summary>
         /// <returns></returns>
         public bool IsReadable()
@@ -167,17 +172,18 @@ namespace BYTES.NET.IO.Network
             {
                 if(_conn == null)
                 {
-                    DirectoryInfo dirInfo = new DirectoryInfo(_path);
+                    Directory.GetFiles(_path);
                 }
                 else
                 {
                     using (_conn)
                     {
-                        DirectoryInfo dirInfo = new DirectoryInfo(_path);
+                        Directory.GetFiles(_path);
                     }
                 }
                 return true;
             }
+
             catch(Exception ex)
             {
                 return false;
@@ -185,7 +191,7 @@ namespace BYTES.NET.IO.Network
         }
 
         /// <summary>
-        /// 
+        /// Checks if a file exists 
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -206,7 +212,7 @@ namespace BYTES.NET.IO.Network
         }
 
         /// <summary>
-        /// 
+        /// Checks if a folder exists
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -235,7 +241,7 @@ namespace BYTES.NET.IO.Network
         }
 
         /// <summary>
-        /// 
+        /// Read content of a file as an array of bytes
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -265,7 +271,8 @@ namespace BYTES.NET.IO.Network
         }
 
         /// <summary>
-        /// 
+        /// Copies a file from the source to the destination
+        /// Destination must be a file as well
         /// </summary>
         /// <param name="source"></param>
         /// <param name="destination"></param>
@@ -297,7 +304,7 @@ namespace BYTES.NET.IO.Network
         #region private methods
 
         /// <summary>
-        /// 
+        /// Clean and format the path string
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>

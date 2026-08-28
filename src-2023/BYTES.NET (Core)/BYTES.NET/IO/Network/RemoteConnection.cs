@@ -2,6 +2,7 @@
 using BYTES.NET.IO.Network;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -14,19 +15,24 @@ using System.Threading.Tasks;
 namespace BYTES.NET.IO.Network
 {
     /// <summary>
-    /// remote connection data structure class
+    /// Saves information about connection to a FileShare
     /// </summary>
     /// <remark> only required when creating a new 'RemotefolderInfo' using a dedicated user account</remark>
     /// <remark> using https://stackoverflow.com/questions/295538/how-to-provide-user-name-and-password-when-connecting-to-a-network-share as a reference</remark>
     public class RemoteConnection: IDisposable
     {
-        [DllImport("mpr.dll")]
+        #region dll imports
+
+        [DllImport("mpr.dll", CharSet = CharSet.Unicode)]
         private static extern int WNetAddConnection2(RemoteRessource netResource,
             string password, string username, int flags);
 
-        [DllImport("mpr.dll")]
+        [DllImport("mpr.dll", CharSet = CharSet.Unicode)]
         private static extern int WNetCancelConnection2(string name, int flags,
             bool force);
+
+        #endregion
+
 
         #region private properties
 
@@ -43,36 +49,45 @@ namespace BYTES.NET.IO.Network
         /// </summary>
         /// <param name="path"></param>
         /// <param name="user"></param>
-        public RemoteConnection(string path, UserInfo user)
+        public RemoteConnection(string path, UserInfo user, ResourceScope scope, ResourceType resourceType, ResourceDisplaytype displayType)
         {
             _path = path;
             _user = user;
 
             RemoteRessource netResource = new RemoteRessource()
             {
-                Scope = ResourceScope.GlobalNetwork,
-                ResourceType = ResourceType.Disk,
-                DisplayType = ResourceDisplaytype.Share,
+                Scope = scope,
+                ResourceType = resourceType,
+                DisplayType = displayType,
                 RemoteName = path
             };
 
-            var result = WNetAddConnection2(netResource, user.Password, user.Name, 0);
+            int result = WNetAddConnection2(netResource, user.Password, user.Name, 0);
             
-            // why commented out???
-            /*if(result != 0)
+            if(result != 0)
             {
-                throw new Exception(result);
-            }*/
+                throw new Win32Exception(result);
+            }
         }
 
-        //???
+        /// <summary>
+        /// Overloading constructor with standard values
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="user"></param>
+        public RemoteConnection(string path, UserInfo user)
+        : this(path, user, ResourceScope.GlobalNetwork, ResourceType.Disk, ResourceDisplaytype.Share) { }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~RemoteConnection()
         {
             Dispose(true);
         }
 
         /// <summary>
-        /// 
+        /// Deletes the connection to the share and frees the memory
         /// </summary>
         public void Dispose()
         {
@@ -81,7 +96,7 @@ namespace BYTES.NET.IO.Network
         }
 
         /// <summary>
-        /// 
+        /// Severs the connection to the share
         /// </summary>
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
