@@ -102,14 +102,14 @@ namespace BYTES.NET.Windows.Registry
         #endregion
 
 
-        #region shared methods methods
+        #region public methods
 
         /// <summary>
         /// method creating a registry key from path
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static Microsoft.Win32.RegistryKey GetKey(string path)
+        public static RegistryKey GetKey(string path)
         {
             if(path == "HKEY_LOCAL_MACHINE")
             {
@@ -123,10 +123,28 @@ namespace BYTES.NET.Windows.Registry
             return null;
         }
 
-        #endregion
+        /// <summary>
+        /// returns value of specific key
+        /// use to prevent searching through all values
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="subkey"></param>
+        public object GetKeyValue(string key, string subkey = null)
+        {
+            RegistryKey target;
 
+            if (subkey == null)
+            {
+                target = _root;
+            }
+            else
+            {
+                target = _root.OpenSubKey(subkey, true);
+            }
 
-        #region public methods
+            return target.GetValue(key);
+        }
+
 
         /// <summary>
         /// method searching for children matching the filter (options) given
