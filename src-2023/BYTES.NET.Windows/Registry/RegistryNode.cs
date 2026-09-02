@@ -5,6 +5,9 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security;
+using System.Security.AccessControl;
+using Microsoft.Win32;
 
 namespace BYTES.NET.Windows.Registry
 {
@@ -91,7 +94,7 @@ namespace BYTES.NET.Windows.Registry
         /// overloaded new instance method
         /// </summary>
         /// <param name="key"></param>
-        public RegistryNode(ref Microsoft.Win32.RegistryKey key)
+        public RegistryNode(Microsoft.Win32.RegistryKey key)
         {
             _root = key;
         }
@@ -165,6 +168,75 @@ namespace BYTES.NET.Windows.Registry
             return output.ToArray();
         }
 
+
+        // method to check which permissions we have? 
+        // the official microsoft documentation only uses try and throw error for it
+
+        /// <summary>
+        /// Delete the subkey.
+        /// Automatically checks permissions and throws an exception
+        /// </summary>
+        public void DeleteKey(string key, string subkey = null)
+        {
+            RegistryKey target;
+
+            if (subkey == null)
+            {
+                target = _root;
+            }
+            else
+            {
+                target = _root.OpenSubKey(subkey, true);
+            }
+
+            target.DeleteSubKey(key);
+        }
+
+        /// <summary>
+        /// Create a new key
+        /// When given a subkey, create the subkey instead
+        /// </summary>
+        /// <param name="key"></param>
+        public void AddKey(string key, string subkey = null)
+        {
+            RegistryKey target;
+
+            if (subkey == null)
+            {
+                target = _root;                
+            }
+            else
+            {
+                target = _root.OpenSubKey(subkey, true);
+            }
+
+            target.CreateSubKey(key);
+        }
+
+        /// <summary>
+        /// Adds a key to the given root and sets it to the value
+        /// Can recieve an optional subkey whose value to change
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="subkey"></param>
+        public void SetKeyValue(string key, object value, string subkey = null)
+        {
+            RegistryKey target;
+
+            if (subkey == null)
+            {
+                target = _root;
+            }
+            else
+            {
+                target = _root.OpenSubKey(subkey, true);
+            }
+
+            target.SetValue(key, value);
+        }
+
+        
         #endregion
 
 
@@ -183,7 +255,7 @@ namespace BYTES.NET.Windows.Registry
                 path = path.Substring(1);
             }   
 
-            return root.OpenSubKey(path);
+            return root.OpenSubKey(path, true);
         }
 
         /// <summary>

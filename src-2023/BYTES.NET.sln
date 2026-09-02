@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.6.33815.320
+# Visual Studio Version 18
+VisualStudioVersion = 18.8.12105.206 oobstable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BYTES.NET.WPF", "BYTES.NET.WPF\BYTES.NET.WPF.csproj", "{398EA230-460B-4A2A-8D30-E99E0BEF4005}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BYTES.NET.Extensibility", "BYTES.NET.Extensibility\BYTES.NET.Extensibility\BYTES.NET.Extensibility.csproj", "{D8C15577-AC06-CA6E-1D6B-746CFD9A43E1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BYTES.NET.Extensibility.Tests", "BYTES.NET.Extensibility\BYTES.NET.Extensibility.Tests\BYTES.NET.Extensibility.Tests.csproj", "{348C9D04-D851-19BB-F490-84225B392B2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegistryCLI", "RegistryCLI\RegistryCLI.csproj", "{DE47068D-97B0-453D-B244-A715CFE995BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{348C9D04-D851-19BB-F490-84225B392B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{348C9D04-D851-19BB-F490-84225B392B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{348C9D04-D851-19BB-F490-84225B392B2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE47068D-97B0-453D-B244-A715CFE995BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE47068D-97B0-453D-B244-A715CFE995BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE47068D-97B0-453D-B244-A715CFE995BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE47068D-97B0-453D-B244-A715CFE995BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
