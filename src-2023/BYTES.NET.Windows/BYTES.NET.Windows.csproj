@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <Folder Include="IO\" />
+    <Folder Include="SQL\" />
   </ItemGroup>
 
   <!-- add external resources/ files (for the NuGet package); see also 'https://docs.microsoft.com/de-de/nuget/reference/msbuild-targets') -->
