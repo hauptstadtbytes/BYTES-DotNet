@@ -64,3 +64,10 @@ src-2023/WorkflowcoreCLI/bin/
 src-2023/WorkflowcoreCLI/obj/
 src-2023/WorkflowGraph/bin/
 src-2023/WorkflowGraph/obj/
+src-2023/DapperCLI/bin/
+src-2023/DapperCLI/obj/DapperCLI.csproj.nuget.dgspec.json
+src-2023/DapperCLI/obj/
+src-2023/EFCLI/obj/
+src-2023/LinqToDbcLI/bin/
+src-2023/LinqToDbcLI/obj/
+src-2023/EFCLI/bin/

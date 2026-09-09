@@ -31,15 +31,9 @@ public class EfCoreCLI
         var (provider, host, port, database, user, password) = ParseProvider(choice);
 
         SongContext db = ConnectToDB(provider, host, port, database, user, password);
-        if (db.Database.EnsureCreated())
-        {
-            db.Songs.RemoveRange(db.Songs);
-        }
-        else
-        {
-            throw new Exception("Table does not exist");
-        }
-        
+        db.Database.EnsureCreated();
+        db.Songs.ExecuteDelete();
+
         List<Song> songs = new List<Song>
             {
                 new() { Name = "Twin Princes", Artist = "Yuka Kitamura", Album = "Dark Souls 3 (Original Game Soundtrack)", DurationInSeconds = 194 },
@@ -109,7 +103,7 @@ public class EfCoreCLI
         {
             "1" => ("mariadb", "127.0.0.1", "3307", "testdb", "testuser", "testpass"),
             "2" => ("postgres", "127.0.0.1", "5432", "testdb", "testuser", "testpass"),
-            "3" => ("mssql", "127.0.0.1", "1433", "testdb", "testuser", "testpass"),
+            "3" => ("mssql", "127.0.0.1", "1433", "testdb", "sa", "YourStrong!Passw0rd"),
             "4" => ("mysql", "127.0.0.1", "3306", "testdb", "testuser", "testpass"),
             _ => throw new Exception("Provider unknown")
         };
