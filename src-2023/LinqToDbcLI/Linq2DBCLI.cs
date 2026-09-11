@@ -2,7 +2,6 @@
 using LinqToDB.Data;
 using LinqToDB.Mapping;
 
-
 /// <summary>
 /// CLI example of how to user LINQtoDB as an ORM
 /// </summary>
@@ -24,14 +23,16 @@ public class LinqToDbCli
         List<Song> songs = new List<Song>
             {
                 new() { Name = "Twin Princes", Artist = "Yuka Kitamura", Album = "Dark Souls 3 (Original Game Soundtrack)", DurationInSeconds = 194 },
-                new() { Name = "Darkeater Midir", Artist = "Yuka Kitamura", Album = "Dark Souls 3 (Original Game Soundtrack)", DurationInSeconds = 256 }
+                new() { Name = "Darkeater Midir", Artist = "Yuka Kitamura", Album = "Dark Souls 3 (Original Game Soundtrack)", DurationInSeconds = 256 },
+                new() { Name = "Ornstein & Smough", Artist = "Motoi Sakuraba", Album = "Dark Souls (Original Game Soundtrack)", DurationInSeconds = 170 },
+                new() { Name = "Caligo, Miasma of Night", Artist = "FromSoftware", Album = "Elden Ring: NIGHTREIGN (Original Game Soundtrack)", DurationInSeconds = 422 }
             };
 
         foreach (Song s in songs)
         {
             db.Insert(s);
         }
-        Console.WriteLine($"{songs.Count} Songs eingefügt.");
+        Console.WriteLine($"{songs.Count} Songs added.");
 
         foreach (Song song in db.GetTable<Song>())
         {
