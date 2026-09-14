@@ -48,11 +48,15 @@
 	<PropertyGroup Condition=" '$(TargetFramework)' == 'net10.0-windows'">
 		<DefineConstants>WINDOWS;NET100;NETCORE</DefineConstants>
 	</PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="IO\" />
-    <Folder Include="SQL\" />
-  </ItemGroup>
+	
+	<ItemGroup>
+	  <Compile Remove="IO\**" />
+	  <Compile Remove="SQL\**" />
+	  <EmbeddedResource Remove="IO\**" />
+	  <EmbeddedResource Remove="SQL\**" />
+	  <None Remove="IO\**" />
+	  <None Remove="SQL\**" />
+	</ItemGroup>
 
   <!-- add external resources/ files (for the NuGet package); see also 'https://docs.microsoft.com/de-de/nuget/reference/msbuild-targets') -->
   <ItemGroup>
