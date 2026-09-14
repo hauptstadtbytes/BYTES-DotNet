@@ -3,13 +3,30 @@ using System.Reflection.Metadata.Ecma335;
 
 public class RegistryCLI
 {
+    /// <summary>
+    /// CLI showcasing how to use the RegistryNode class
+    /// 
+    /// Important note:
+    /// To properly use Registry keys, an app.manifest file is needed with the requestedExecutionLevel
+    /// set to "requireAdministrator". Otherwise we cannot access any key under HKEY.
+    /// See the CLI's app.manifest for reference.
+    /// </summary>
     public static void Main()
     {
         Console.WriteLine("---------------- 1. Create RegistryNode ----------------");
+        RegistryNode rg;
 
-        RegistryNode rg = new RegistryNode("HKEY_LOCAL_MACHINE\\SOFTWARE");
+        try
+        {
+            rg = new RegistryNode("HKEY_LOCAL_MACHINE\\SOFTWARE");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Cannot access the key. Error: \n {e}");
+            return;
+        }
+
         Console.WriteLine("RegistryNode created");
-
         Console.WriteLine("---------------- 2. Create Keys ----------------");
 
         try
@@ -21,9 +38,9 @@ public class RegistryCLI
         {
             Console.WriteLine(e);
         }
-        Console.WriteLine("Keys created");
+        Console.WriteLine("Keys \"Test1\" and \"Test1\\Test2\" created\n");
 
-        Console.WriteLine("Press [ENTER] to continue.");
+        Console.WriteLine("Press [ENTER] to continue.\n");
         Console.ReadLine();
 
         Console.WriteLine("---------------- 3. Set values of keys ----------------");
@@ -38,9 +55,9 @@ public class RegistryCLI
         {
             Console.WriteLine(e);
         }
-        Console.WriteLine("Changed values of keys.");
+        Console.WriteLine("Changed values of keys.\n");
 
-        Console.WriteLine("Press [ENTER] to continue.");
+        Console.WriteLine("Press [ENTER] to continue.\n");
         Console.ReadLine();
 
 
@@ -48,27 +65,30 @@ public class RegistryCLI
 
         try
         {
-            RegistryNode test1Node = new RegistryNode(rg.Root.OpenSubKey("Test1"));
-            Dictionary<string, object> test1Values = test1Node.Values;
+            RegistryNode test1 = new RegistryNode(rg.Root.OpenSubKey("Test1"));
+            Dictionary<string, object> test1Values = test1.Values;
+
             Console.WriteLine("Test1 values:");
-            foreach (KeyValuePair<string, object> kv in test1Values)
+            foreach (KeyValuePair<string, object> k in test1Values)
             {
-                Console.WriteLine($"  {kv.Key} = {kv.Value}");
+                Console.WriteLine($"  {k.Key} = {k.Value}");
             }
 
-            RegistryNode test2Node = new RegistryNode(rg.Root.OpenSubKey("Test1\\Test2"));
-            Dictionary<string, object> test2Values = test2Node.Values;
+            RegistryNode test2 = new RegistryNode(rg.Root.OpenSubKey("Test1\\Test2"));
+            Dictionary<string, object> test2Values = test2.Values;
+            
             Console.WriteLine("Test1/Test2 values:");
-            foreach (KeyValuePair<string, object> kv in test2Values)
+            foreach (KeyValuePair<string, object> k in test2Values)
             {
-                Console.WriteLine($"  {kv.Key} = {kv.Value}");
+                Console.WriteLine($"  {k.Key} = {k.Value}");
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
         }
-        Console.WriteLine("Press [ENTER] to continue.");
+
+        Console.WriteLine("Press [ENTER] to continue.\n");
         Console.ReadLine();
 
         Console.WriteLine("---------------- 5. Get children of root ----------------");
@@ -80,7 +100,7 @@ public class RegistryCLI
             Console.WriteLine($"Children ({children.Length}):");
             foreach (RegistryNode child in children)
             {
-                Console.WriteLine($"  {child.Path}");
+                Console.WriteLine($"{child.Path}");
             }
 
         }
@@ -88,7 +108,8 @@ public class RegistryCLI
         {
             Console.WriteLine(e);
         }
-        Console.WriteLine("Press [ENTER] to continue.");
+
+        Console.WriteLine("Press [ENTER] to continue.\n");
         Console.ReadLine();
 
         Console.WriteLine("---------------- 6. Filter key by value ----------------");
@@ -104,7 +125,9 @@ public class RegistryCLI
 
             RegistryNode[] matches = rg.SearchForChildren(filter, options);
 
+            Console.WriteLine("Search for key with value \"test\"\n");
             Console.WriteLine($"Matches ({matches.Length}):");
+
             foreach (RegistryNode match in matches)
             {
                 Console.WriteLine($"  {match.Path}");
@@ -114,7 +137,8 @@ public class RegistryCLI
         {
             Console.WriteLine(e);
         }
-        Console.WriteLine("Press [ENTER] to continue.");
+
+        Console.WriteLine("Press [ENTER] to continue.\n");
         Console.ReadLine();
 
         Console.WriteLine("---------------- 7. Get value of Test1\\Test2 ----------------");
@@ -127,7 +151,7 @@ public class RegistryCLI
         {
             Console.WriteLine(e);
         }
-        Console.WriteLine("Press [ENTER] to continue.");
+        Console.WriteLine("Press [ENTER] to continue.\n");
         Console.ReadLine();
 
         Console.WriteLine("---------------- 8. Delete keys ----------------");
@@ -143,10 +167,10 @@ public class RegistryCLI
         }
         Console.WriteLine("Deleted keys Test1 and Test2");
 
-        Console.WriteLine("Press [ENTER] to continue.");
+        Console.WriteLine("Press [ENTER] to continue.\n");
         Console.ReadLine();
 
-        Console.WriteLine("---------------- 9. Delete nonexistent key to force error ----------------");
+        Console.WriteLine("---------------- 9. Delete nonexistent key to force error ----------------s");
 
         try
         {
@@ -155,7 +179,6 @@ public class RegistryCLI
         catch (Exception e)
         {
             Console.WriteLine(e);
-            Console.WriteLine("Test CLI finished.");
         }
 
         Console.WriteLine("---------------- CLI FINISHED ----------------");

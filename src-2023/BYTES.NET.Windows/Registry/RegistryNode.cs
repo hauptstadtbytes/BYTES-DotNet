@@ -11,6 +11,9 @@ using Microsoft.Win32;
 
 namespace BYTES.NET.Windows.Registry
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class RegistryNode
     {
         #region public variables
@@ -41,7 +44,7 @@ namespace BYTES.NET.Windows.Registry
         public string Path { get => _root.Name; }
             
         /// <summary>
-        /// Get the values 
+        /// Get the values of the key
         /// </summary>
         public Dictionary<string, object> Values
         {
@@ -59,7 +62,7 @@ namespace BYTES.NET.Windows.Registry
         }
 
         /// <summary>
-        /// 
+        /// Get the subkeys of the current key
         /// </summary>
         public RegistryNode[] Children
         {
@@ -82,7 +85,8 @@ namespace BYTES.NET.Windows.Registry
         #region constructor 
 
         /// <summary>
-        /// default new instance method
+        /// Constructor
+        /// Uses the key path
         /// </summary>
         /// <param name="path"></param>
         public RegistryNode(string path)
@@ -91,7 +95,8 @@ namespace BYTES.NET.Windows.Registry
         }
 
         /// <summary>
-        /// overloaded new instance method
+        /// Overloaded Constructor
+        /// Uses the key directly
         /// </summary>
         /// <param name="key"></param>
         public RegistryNode(Microsoft.Win32.RegistryKey key)
@@ -105,7 +110,7 @@ namespace BYTES.NET.Windows.Registry
         #region public methods
 
         /// <summary>
-        /// method creating a registry key from path
+        /// Get the key by path
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -124,8 +129,7 @@ namespace BYTES.NET.Windows.Registry
         }
 
         /// <summary>
-        /// returns value of specific key
-        /// use to prevent searching through all values
+        /// Returns value of specific key
         /// </summary>
         /// <param name="key"></param>
         /// <param name="subkey"></param>
@@ -147,7 +151,7 @@ namespace BYTES.NET.Windows.Registry
 
 
         /// <summary>
-        /// method searching for children matching the filter (options) given
+        /// Method searching for children matching the filter given
         /// </summary>
         /// <param name="filter"></param>
         /// <param name="options"></param>
@@ -162,13 +166,12 @@ namespace BYTES.NET.Windows.Registry
             }
                 
             bool ignoreCase = true;
+            bool containsSearch = true;
 
             if (!options.Contains(EnumerationOptions.IgnoreCase))
             {
                 ignoreCase = false;
             }
-                
-            bool containsSearch = true;
 
             if (!options.Contains(EnumerationOptions.ContainsSearch))
             {
@@ -186,12 +189,8 @@ namespace BYTES.NET.Windows.Registry
             return output.ToArray();
         }
 
-
-        // method to check which permissions we have? 
-        // the official microsoft documentation only uses try and throw error for it
-
         /// <summary>
-        /// Delete the subkey.
+        /// Delete the subkey
         /// Automatically checks permissions and throws an exception
         /// </summary>
         public void DeleteKey(string key, string subkey = null)
@@ -212,20 +211,20 @@ namespace BYTES.NET.Windows.Registry
 
         /// <summary>
         /// Create a new key
-        /// When given a subkey, create the subkey instead
+        /// When given a parent, create the given key as a child of the parent
         /// </summary>
         /// <param name="key"></param>
-        public void AddKey(string key, string subkey = null)
+        public void AddKey(string key, string parent = null)
         {
             RegistryKey target;
 
-            if (subkey == null)
+            if (parent == null)
             {
                 target = _root;                
             }
             else
             {
-                target = _root.OpenSubKey(subkey, true);
+                target = _root.OpenSubKey(parent, true);
             }
 
             target.CreateSubKey(key);
@@ -233,7 +232,7 @@ namespace BYTES.NET.Windows.Registry
 
         /// <summary>
         /// Adds a key to the given root and sets it to the value
-        /// Can recieve an optional subkey whose value to change
+        /// Can recieve an optional subkey whose value to change instead of the parent key
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -261,7 +260,7 @@ namespace BYTES.NET.Windows.Registry
         #region private methods
 
         /// <summary>
-        /// method opening a sub key
+        /// Return the subkey
         /// </summary>
         /// <param name="root"></param>
         /// <param name="path"></param>
@@ -277,7 +276,7 @@ namespace BYTES.NET.Windows.Registry
         }
 
         /// <summary>
-        /// method validating a key by the filter criteria given
+        /// Validate if the values of the node match the filter
         /// </summary>
         /// <param name="node"></param>
         /// <param name="filter"></param>
