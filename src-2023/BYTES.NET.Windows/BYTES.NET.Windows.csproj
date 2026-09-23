@@ -51,13 +51,13 @@
 
   <ItemGroup>
     <Folder Include="IO\" />
+    <Folder Include="References\" />
   </ItemGroup>
 
   <!-- add external resources/ files (for the NuGet package); see also 'https://docs.microsoft.com/de-de/nuget/reference/msbuild-targets') -->
   <ItemGroup>
 	  <None Include="..\Resources\License.txt" Pack="true" PackagePath="\meta\" />
 	  <None Include="..\Resources\Icon.png" Pack="true" PackagePath="\meta\" />
-	  <None Include="References\RegistryCLI.csproj" />
   </ItemGroup>
 
   <!-- publish NuGet package automatically to github (for release versions only, using the source from 'NuGet.config' file in the solution level directory -->
