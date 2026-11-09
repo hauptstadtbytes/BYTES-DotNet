@@ -165,7 +165,7 @@ namespace BYTES.NET.Windows.Registry
         {
             List<RegistryNode> output = new List<RegistryNode>();
 
-            if (Information.IsNothing(filter))
+            if (filter == null)
             {
                 return this.Children;
             }
@@ -236,9 +236,10 @@ namespace BYTES.NET.Windows.Registry
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="subkey"></param>
-        public void SetKeyValue(string key, object value)
+        public void SetKeyValue(string key, string valueName, object value)
         {
-            _root.SetValue(key, value);
+            RegistryKey subkey = _root.CreateSubKey(key);
+            subkey.SetValue(valueName, value);
         }
         
         #endregion

@@ -29,6 +29,37 @@ public class RegistryCLI
         Console.WriteLine("RegistryNode created");
         Console.WriteLine("---------------- 2. Create Keys ----------------");
 
+        CreateKeys(rg);
+        Continue();
+
+        Console.WriteLine("---------------- 3. Set values of keys ----------------");
+
+        SetValues(rg);
+        Continue();
+
+        Console.WriteLine("---------------- 4. Get values of subkeys ----------------");
+
+        GetValues(rg);
+        Continue();
+
+        Console.WriteLine("---------------- 5. Get children of root ----------------");
+
+        GetChildren(rg);
+        Continue();
+
+        Console.WriteLine("---------------- 6. Filter key by value ----------------");
+
+        FilterKeys(rg);
+        Continue();
+
+        Console.WriteLine("---------------- 7. Delete keys ----------------");
+
+        DeleteKeys(rg);
+
+        Console.WriteLine("---------------- CLI FINISHED ----------------");
+    }
+
+    private static void CreateKeys(RegistryNode rg) {
         try
         {
             rg.AddKey("Test1");
@@ -40,60 +71,38 @@ public class RegistryCLI
             Console.WriteLine(e);
         }
         Console.WriteLine("Keys created\n");
+    }
 
-        Console.WriteLine("Press [ENTER] to continue.\n");
-        Console.ReadLine();
-
-        Console.WriteLine("---------------- 3. Set values of keys ----------------");
-
+    private static void SetValues(RegistryNode rg)
+    {
         try
         {
-            rg.SetKeyValue("Test1", "Teststring"); 
-            rg.SetKeyValue("Test2", true);     
-            rg.SetKeyValue("Test3", 123);  
+            rg.SetKeyValue("Test1", "Key1", "Teststring");
+            rg.SetKeyValue("Test2", "Key2", true);
+            rg.SetKeyValue("Test3", "Key3", 123);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
         }
         Console.WriteLine("Changed values of keys.\n");
+    }
 
-        Console.WriteLine("Press [ENTER] to continue.\n");
-        Console.ReadLine();
-
-
-        Console.WriteLine("---------------- 4. Get values of subkeys ----------------");
-
+    private static void GetValues(RegistryNode rg)
+    {
         try
         {
-            RegistryNode test1 = new RegistryNode(rg.Root.OpenSubKey("Test1"));
-            Dictionary<string, object> test1Values = test1.Values;
-
-            Console.WriteLine("Test1 values:");
-            foreach (KeyValuePair<string, object> k in test1Values)
-            {
-                Console.WriteLine($"  {k.Key} = {k.Value}");
-            }
-
-            RegistryNode test2 = new RegistryNode(rg.Root.OpenSubKey("Test2"));
-            Dictionary<string, object> test2Values = test2.Values;
-            
-            Console.WriteLine("Test2 values:");
-            foreach (KeyValuePair<string, object> k in test2Values)
-            {
-                Console.WriteLine($"  {k.Key} = {k.Value}");
-            }
+            Console.WriteLine(rg.GetKeyValue("Test1"));
+            Console.WriteLine(rg.GetKeyValue("Test2"));
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
         }
+    }
 
-        Console.WriteLine("Press [ENTER] to continue.\n");
-        Console.ReadLine();
-
-        Console.WriteLine("---------------- 5. Get children of root ----------------");
-
+    private static void GetChildren(RegistryNode rg)
+    {
         try
         {
             RegistryNode[] children = rg.Children;
@@ -109,24 +118,17 @@ public class RegistryCLI
         {
             Console.WriteLine(e);
         }
+    }
 
-        Console.WriteLine("Press [ENTER] to continue.\n");
-        Console.ReadLine();
-
-        Console.WriteLine("---------------- 6. Filter key by value ----------------");
-
+    private static void FilterKeys(RegistryNode rg)
+    {
         try
         {
-            Dictionary<string, string> filter = new Dictionary<string, string> { { "Test1", "test" } };
-            RegistryNode.EnumerationOptions[] options = new[]
-            {
-                RegistryNode.EnumerationOptions.IgnoreCase,
-                RegistryNode.EnumerationOptions.ContainsSearch
-            };
+            Dictionary<string, string> filter = new Dictionary<string, string> { { "Key1", "Teststring" } };
 
-            RegistryNode[] matches = rg.SearchForChildren(filter, options);
+            RegistryNode[] matches = rg.SearchForChildren(filter);
 
-            Console.WriteLine("Search for key with value \"test\"\n");
+            Console.WriteLine("Search for key with value \"Teststring\"\n");
             Console.WriteLine($"Matches ({matches.Length}):");
 
             foreach (RegistryNode match in matches)
@@ -138,52 +140,27 @@ public class RegistryCLI
         {
             Console.WriteLine(e);
         }
+    }
 
-        Console.WriteLine("Press [ENTER] to continue.\n");
-        Console.ReadLine();
-
-        Console.WriteLine("---------------- 7. Get value of Test1\\Test2 ----------------");
-
+    private static void DeleteKeys(RegistryNode rg)
+    {
         try
         {
-            Console.WriteLine(rg.GetKeyValue("Test2"));
+            rg.DeleteKey("Test3");
+            rg.DeleteKey("Test2");
+            rg.DeleteKey("Test1");
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
         }
+        Console.WriteLine("Deleted keys.");
+    }
+
+    private static void Continue()
+    {
         Console.WriteLine("Press [ENTER] to continue.\n");
         Console.ReadLine();
-
-        Console.WriteLine("---------------- 8. Delete keys ----------------");
-
-        try
-        {
-            rg.DeleteKey("Test2"); 
-            rg.DeleteKey("Test1"); 
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-        Console.WriteLine("Deleted keys Test1 and Test2");
-
-        Console.WriteLine("Press [ENTER] to continue.\n");
-        Console.ReadLine();
-
-        Console.WriteLine("---------------- 9. Delete nonexistent key to force error ----------------s");
-
-        try
-        {
-            rg.DeleteKey("Test1");  // delete key root/Test1 to force error
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-
-        Console.WriteLine("---------------- CLI FINISHED ----------------");
-
     }
 }
 
