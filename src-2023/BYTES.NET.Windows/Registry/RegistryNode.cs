@@ -12,14 +12,15 @@ using Microsoft.Win32;
 namespace BYTES.NET.Windows.Registry
 {
     /// <summary>
-    /// 
+    /// Object saving a path to a folder in the windows registry,
+    /// as well as methods to work with the windows registry.
     /// </summary>
     public class RegistryNode
     {
         #region public variables
 
         /// <summary>
-        /// 
+        /// Enums to use for filtering when searching
         /// </summary>
         public enum EnumerationOptions
         {
@@ -110,6 +111,21 @@ namespace BYTES.NET.Windows.Registry
         #region public methods
 
         /// <summary>
+        /// Check if the key exists by trying to access it
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns> True if key exists </returns>
+        public bool KeyExists(string path)
+        {
+            RegistryKey keyExists = _root.OpenSubKey(path);
+            if(keyExists != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Get the key by path
         /// </summary>
         /// <param name="path"></param>
@@ -133,25 +149,14 @@ namespace BYTES.NET.Windows.Registry
         /// </summary>
         /// <param name="key"></param>
         /// <param name="subkey"></param>
-        public object GetKeyValue(string key, string subkey = null)
+        public object GetKeyValue(string key)
         {
-            RegistryKey target;
-
-            if (subkey == null)
-            {
-                target = _root;
-            }
-            else
-            {
-                target = _root.OpenSubKey(subkey, true);
-            }
-
-            return target.GetValue(key);
+            return _root.GetValue(key);
         }
 
 
         /// <summary>
-        /// Method searching for children matching the filter given
+        /// Method searching for child nodes matching the filter given
         /// </summary>
         /// <param name="filter"></param>
         /// <param name="options"></param>
@@ -193,66 +198,48 @@ namespace BYTES.NET.Windows.Registry
         /// Delete the subkey
         /// Automatically checks permissions and throws an exception
         /// </summary>
-        public void DeleteKey(string key, string subkey = null)
+        public void DeleteKey(string key)
         {
-            RegistryKey target;
-
-            if (subkey == null)
-            {
-                target = _root;
-            }
-            else
-            {
-                target = _root.OpenSubKey(subkey, true);
-            }
-
-            target.DeleteSubKey(key);
+            _root.DeleteSubKey(key);
         }
 
         /// <summary>
         /// Create a new key
-        /// When given a parent, create the given key as a child of the parent
         /// </summary>
         /// <param name="key"></param>
-        public void AddKey(string key, string parent = null)
+        public RegistryKey AddKey(string key, bool create = true)
         {
-            RegistryKey target;
-
-            if (parent == null)
+            if (!create)
             {
-                target = _root;                
+                if (KeyExists(key))
+                {
+                    return GetKey(_root + key);
+                }
+                return null;
             }
-            else
-            {
-                target = _root.OpenSubKey(parent, true);
-            }
+            
+            return _root.CreateSubKey(key);
+        }
 
-            target.CreateSubKey(key);
+        /// <summary>
+        /// Addds a new subfolder/subnode to the current node
+        /// </summary>
+        /// <param name="node"></param>
+        public void AddNode(string node)
+        {
+            RegistryKey newNode = _root.CreateSubKey(node);
         }
 
         /// <summary>
         /// Adds a key to the given root and sets it to the value
-        /// Can recieve an optional subkey whose value to change instead of the parent key
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="subkey"></param>
-        public void SetKeyValue(string key, object value, string subkey = null)
+        public void SetKeyValue(string key, object value)
         {
-            RegistryKey target;
-
-            if (subkey == null)
-            {
-                target = _root;
-            }
-            else
-            {
-                target = _root.OpenSubKey(subkey, true);
-            }
-
-            target.SetValue(key, value);
+            _root.SetValue(key, value);
         }
-
         
         #endregion
 

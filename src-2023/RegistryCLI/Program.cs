@@ -31,14 +31,15 @@ public class RegistryCLI
 
         try
         {
-            rg.AddKey("Test1");             // create subkey under root
-            rg.AddKey("Test2", "Test1");    // create subkey under root/Test1
+            rg.AddKey("Test1");
+            rg.AddKey("Test2");
+            rg.AddNode("Test3");
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
         }
-        Console.WriteLine("Keys \"Test1\" and \"Test1\\Test2\" created\n");
+        Console.WriteLine("Keys created\n");
 
         Console.WriteLine("Press [ENTER] to continue.\n");
         Console.ReadLine();
@@ -47,9 +48,9 @@ public class RegistryCLI
 
         try
         {
-            rg.SetKeyValue("Test1", "Teststring", "Test1"); 
-            rg.SetKeyValue("Test2", true, "Test1");     
-            rg.SetKeyValue("Test3", 123, "Test1\\Test2");  
+            rg.SetKeyValue("Test1", "Teststring"); 
+            rg.SetKeyValue("Test2", true);     
+            rg.SetKeyValue("Test3", 123);  
         }
         catch (Exception e)
         {
@@ -74,10 +75,10 @@ public class RegistryCLI
                 Console.WriteLine($"  {k.Key} = {k.Value}");
             }
 
-            RegistryNode test2 = new RegistryNode(rg.Root.OpenSubKey("Test1\\Test2"));
+            RegistryNode test2 = new RegistryNode(rg.Root.OpenSubKey("Test2"));
             Dictionary<string, object> test2Values = test2.Values;
             
-            Console.WriteLine("Test1/Test2 values:");
+            Console.WriteLine("Test2 values:");
             foreach (KeyValuePair<string, object> k in test2Values)
             {
                 Console.WriteLine($"  {k.Key} = {k.Value}");
@@ -145,7 +146,7 @@ public class RegistryCLI
 
         try
         {
-            Console.WriteLine(rg.GetKeyValue("Test2", "Test1"));
+            Console.WriteLine(rg.GetKeyValue("Test2"));
         }
         catch (Exception e)
         {
@@ -158,8 +159,8 @@ public class RegistryCLI
 
         try
         {
-            rg.DeleteKey("Test2", "Test1");  // delete key root/Test1/Test2
-            rg.DeleteKey("Test1");           // delete key root/Test1
+            rg.DeleteKey("Test2"); 
+            rg.DeleteKey("Test1"); 
         }
         catch (Exception e)
         {
