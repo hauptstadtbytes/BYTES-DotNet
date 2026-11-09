@@ -51,3 +51,6 @@ src-2023/BYTES.NET (Core)/NovellExampleCLI/obj/
 src-2023/BYTES.NET (Core)/SftpCLI/bin/
 src-2023/BYTES.NET (Core)/SftpCLI/obj/
 src-2023/BYTES.NET.Extensibility/BYTES.NET.Extensibility.Tests/bin/
+src-2023/BYTES.NET.Extensibility/BYTES.NET.Extensibility.Tests/obj/
+bin/
+src-2023/BYTES.NET.Extensibility/BYTES.NET.Extensibility/obj/BYTES.NET.Extensibility.csproj.nuget.dgspec.json
