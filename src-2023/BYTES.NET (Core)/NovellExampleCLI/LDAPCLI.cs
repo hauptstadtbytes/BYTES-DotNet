@@ -35,7 +35,7 @@ internal class LDAPCLI
         using var conn = await ConnectAsync(host);
 
         string? baseDn = await GetBaseDnAsync(conn);
-        string domain = formatDomain(baseDn);
+        string domain = FormatDomain(baseDn);
 
         Console.WriteLine("---Authenticate---\n");
         UserInfo user = new UserInfo(username, password, domain);
@@ -130,20 +130,6 @@ internal class LDAPCLI
     }
 
     /// <summary>
-    /// Convenience function
-    /// Format the domain to be more readable
-    /// </summary>
-    static string formatDomain(string domain)
-    {
-        string formattedDomain = string.Join(".",
-            domain.Split(',')
-            .Where(x => x.StartsWith("DC=", StringComparison.OrdinalIgnoreCase))
-            .Select(x => x.Substring(3)));
-
-        return formattedDomain;
-    }
-
-    /// <summary>
     /// Search the service for all users
     /// </summary>
     static async void SearchWithFilter(LdapConnection conn, string host, string? baseDn)
@@ -203,6 +189,20 @@ internal class LDAPCLI
                 Console.WriteLine($"{a.Name}: {value}");
             }
         }
+    }
+
+    /// <summary>
+    /// Convenience function
+    /// Format the domain to be more readable
+    /// </summary>
+    static string FormatDomain(string domain)
+    {
+        string formattedDomain = string.Join(".",
+            domain.Split(',')
+            .Where(x => x.StartsWith("DC=", StringComparison.OrdinalIgnoreCase))
+            .Select(x => x.Substring(3)));
+
+        return formattedDomain;
     }
 
     /// <summary>
