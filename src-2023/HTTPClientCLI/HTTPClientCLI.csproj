@@ -45,9 +45,13 @@
 
 	<!-- Add Packages for 4.8-->
 	<ItemGroup Condition="'$(TargetFramework)' == 'net48'">
-		<PackageReference Include="System.Text.Json" Version="10.0.9" />
-		<PackageReference Include="System.Net.Http.Json" Version="10.0.9" />
+		<PackageReference Include="System.Text.Json" Version="11.0.0" />
+		<PackageReference Include="System.Net.Http.Json" Version="11.0.0" />
 		<Reference Include="System.Net.Http" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="11.0.0" />
+	  <PackageReference Include="System.Management" Version="11.0.0" />
 	</ItemGroup>
 	
   <ItemGroup>

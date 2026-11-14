@@ -44,6 +44,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
+	  <PackageReference Include="System.Management" Version="11.0.0" />
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\BYTES.NET (Core)\BYTES.NET\BYTES.NET.csproj" />

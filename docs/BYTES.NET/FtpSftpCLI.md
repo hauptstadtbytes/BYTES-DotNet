@@ -1,7 +1,10 @@
-# FTP/ SFTP Docker Container
+# FTP und SFTP-Support
+Um die beiden Protokolle zu unterstützen, benutzen wir die Bibliotheken [FluentFTP](https://github.com/robinrodricks/FluentFTP) für FTP-Support, und [SSH.NET](https://github.com/sshnet/SSH.NET) für SFTP-Support.
+Die folgende Anleitung hilft beim Aufsetzen von zwei Dockercontainern für einen FTP-Service und einen SFTP-Service.
+
 
 ## FTP
-1. Erstellen der docker-compose.yml mit Inhalt:
+1. Erstelle die Datei docker-compose.yml mit Inhalt:
 
 ```
 services:
@@ -33,7 +36,7 @@ services:
       - ./ftp-data:/home/testuser
 ```
 
-2. Hinzufügen von Dateien in den `ftp-data`-Ordner (und den ftp-data Ordner selber)
+2. Füge den Ordner `ftp-data` auf der selben Ebene wie die docker-compose.yml zu. Füge beliebige Dateien in den Ordner ein. Die werden später in der CLI gesucht und angezeigt.
 3. Nun kann man die CLI ausführen. Die Anmeldedaten sind dabei:
 - host: localhost
 - username: testuser

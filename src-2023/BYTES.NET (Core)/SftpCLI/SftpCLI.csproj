@@ -48,10 +48,11 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="SSH.NET" Version="2026.0.0" />
+	  <PackageReference Include="System.Management" Version="11.0.0" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
-		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="11.0.0" />
 	</ItemGroup>
 	
 	<!-- define constants for framework differentiation; see also 'https://weblog.west-wind.com/posts/2017/jun/22/multitargeting-and-porting-a-net-library-to-net-core-20'-->

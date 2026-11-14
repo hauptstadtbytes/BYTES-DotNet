@@ -43,7 +43,8 @@
 	
 	<!-- define references and dependencies --> 
 	<ItemGroup>
-	  <PackageReference Include="System.ComponentModel.Composition" Version="7.0.0" />
+	  <PackageReference Include="System.ComponentModel.Composition" Version="11.0.0" />
+	  <PackageReference Include="System.Management" Version="11.0.0" />
 	</ItemGroup> 
 	<ItemGroup>
 	  <ProjectReference Include="..\..\BYTES.NET (Core)\BYTES.NET\BYTES.NET.csproj" />
