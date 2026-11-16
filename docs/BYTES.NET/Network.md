@@ -1,13 +1,15 @@
 # Network Namespace
-Die Funktionen im Network Namespace ermöglichen das Verbinden mit einer Fileshare, sowie [User Impersonation](https://learn.microsoft.com/de-de/power-apps/developer/data-platform/impersonate-another-user). 
-Der Namespace besteht aus:
- - **RemoteConnection.cs**: Eine Klasse, die Informationen über die Verbindung zu einer Fileshare speichert
- - **RemoteFolderInfo.cs**: Eine Klasse, die Informationen über die Fileshare und die darin enthaltenen Daten selber speichert.
- - **RemoteRessource.cs**: Eine Klasse, die Informationen über die Ressourcen der Fileshare speichert. 
 
-Die Anmeldeinformationen der Benutzer werden in unserer **UserInfo**-Klasse gespeichert, zu finden im IO-Namespace.
+The functions in the Network namespace make it possible to connect to a file share as well as perform [user impersonation](https://learn.microsoft.com/en-us/power-apps/developer/data-platform/impersonate-another-user). 
 
-Im Projekt BYTES.NET.Tests sind unter IO/Network/TestRemoteFolderInfo.cs Anwendungsbeispiele für den Network-Namespace zu sehen, sowie wie man die Funktionen benutzt, um sich mit einer Fileshare zu verbinden, und einen User zu imitieren.
+The namespace consists of:
+ - **RemoteConnection.cs**: A class that stores information about the connection to a file share
+ - **RemoteFolderInfo.cs**: A class that stores information about the file share itself and the data it contains
+ - **RemoteRessource.cs**: A class that stores information about the resources of the file share 
+
+Login credentials are stores in the BYTES.NET **UserInfo** class, part of the BYTES.NET.IO namespace.
+
+In the BYTES.NET.Tests project, usage examples for the Network namespace can be found under IO/Network/TestRemoteFolderInfo.cs. It shows how to use the functions to connect to a file share and to impersonate a user.
 
 # HTTPClient
-Im Projekt **HTTPClientCLI** findet man eine Implementierung, wie man die neue .net HTTPClient-Klasse verwenden kann, um mit Websites per HTTP-Anfragen zu kommunizieren.
+The **HTTPClientCLI** project contains an implementation showing how to use the .net HTTPClient class to communicate with websites via HTTP requests.

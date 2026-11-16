@@ -1,10 +1,13 @@
-# FTP und SFTP-Support
-Um die beiden Protokolle zu unterstützen, benutzen wir die Bibliotheken [FluentFTP](https://github.com/robinrodricks/FluentFTP) für FTP-Support, und [SSH.NET](https://github.com/sshnet/SSH.NET) für SFTP-Support.
-Die folgende Anleitung hilft beim Aufsetzen von zwei Dockercontainern für einen FTP-Service und einen SFTP-Service.
+# FTP and SFTP support
 
+To support both protocols, we use the packages
+- [FluentFTP](https://github.com/robinrodricks/FluentFTP) for FTP
+- [SSH.NET](https://github.com/sshnet/SSH.NET) for SFTP
+
+The following documentation shows how to set up two docker container for FTP/SFTP services, and how to use the packages to work with (S)FTP servers.
 
 ## FTP
-1. Erstelle die Datei docker-compose.yml mit Inhalt:
+1. Create a docker-compose.yml file with the following content:
 
 ```
 services:
@@ -36,16 +39,19 @@ services:
       - ./ftp-data:/home/testuser
 ```
 
-2. Füge den Ordner `ftp-data` auf der selben Ebene wie die docker-compose.yml zu. Füge beliebige Dateien in den Ordner ein. Die werden später in der CLI gesucht und angezeigt.
-3. Nun kann man die CLI ausführen. Die Anmeldedaten sind dabei:
+2. Create a folder calles `ftp-data` at the same level as the docker-compose.yml. Now add some random files to the folder. The content or names do not matter. We only want something inside the folder to display later on.
+
+3. Start the container with `docker compose up`.
+You can now start the CLI. To connect to the FTP server, use these credentials:
 - host: localhost
 - username: testuser
 - password: testpass
 
-## SFTP mit Zertifikat
-1. Keypaar erstellen
-   ssh-keygen -t ed25519
-2. Docker Container erstellen
+## SFTP with keyfile
+1. Create a key. To do so, open a terminal and run the following code:
+   `ssh-keygen -t ed25519`
+2. Create a docker container for the SFTP server. For that, create a docker-compose.yml and add the content:
+
 ```
 services:
   sftp:
@@ -59,17 +65,16 @@ services:
       - ./keys/:/home/testuser/.ssh/keys/
 ```
 
-Der public key wird in das .ssh-Verzeichnis des Containers kopiert. 
-Nun kann man sich mit 
+Copy the public key into the .ssh folder. 
+
+3. Start the container. You can connect to the server with these credentials:
 - host: localhost
 - username: testuser
 - keyfile path: (path to file)
 - passphrase: (passphrase)
-anmelden.
 
-Aktuell ist der Container so konfiguriert, dass man sich mit oder ohne Zertifikat anmelden kann.
-Bei dem selben Server kann man sich ebenfalls gleichzeitig mit 
+
+The server is configured in a way that allows both authentication via key certificate or username and password. To authenticate via username and password, use these credentials:
 - host: localhost
 - username: testuser
 - password: testpass
-anmelden.

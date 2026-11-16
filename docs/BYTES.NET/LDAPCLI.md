@@ -1,8 +1,10 @@
-# Allgemeines
-Für die Arbeit mit Microsoft Active Directory (AD), sowie OpenLDAP, empfehlen wir die Benutzung der Open-Source Bibliothek [*Novell*](https://github.com/dsbenghe/Novell.Directory.Ldap.NETStandard). Die Benutzung ist unter /src-23/BYTES.NET (Core)/NovellExampleCLI zu finden.
+# General
+For working with Microsofts Active Directory (AD) as well as OpenLDAP we recommend using the open-source library [*Novell*](https://github.com/dsbenghe/Novell.Directory.Ldap.NETStandard). An example of how to use it can be found under /src-23/BYTES.NET (Core)/NovellExampleCLI.
 
-# Benutzung
-Zum Einloggen eines Users per Novell braucht man zwei Befehle:
+# Usage
+
+Logging in a user via Novell requires two commands: 
+
 ```
 await using (var cn = new LdapConnection())
 {
@@ -10,18 +12,20 @@ await using (var cn = new LdapConnection())
     await cn.BindAsync("<<userdn>>", "<<userpassword>>");
 }
 ```
-Damit erstellt man eine neue Verbindung zu AD/ OpenLDAP.
 
-Bei der Benennung der Usernamen ist jedoch zu beachten, dass der Name nicht überall gleich sein kann. So arbeitet OpenLDAP mit Usernamen des Schemas `cn=admin,dc=test,dc=local`, wogegen AD Usernamen mit dem Schema `username@domain` aktzeptiert.
+This creates a new connection to AD/OpenLDAP.
 
-Danach kann man Anfragen an den Service stellen (unter Benutzung der `SearchAsync`-Funktion).
+When naming users, note that the username format is not the same everywhere. OpenLDAP works with usernames following the schema `cn=admin,dc=test,dc=local`, whereas AD accepts usernames following the schema `username@domain`.
 
-## Unterschied Benutzernamenkonvention
-OpenLDAP ist beim aktzeptieren der Benutzernamen strenger als AD. Um sich bei OpenLDAP zu authentifizieren benötigt man den Distiguished Name in Form von `cn=admin,dc=test,dc=local`. Bei AD kann man sich hingegen mit `<domain>@<username>`oder `<username>\<domain>` authentifizieren.
+To send requests, we recommend using the `SearchAsync` function.
 
-# OpenLDAP, Docker und Novell
+## Differences in naming conventions
 
-Man kann OpenLDAP mit Docker lokal hosten. Dazu erstellt man eine `docker-compose.yml`-Datei:
+OpenLDAP is stricter than AD when it comes to accepting usernames. To authenticate against OpenLDAP, you need the Distinguished Name in the form `cn=admin,dc=test,dc=local`. With AD, on the other hand, you can authenticate using `<domain>@<username>` or `<username>\<domain>`.
+
+# OpenLDAP, Docker and Novell
+
+You can host OpenLDAP locally using Docker. To do so, create a `docker-compose.yml` file:
 
 ```
 services:
@@ -35,6 +39,7 @@ services:
     ports:
       - "389:389"
 ```
-Der Port ist dabei als Standard-Port gewählt.
 
-Weitere Information zum Setup von OpenLDAP per Docker sind auf der offiziellen [GitHub-Seite](https://github.com/osixia/container-openldap) zu finden.
+The port is set to the default.
+
+Further information on setting up OpenLDAP in a Docker container can be found on the official [GitHub page](https://github.com/osixia/container-openldap).
