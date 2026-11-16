@@ -104,3 +104,13 @@ src-2023/BYTES.NET.Extensibility/BYTES.NET.Extensibility/bin/Debug/net8.0-window
 src-2023/BYTES.NET.Extensibility/BYTES.NET.Extensibility/bin/Debug/net8.0-windows/BYTES.NET.xml
 src-2023/HTTPClientCLI/bin/
 src-2023/HTTPClientCLI/obj/
+/obj
+src-2023/DapperCLI/
+src-2023/EFCLI/
+src-2023/ElsaCLI/
+src-2023/ElsaLib/
+src-2023/Workflowcore/
+src-2023/WorkflowGraph/
+src-2023/LinqToDbcLI/bin/
+src-2023/BYTES.NET.Math/obj/
+src-2023/BYTES.NET.Imaging/obj/
