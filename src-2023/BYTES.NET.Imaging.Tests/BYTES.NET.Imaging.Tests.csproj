@@ -17,7 +17,7 @@
 		<!-- <PackageReleaseNotes>nuget.exe added to 'content' directory</PackageReleaseNotes> -->
 		<Authors>Sebastian Raese</Authors>
 		<Company>hauptstadtbytes GmbH</Company>
-		<Copyright>Copyright (c) 2023 hauptstadtbytes GmbH</Copyright>
+		<Copyright>Copyright (c) 2026 hauptstadtbytes GmbH</Copyright>
 
 		<PackageProjectUrl>https://bytes-dotnet.readme.io/docs/getting-started</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/hauptstadtbytes/BYTES-DotNet</RepositoryUrl>
