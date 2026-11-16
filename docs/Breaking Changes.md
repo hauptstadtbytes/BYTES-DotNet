@@ -13,3 +13,6 @@ Empfehlung: Benutzen von Novell. Beispiel für die Benutzung ist in LDAPCLI.
 -> nicht migriert (HttpClient)
 Empfehlung: Benutzen der neuen .Net Klasse "HttpClient". Verwendungsbeispiel in HttpClientCLI.
 
+## Collections - SQL
+-> SQL-Code nicht migriert
+Empfehlung: Benutzen von Linq2DB Verwendungsbeispiel in Linq2DBCLI
