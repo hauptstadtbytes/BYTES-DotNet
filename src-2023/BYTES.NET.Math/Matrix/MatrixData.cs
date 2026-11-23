@@ -11,7 +11,7 @@ namespace BYTES.NET.Math.Matrix
         #region protected properties
 
         protected TValue[,] _values = null;
-
+        
         #endregion
 
 
@@ -21,19 +21,39 @@ namespace BYTES.NET.Math.Matrix
 
         public int yLength { get => _values.GetLength(1); }
 
+        public int arrayStart = 1;
+
+
         public TValue this[int xCoordinate, int yCoordinate]
         {
             get
             {
                 ValidateCoordinates(xCoordinate, yCoordinate);
-                return _values[xCoordinate - 1, yCoordinate - 1];
+                if(arrayStart == 1)
+                {
+                    return _values[xCoordinate - 1, yCoordinate - 1];
+                }
+                else
+                {
+                    return _values[xCoordinate, yCoordinate];
+                }
             }
             set
             {
                 ValidateCoordinates(xCoordinate, yCoordinate);
 
-                TValue oldValue = _values[xCoordinate - 1, yCoordinate - 1];
-                _values[xCoordinate - 1, yCoordinate - 1] = value;
+                TValue oldValue;
+
+                if (arrayStart == 1)
+                {
+                    oldValue = _values[xCoordinate - 1, yCoordinate - 1];
+                    _values[xCoordinate - 1, yCoordinate - 1] = value;
+                }
+                else
+                {
+                    oldValue = _values[xCoordinate, yCoordinate];
+                    _values[xCoordinate, yCoordinate] = value;
+                }
 
                 OnValueUpdate(xCoordinate, yCoordinate, oldValue, value);
             }
@@ -63,6 +83,27 @@ namespace BYTES.NET.Math.Matrix
             _values = new TValue[xLength, yLength];
         }
 
+        /// <summary>
+        /// overloaded constructor to accept an int to start the array at
+        /// accepts either 0 or 1 as the start for the array
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="arraystart"></param>
+        public MatrixData(TValue[,] values, int arraystart)
+        {
+            _values = values;
+
+            if(arraystart != 0 && arraystart != 1)
+            {
+                throw new ArgumentException("Invalid array start");
+            }
+            else
+            {
+                arrayStart = arraystart;
+            }
+            
+        }
+
         #endregion
 
 
@@ -87,17 +128,36 @@ namespace BYTES.NET.Math.Matrix
         /// <param name="yCoordinate"></param>
         private void ValidateCoordinates(int xCoordinate, int yCoordinate)
         {
-            if (xCoordinate < 1)
-                throw new ArgumentException("Failed to validate x-coordinate. All coordinates have to be 1-based.");
+            // add another check for the array start
+            // need to make two branches for the start
+            if (arrayStart == 1)
+            {
+                if (xCoordinate < 1)
+                    throw new ArgumentException("Failed to validate x-coordinate. All coordinates have to be 1-based.");
 
-            if (xCoordinate > this.xLength)
-                throw new ArgumentException("Failed to validate x-coordinate. The value given is bigger than the x-Length.");
+                if (xCoordinate > this.xLength-1)
+                    throw new ArgumentException("Failed to validate x-coordinate. The value given is bigger than the x-Length.");
 
-            if (yCoordinate < 1)
-                throw new ArgumentException("Failed to validate y-coordinate. All coordinates have to be 1-based.");
+                if (yCoordinate < 1)
+                    throw new ArgumentException("Failed to validate y-coordinate. All coordinates have to be 1-based.");
 
-            if (yCoordinate > this.yLength)
-                throw new ArgumentException("Failed to validate y-coordinate. The value given is bigger than the y-Length.");
+                if (yCoordinate > this.yLength-1)
+                    throw new ArgumentException("Failed to validate y-coordinate. The value given is bigger than the y-Length.");
+            }
+            else if (arrayStart == 0)
+            {
+                if (xCoordinate < 0)
+                    throw new ArgumentException("Failed to validate x-coordinate. All coordinates have to be 1-based.");
+
+                if (xCoordinate > this.xLength)
+                    throw new ArgumentException("Failed to validate x-coordinate. The value given is bigger than the x-Length.");
+
+                if (yCoordinate < 0)
+                    throw new ArgumentException("Failed to validate y-coordinate. All coordinates have to be 1-based.");
+
+                if (yCoordinate > this.yLength)
+                    throw new ArgumentException("Failed to validate y-coordinate. The value given is bigger than the y-Length.");
+            }
         }
 
         #endregion
