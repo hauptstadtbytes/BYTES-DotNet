@@ -23,7 +23,6 @@ namespace BYTES.NET.Math.Matrix
 
         public int arrayStart = 1;
 
-
         public TValue this[int xCoordinate, int yCoordinate]
         {
             get
@@ -128,35 +127,49 @@ namespace BYTES.NET.Math.Matrix
         /// <param name="yCoordinate"></param>
         private void ValidateCoordinates(int xCoordinate, int yCoordinate)
         {
-            // add another check for the array start
-            // need to make two branches for the start
             if (arrayStart == 1)
             {
                 if (xCoordinate < 1)
+                {
                     throw new ArgumentException("Failed to validate x-coordinate. All coordinates have to be 1-based.");
-
-                if (xCoordinate > this.xLength-1)
-                    throw new ArgumentException("Failed to validate x-coordinate. The value given is bigger than the x-Length.");
+                }
+                   
+                if (xCoordinate > this.xLength)
+                {
+                    throw new ArgumentException("Failed to validate x-coordinate. The value given is bigger than the x-Length");
+                }
 
                 if (yCoordinate < 1)
-                    throw new ArgumentException("Failed to validate y-coordinate. All coordinates have to be 1-based.");
+                {
+                    throw new ArgumentException("Failed to validate x-coordinate. All coordinates have to be 1-based.");
+                }
 
-                if (yCoordinate > this.yLength-1)
-                    throw new ArgumentException("Failed to validate y-coordinate. The value given is bigger than the y-Length.");
+                if (yCoordinate > this.yLength)
+                {
+                    throw new ArgumentException("Failed to validate x-coordinate. The value given is bigger than the y-Length");
+                }
             }
             else if (arrayStart == 0)
             {
                 if (xCoordinate < 0)
-                    throw new ArgumentException("Failed to validate x-coordinate. All coordinates have to be 1-based.");
+                {
+                    throw new ArgumentException("Failed to validate x-coordinate. All coordinates have to be 0-based.");
+                }
 
-                if (xCoordinate > this.xLength)
+                if (xCoordinate > this.xLength-1)
+                {
                     throw new ArgumentException("Failed to validate x-coordinate. The value given is bigger than the x-Length.");
+                }
 
                 if (yCoordinate < 0)
-                    throw new ArgumentException("Failed to validate y-coordinate. All coordinates have to be 1-based.");
+                {
+                    throw new ArgumentException("Failed to validate x-coordinate. All coordinates have to be 0-based.");
+                }
 
-                if (yCoordinate > this.yLength)
+                if (yCoordinate > this.yLength-1)
+                {
                     throw new ArgumentException("Failed to validate y-coordinate. The value given is bigger than the y-Length.");
+                }
             }
         }
 
